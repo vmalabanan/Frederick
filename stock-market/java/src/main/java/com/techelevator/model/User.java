@@ -16,13 +16,19 @@ public class User {
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
 
-   public User() { }
+   //Added full name variable
+   private String firstName;
+   private String lastName;
 
-   public User(Long id, String username, String password, String authorities) {
+   public User() { }
+   //Added fullName to constructor
+   public User(Long id, String username, String password, String authorities, String firstName, String lastName) {
       this.id = id;
       this.username = username;
       this.password = password;
       this.activated = true;
+      this.firstName = firstName;
+      this.lastName = lastName;
    }
 
    public Long getId() {
@@ -65,6 +71,25 @@ public class User {
       this.authorities = authorities;
    }
 
+   //Added getter and setter for first and last
+   public String getFirstName() {
+      return firstName;
+   }
+
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
+
+   public String getLastName() {
+      return lastName;
+   }
+
+   public void setLastName(String lastName) {
+      this.firstName = lastName;
+   }
+
+
+
    public void setAuthorities(String authorities) {
       String[] roles = authorities.split(",");
       for(String role : roles) {
@@ -72,7 +97,7 @@ public class User {
          this.authorities.add(new Authority(authority));
       }
    }
-
+   //added first and last to equals for consistency
    @Override
    public boolean equals(Object o) {
       if (this == o) return true;
@@ -82,14 +107,18 @@ public class User {
               activated == user.activated &&
               Objects.equals(username, user.username) &&
               Objects.equals(password, user.password) &&
-              Objects.equals(authorities, user.authorities);
+              Objects.equals(authorities, user.authorities) &&
+              Objects.equals(firstName, user.firstName) &&
+              Objects.equals(lastName, user.lastName);
    }
 
+   //same for hash
    @Override
    public int hashCode() {
-      return Objects.hash(id, username, password, activated, authorities);
+      return Objects.hash(id, username, password, activated, authorities, firstName, lastName);
    }
 
+   //Edited toString to incorporate first and last just in case
    @Override
    public String toString() {
       return "User{" +
@@ -97,6 +126,8 @@ public class User {
               ", username='" + username + '\'' +
               ", activated=" + activated +
               ", authorities=" + authorities +
+              ", firstName=" + firstName +
+              ", lastName=" + lastName +
               '}';
    }
 }
