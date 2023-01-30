@@ -15,10 +15,8 @@ public class RegisterUserDTO {
     @NotEmpty(message = "Please select a role for this user.")
     private String role;
     //Added first last to registeruserdto
-    @JsonProperty("first_name")
     @NotEmpty
     private String firstName;
-    @JsonProperty("last_name")
     @NotEmpty
     private String lastName;
 
