@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <Header class="navbar navbar-expand-ig bd-navbar sticky-top" />
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
-    </div>
+    </div> -->
     <router-view />
-    <footer />
+    <footer class="sticky-bottom" />
   </div>
 </template>
 
@@ -29,5 +29,13 @@ footer {
   width: 100vw;
   background-color: #FFB703;
   padding: 30px
+}
+
+button {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  background: #FFB703;
+  border: none;
+  border-radius: 15px;
+  color: white
 }
 </style>
