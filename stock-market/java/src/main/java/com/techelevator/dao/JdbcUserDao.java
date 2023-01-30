@@ -62,12 +62,13 @@ public class JdbcUserDao implements UserDao {
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
+    //changes made to reflect interface
     @Override
-    public boolean create(String username, String password, String role) {
+    public boolean create(String username, String password, String role, String firstName, String lastName) {
         boolean userCreated = false;
 
         // create user
-        String insertUser = "insert into users (username,password_hash,role) values(?,?,?)";
+        String insertUser = "insert into users (username,password_hash,role,first_name,last_name) values(?,?,?,?,?)";
         String password_hash = new BCryptPasswordEncoder().encode(password);
         String ssRole = "ROLE_" + role.toUpperCase();
 
@@ -78,6 +79,8 @@ public class JdbcUserDao implements UserDao {
                     ps.setString(1, username);
                     ps.setString(2, password_hash);
                     ps.setString(3, ssRole);
+                    ps.setString(4, firstName);
+                    ps.setString(5, lastName);
                     return ps;
                 }
                 , keyHolder) == 1;
@@ -86,6 +89,7 @@ public class JdbcUserDao implements UserDao {
         return userCreated;
     }
 
+    //edited map row to user
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getLong("user_id"));
@@ -93,6 +97,8 @@ public class JdbcUserDao implements UserDao {
         user.setPassword(rs.getString("password_hash"));
         user.setAuthorities(rs.getString("role"));
         user.setActivated(true);
+        user.setFirstName(rs.getString("first_name"));
+        user.setLastName(rs.getString("last_name"));
         return user;
     }
 }
