@@ -5,41 +5,24 @@
       <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
         Invalid username and password!
       </div>
-      <div
-        class="alert alert-success"
-        role="alert"
-        v-if="this.$route.query.registration"
-      >
+      <div class="alert alert-success" role="alert" v-if="this.$route.query.registration">
         Thank you for registering, please sign in.
       </div>
 
       <div class="form-floating">
-        <input
-          type="text"
-          id="username"
-          class="form-control"
-          placeholder="Username"
-          v-model="user.username"
-          required
-          autofocus
-        />
+        <input type="text" id="username" class="form-control" placeholder="Username" v-model="user.username" required
+          autofocus />
         <label for="username" class="sr-only">Username</label>
       </div>
 
       <div class="form-floating">
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="user.password"
-          required
-        />
+        <input type="password" id="password" class="form-control" placeholder="Password" v-model="user.password"
+          required />
         <label for="password" class="sr-only">Password</label>
       </div>
 
       <button class="btn btn-lg btn-primary btn-block submit" type="submit">Sign in</button>
-            <router-link :to="{ name: 'register' }">Need an account?</router-link>
+      <router-link :to="{ name: 'register' }">Need an account?</router-link>
 
     </form>
   </div>
@@ -84,13 +67,13 @@ export default {
 </script>
 
 <style scoped>
-
 #login {
   margin-top: 2rem;
   display: flex;
   width: 100vw;
   justify-content: center;
 }
+
 .form-signin {
   display: flex;
   flex-direction: column;

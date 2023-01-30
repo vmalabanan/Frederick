@@ -6,7 +6,7 @@
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
     </div> -->
     <router-view />
-    <footer class="sticky-bottom" />
+    <footer class="fixed-bottom px-4 py-4" style="background-color: #FFB703;" />
   </div>
 </template>
 
@@ -21,21 +21,3 @@ export default {
 
 }
 </script>
-
-<style>
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  background-color: #FFB703;
-  padding: 30px
-}
-
-button {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  background: #FFB703;
-  border: none;
-  border-radius: 15px;
-  color: white
-}
-</style>
