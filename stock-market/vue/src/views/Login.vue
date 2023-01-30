@@ -25,18 +25,22 @@
         />
         <label for="username" class="sr-only">Username</label>
       </div>
-      <label for="password" class="sr-only">Password</label>
-      <input
-        type="password"
-        id="password"
-        class="form-control"
-        placeholder="Password"
-        v-model="user.password"
-        required
-      />
 
-      <router-link :to="{ name: 'register' }">Need an account?</router-link>
-      <button type="submit">Sign in</button>
+      <div class="form-floating">
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Password"
+          v-model="user.password"
+          required
+        />
+        <label for="password" class="sr-only">Password</label>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block submit" type="submit">Sign in</button>
+            <router-link :to="{ name: 'register' }">Need an account?</router-link>
+
     </form>
   </div>
 </template>
@@ -78,3 +82,26 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+#login {
+  margin-top: 2rem;
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+}
+.form-signin {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+input {
+  margin-bottom: 1rem;
+}
+
+.submit {
+  margin: .25rem;
+}
+</style>
