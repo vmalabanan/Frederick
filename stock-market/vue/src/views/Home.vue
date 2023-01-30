@@ -14,7 +14,7 @@
         mauris
         id dapibus. Ut purus aliquet convallis aliquet et nisl. Diam facilisis volutpat ornare.</p>
       <div class="text-center">
-        <button>Let's Go</button>
+        <button @click="handleClick">Let's Go</button>
       </div>
     </div>
   </div>
@@ -22,8 +22,13 @@
 
 <script>
 export default {
-  name: "home"
-};
+  name: "home",
+  methods: {
+    handleClick() {
+      this.$router.push({ name: 'login' });
+    }
+  }
+}
 </script>
 
 <style >
