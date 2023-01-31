@@ -22,7 +22,7 @@ public class JdbcGameDao implements GameDao
     public List<Game> findAll()
     {
         List<Game> games = new ArrayList<>();
-        String sql = "SELECT + FROM games";
+        String sql = "SELECT * FROM games";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next())
