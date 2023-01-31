@@ -67,7 +67,6 @@ export default {
       gamesService.add(this.game).then(response => {
         if (response.status === 201) {
           // set game ID with info from backend
-
           const id = response.data.id;
           console.log("response data: " + response.data); // just checking what response data is
 
@@ -78,6 +77,7 @@ export default {
       .catch(error => {
             const response = error.response;
             if (response.status === 400) {
+              this.createGameErrors = true;
               this.createGameErrorMsg = "Bad Request: Game Creation Errors";
             }
       })
@@ -91,8 +91,10 @@ export default {
 #create {
   margin-top: 2rem;
   display: flex;
+  flex-direction: column;
   width: 100vw;
   justify-content: center;
+  align-items: center;
 }
 .form-create-game {
   display: flex;
