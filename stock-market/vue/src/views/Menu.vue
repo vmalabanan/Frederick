@@ -15,7 +15,7 @@ export default {
   name: "menu",
   methods: {
     createPage() {
-      this.$router.push({ name: "create" });
+      this.$router.push({ name: "createGame" });
     },
     gameList() {
       this.$router.push({ name: "gamelist" });
