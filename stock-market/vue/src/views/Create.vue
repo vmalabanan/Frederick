@@ -1,6 +1,6 @@
 <template>
   <div>
-    This is the Create Game page!
+    <h1>This is the Create Game page!</h1>
   </div>
 </template>
 

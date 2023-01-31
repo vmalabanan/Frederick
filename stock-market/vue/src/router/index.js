@@ -83,6 +83,15 @@ const router = new Router({
     },
 
     {
+      path: "/gamelist",
+      name: "gamelist",
+      component: GameList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
       path: "/portfolio",
       name: "portfolio",
       component: Portfolio,

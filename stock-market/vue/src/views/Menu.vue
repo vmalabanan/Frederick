@@ -1,38 +1,42 @@
 <template>
   <div class="options-container">
-    <div class="options">
-      <router-link :to="{ name: 'create' }">
-        <button class="btn btn-lg btn-primary btn-block">Host Game</button>
-      </router-link>
-      <router-link :to="{ name: 'create' }">
-        <button class="btn btn-lg btn-primary btn-block">Join Game</button>
-      </router-link>
-      <router-link :to="{ name: 'portfolio' }">
-        <button class="btn btn-lg btn-primary btn-block">My Games</button>
-      </router-link>
+    <div class="options d-grid gap-3 col-4 mx-auto">
+      <button class="btn btn-lg btn-primary" @click="createPage">
+        Host Game
+      </button>
+      <button class="btn btn-lg btn-warning" @click="gameList">Join Game</button>
+      <button class="btn btn-lg btn-info" @click="portfolio">My Games</button>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "menu"
+  name: "menu",
+  methods: {
+    createPage() {
+      this.$router.push({ name: "create" });
+    },
+    gameList() {
+      this.$router.push({ name: "gamelist" });
+    },
+    portfolio() {
+      this.$router.push({ name: "portfolio" });
+    }
+  }
 };
 </script>
 
 <style>
-
 .options-container {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
-
+  margin-top: 4rem;
 }
 
 .options {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  /* justify-content: center; */
 }
 </style>
