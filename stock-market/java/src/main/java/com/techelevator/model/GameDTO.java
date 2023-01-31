@@ -1,5 +1,6 @@
 package com.techelevator.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
@@ -7,9 +8,9 @@ public class GameDTO
 {
     @NotEmpty
     private String gameName;
-    @NotEmpty
+//    @NotEmpty
     private LocalDateTime endDate;
-    @NotEmpty
+    @Min(value = 1)
     private int gameLengthDays;
 
     public String getGameName()

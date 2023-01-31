@@ -22,7 +22,7 @@
           name="length"
           id="length"
           class="form-control"
-          v-model.number="game.length"
+          v-model.number="game.gameLengthDays"
           required
         >
           <!-- We only have one game length option for now -->
@@ -50,7 +50,7 @@ export default {
     return {
       game: {
         gameName: "",
-        length: 0,
+        gameLengthDays: 0,
         endDate: 0,
       },
       createGameErrors: false,
@@ -61,7 +61,8 @@ export default {
     createGame() {
       // set end date
       const endDate = new Date();
-      endDate.setDate(endDate.getDate() + this.game.length);
+      endDate.setDate(endDate.getDate() + this.game.gameLengthDays);
+      this.game.endDate = endDate;
 
       // send game info to back end
       gamesService.add(this.game).then(response => {

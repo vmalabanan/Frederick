@@ -81,10 +81,10 @@ public class JdbcGameDao implements GameDao
     @Override
     public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays)
     {
-        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days " +
-                     "(?, ?, ?, ?)";
+        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
+                     "VALUES (?, ?, ?, ?) RETURNING game_id";
 
-        int created = jdbcTemplate.update(sql, gameName, organizerId, endDate, gameLengthDays);
+        int created = jdbcTemplate.queryForObject(sql, int.class, gameName, organizerId, endDate, gameLengthDays);
         return created > 0;
     }
 
