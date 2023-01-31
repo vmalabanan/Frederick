@@ -18,9 +18,9 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@PreAuthorize("isAuthenticated()")
 //base path: /games
 @RequestMapping("/games")
-
 public class GameController
 {
     private GameDao gameDao;
