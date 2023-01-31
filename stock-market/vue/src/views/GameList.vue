@@ -2,18 +2,14 @@
     <div id="GameList">
         <div class="card w-50">
             <div class="card-header" style="background-color: #FFB703; border-radius:25px; height: 60px">
-                <span>Game Name</span>
-                <span>Type</span>
-                <span>Length</span>
-                <i class="fa-sharp fa-solid fa-xmark-large"></i>
+                <span>Game Name</span><span>Type</span><span>Length</span><i></i>
             </div>
             <div id="games" class="card-body">
-                <Game name="MANGA FTW" type="Normal" duration="1 Week" />
-                <Game name="MANGA FTW" type="Normal" duration="1 Week" />
-                <Game name="MANGA FTW" type="Normal" duration="1 Week" />
+                <Game name="MANGA FTW" type="Normal" duration="7 days" />
+                <Game name="MANGA FTW" type="Normal" duration="7 days" />
+                <Game name="MANGA FTW" type="Normal" duration="7 days" />
             </div>
-            <div class="card-footer" style="background-color: #FFB703; border-radius:25px; height: 60px">
-            </div>
+            <div class="card-footer" style="background-color: #FFB703; border-radius:25px; height: 60px" />
         </div>
     </div>
 </template>
@@ -30,9 +26,9 @@ export default {
 <style>
 div#GameList {
     display: flex;
-    height: 100vh;
     display: flex;
     align-items: center;
+    margin-top: 5%;
 }
 
 
@@ -48,4 +44,4 @@ div.card-header {
     justify-content: space-evenly;
     align-items: center;
 }
-</style>5
+</style>
