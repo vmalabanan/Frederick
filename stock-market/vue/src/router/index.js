@@ -1,3 +1,4 @@
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
@@ -89,7 +90,7 @@ const router = new Router({
       name: "portfolio",
       component: Portfolio,
       meta: {
-        requiresAuth: true
+        requiresAuth: false
       }
     },
   ]
