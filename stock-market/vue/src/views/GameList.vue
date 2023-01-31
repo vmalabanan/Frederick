@@ -2,12 +2,13 @@
     <div id="GameList">
         <div class="card w-50">
             <div class="card-header" style="background-color: #FFB703; border-radius:25px; height: 60px">
-                <span>Game Name</span><span>Type</span><span>Length</span><i></i>
+                <span style="width: 200px">Game Name</span>
+                <span style="width: 60px">Type</span>
+                <span style="width: 60px">Length</span>
+                <span style="width: 100px"></span>
             </div>
             <div id="games" class="card-body">
-                <Game name="MANGA FTW" type="Normal" duration="7 days" />
-                <Game name="MANGA FTW" type="Normal" duration="7 days" />
-                <Game name="MANGA FTW" type="Normal" duration="7 days" />
+                <Game v-for="(game, index) in games" :key="index" :game="game" />
             </div>
             <div class="card-footer" style="background-color: #FFB703; border-radius:25px; height: 60px" />
         </div>
@@ -15,17 +16,28 @@
 </template>
 <script>
 import Game from '../components/Game.vue';
+import GamesService from '../services/GamesService';
 export default {
     name: "GameList",
     components: {
         Game,
+    },
+    data() {
+        return {
+            games: []
+        }
+    },
+    created() {
+        GamesService.getGames().then(resp => {
+            this.games = resp.data
+            console.log(this.games)
+        })
     }
 }
 </script>
 
 <style>
 div#GameList {
-    display: flex;
     display: flex;
     align-items: center;
     margin-top: 5%;
@@ -41,7 +53,7 @@ div#GameList>div {
 
 div.card-header {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     align-items: center;
 }
 </style>
