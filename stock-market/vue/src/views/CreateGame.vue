@@ -69,7 +69,6 @@ export default {
         if (response.status === 201) {
           // set game ID with info from backend
           const id = response.data.id;
-          console.log("response data: " + response.data); // just checking what response data is
 
           // redirect user to portfolio screen for newly created game
           this.$router.push({ name: "portfolio", params: { id: id } });
