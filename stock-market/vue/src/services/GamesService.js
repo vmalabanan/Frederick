@@ -6,4 +6,8 @@ export default {
         return axios.get('/games', user)
     },
 
+    add(game) {
+        return axios.post('/games', game)
+    }
+
 }

@@ -7,7 +7,7 @@ import Register from '../views/Register.vue'
 import GameList from '../views/GameList.vue'
 import store from '../store/index'
 import Menu from '../views/Menu.vue'
-import Create from '../views/Create.vue'
+import CreateGame from '../views/CreateGame.vue'
 import Portfolio from '../views/Portfolio.vue'
 
 Vue.use(Router)
@@ -67,9 +67,9 @@ const router = new Router({
       }
     },
     {
-      path: "/create",
-      name: "create",
-      component: Create,
+      path: "/create-game",
+      name: "createGame",
+      component: CreateGame,
       meta: {
         requiresAuth: true
       }
