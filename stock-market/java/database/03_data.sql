@@ -8,5 +8,8 @@ INSERT INTO users (user_id, username, password_hash, role, first_name, last_name
 ALTER SEQUENCE seq_user_id RESTART WITH 6;
 
 
--- insert ??? table data
+-- insert games table data
+INSERT INTO games (game_id, game_name, game_type, game_length) VALUES (1, 'TE to the moon', 1, 240);
+INSERT INTO games (game_id, game_name, game_type, game_length) VALUES (2, 'TEBets', 1, 480);
+ALTER SEQUENCE seq_game_id RESTART WITH 3;
 
