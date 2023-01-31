@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+//base path: /games
 @RequestMapping("/games")
 public class GameController
 {
@@ -25,6 +26,12 @@ public class GameController
         this.userDao = userDao;
     }
 
+    /**
+     *
+     * @param gameDto accepts valid gameDTO object from client(name, endDate, length)
+     * @param principal gets principal user name to set organizer id
+     * @return integer id of newly created game back to client
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "", method = RequestMethod.POST)
     public int createGame(@Valid @RequestBody GameDTO gameDto, Principal principal)
@@ -34,6 +41,10 @@ public class GameController
         return created ? gameDao.findIdByName(gameDto.getGameName()) : 0;
     }
 
+    /**
+     *
+     * @return list of all games currently stored in db
+     */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Game> listGames()
@@ -41,6 +52,11 @@ public class GameController
         return gameDao.findAll();
     }
 
+    /**
+     *
+     * @param id game id as path variable for endpoint
+     * @return game object with matching game id
+     */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Game findGameById(@PathVariable int id)
