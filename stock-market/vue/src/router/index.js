@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
+import GameList from '../views/GameList.vue'
 import store from '../store/index'
 import Menu from '../views/Menu.vue'
 import Create from '../views/Create.vue'
@@ -52,6 +53,14 @@ const router = new Router({
       path: "/register",
       name: "register",
       component: Register,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/gamelist",
+      name: "gamelist",
+      component: GameList,
       meta: {
         requiresAuth: false
       }
