@@ -18,6 +18,25 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 );
 
+
+-- create game table
+DROP TABLE IF EXISTS games;
+DROP SEQUENCE IF EXISTS seq_game_id;
+
+CREATE SEQUENCE seq_game_id
+  INCREMENT BY 1
+  NO MAXVALUE
+  NO MINVALUE
+  CACHE 1;
+
+CREATE TABLE games (
+	game_id int DEFAULT nextval('seq_game_id'::regclass) NOT NULL,
+	game_name varchar(50) NOT NULL,
+	game_type int NOT NULL,
+	game_length int NOT NULL,
+	CONSTRAINT PK_game PRIMARY KEY (game_id)
+);
+
 -- Add seed data in the 03_data.sql script file
 
 -- Add Foreign key constraints in the 04_constraints.sql script file

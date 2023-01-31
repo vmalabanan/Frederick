@@ -27,7 +27,7 @@ public class JdbcUserDaoTests extends FinalCapstoneDaoTests {
         Assert.assertEquals("TEST_USER", user.getUsername());
         //Added tests for first and last
         Assert.assertEquals("first", user.getFirstName());
-        Assert.assertEquals("last", user.getFirstName());
+        Assert.assertEquals("last", user.getLastName());
     }
 
 }
