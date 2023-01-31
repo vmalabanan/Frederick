@@ -57,14 +57,7 @@ const router = new Router({
         requiresAuth: false
       }
     },
-    {
-      path: "/gamelist",
-      name: "gamelist",
-      component: GameList,
-      meta: {
-        requiresAuth: false
-      }
-    },
+
     {
       path: "/menu",
       name: "menu",
@@ -83,7 +76,16 @@ const router = new Router({
     },
 
     {
-      path: "/portfolio",
+      path: "/games",
+      name: "gamelist",
+      component: GameList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: "/games/:id",
       name: "portfolio",
       component: Portfolio,
       meta: {
