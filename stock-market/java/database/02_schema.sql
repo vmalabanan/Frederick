@@ -32,8 +32,9 @@ CREATE SEQUENCE seq_game_id
 CREATE TABLE games (
 	game_id int DEFAULT nextval('seq_game_id'::regclass) NOT NULL,
 	game_name varchar(50) NOT NULL,
-	game_type int NOT NULL,
-	game_length int NOT NULL,
+	organizer_id int NOT NULL,
+	end_date TIMESTAMP NOT NULL,
+	game_length_days int NOT NULL,
 	CONSTRAINT PK_game PRIMARY KEY (game_id)
 );
 

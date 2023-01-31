@@ -9,7 +9,7 @@ ALTER SEQUENCE seq_user_id RESTART WITH 6;
 
 
 -- insert games table data
-INSERT INTO games (game_id, game_name, game_type, game_length) VALUES (1, 'TE to the moon', 1, 240);
-INSERT INTO games (game_id, game_name, game_type, game_length) VALUES (2, 'TEBets', 1, 480);
+INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (1, 'TE to the moon', 3, '2023-02-07 12:00:00', 7);
+INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (2, 'TEBets', 4, '2023-02-14 12:00:00', 14);
 ALTER SEQUENCE seq_game_id RESTART WITH 3;
 
