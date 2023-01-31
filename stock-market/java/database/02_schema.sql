@@ -36,13 +36,7 @@ CREATE TABLE games (
 	end_date TIMESTAMP NOT NULL,
 	game_length_days int NOT NULL,
 	CONSTRAINT PK_game PRIMARY KEY (game_id)
-
--- games_user table
---DROP TABLE IF EXISTS games;
---
---CREATE TABLE games_users (
---
---);
+);
 
 
 -- Add seed data in the 03_data.sql script file

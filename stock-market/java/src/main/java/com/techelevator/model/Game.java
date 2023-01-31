@@ -1,22 +1,20 @@
 package com.techelevator.model;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Game
 {
     private int gameId;
-    private String game_name;
-    private int organizer_id;
-    private LocalDateTime end_date;
+    private String gameName;
+    private int organizerId;
+    private LocalDateTime endDate;
     private int gameLengthDays;
 
-    public Game(int gameId, String game_name, int organizer_id, LocalDateTime end_date, int gameLengthDays)
+    public Game(int gameId, String game_name, int organizerId, LocalDateTime endDate, int gameLengthDays)
     {
         this.gameId = gameId;
-        this.game_name = game_name;
-        this.organizer_id = organizer_id;
-        this.end_date = end_date;
+        this.gameName = game_name;
+        this.organizerId = organizerId;
+        this.endDate = endDate;
         this.gameLengthDays = gameLengthDays;
     }
 
@@ -30,34 +28,34 @@ public class Game
         this.gameId = gameId;
     }
 
-    public String getGame_name()
+    public String getGameName()
     {
-        return game_name;
+        return gameName;
     }
 
-    public void setGame_name(String game_name)
+    public void setGameName(String gameName)
     {
-        this.game_name = game_name;
+        this.gameName = gameName;
     }
 
-    public int getOrganizer_id()
+    public int getOrganizerId()
     {
-        return organizer_id;
+        return organizerId;
     }
 
-    public void setOrganizer_id(int organizer_id)
+    public void setOrganizerId(int organizerId)
     {
-        this.organizer_id = organizer_id;
+        this.organizerId = organizerId;
     }
 
-    public LocalDateTime getEnd_date()
+    public LocalDateTime getEndDate()
     {
-        return end_date;
+        return endDate;
     }
 
-    public void setEnd_date(LocalDateTime end_date)
+    public void setEnd_date(LocalDateTime endDate)
     {
-        this.end_date = end_date;
+        this.endDate = endDate;
     }
 
     public int getGameLengthDays()
