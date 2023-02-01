@@ -25,7 +25,7 @@ export default {
   name: "home",
   methods: {
     handleClick() {
-      this.$router.push({ name: 'login' });
+      this.$router.push({ name: 'registration' });
     }
   }
 }
