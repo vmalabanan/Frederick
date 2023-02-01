@@ -2,9 +2,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
-import Register from '../views/Register.vue'
+import Registration from '../views/Registration'
 import GameList from '../views/GameList.vue'
 import store from '../store/index'
 import Menu from '../views/Menu.vue'
@@ -35,9 +34,9 @@ const router = new Router({
       }
     },
     {
-      path: "/login",
-      name: "login",
-      component: Login,
+      path: "/registration",
+      name: "registration",
+      component: Registration,
       meta: {
         requiresAuth: false
       }
@@ -50,15 +49,6 @@ const router = new Router({
         requiresAuth: false
       }
     },
-    {
-      path: "/register",
-      name: "register",
-      component: Register,
-      meta: {
-        requiresAuth: false
-      }
-    },
-
     {
       path: "/menu",
       name: "menu",
