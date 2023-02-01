@@ -10,6 +10,7 @@ import store from '../store/index'
 import Menu from '../views/Menu.vue'
 import CreateGame from '../views/CreateGame.vue'
 import Portfolio from '../views/Portfolio.vue'
+import Users from '../components/Users.vue'
 
 Vue.use(Router)
 
@@ -90,7 +91,16 @@ const router = new Router({
       name: "portfolio",
       component: Portfolio,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: "/users",
+      name: "users",
+      component: Users,
+      meta: {
+        requiresAuth: true
       }
     },
   ]
