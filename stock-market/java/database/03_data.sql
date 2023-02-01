@@ -13,3 +13,6 @@ INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days)
 INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (2, 'TEBets', 4, '2023-02-14 12:00:00', 14);
 ALTER SEQUENCE seq_game_id RESTART WITH 3;
 
+-- insert stocks table data
+INSERT INTO stocks (stock_id, name, ticker, price, change) VALUES (1, 'Apple Inc', 'AAPL', 145.93, 1.37);
+ALTER SEQUENCE seq_game_id RESTART WITH 2;
