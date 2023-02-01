@@ -82,7 +82,7 @@ export default {
       gamesService.add(this.game).then(response => {
         if (response.status === 201) {
           // set game ID with info from backend
-          const id = response.data.id;
+          const id = response.data;
 
           // redirect user to portfolio screen for newly created game
           this.$router.push({ name: "portfolio", params: { id: id } });
