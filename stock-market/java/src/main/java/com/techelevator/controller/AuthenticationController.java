@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,11 @@ import com.techelevator.model.User;
 import com.techelevator.model.UserAlreadyExistsException;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
+
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -62,6 +68,27 @@ public class AuthenticationController {
             //added first and last to userDao.create params
             userDao.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole(), newUser.getFirstName(), newUser.getLastName());
         }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @PreAuthorize("isAuthenticated()")
+    public List<String> getAllPlayerNames(Principal principal)
+    {
+//        List<User> users = userDao.findAll();
+//        List<String> players = new ArrayList<>();
+//
+//        for(User user : users)
+//        {
+//            if (!user.getUsername().equalsIgnoreCase(principal.getName()) && !user.getUsername().equalsIgnoreCase("admin"))
+//            {
+//                players.add(user.getUsername());
+//            }
+//        }
+//
+//        return players;
+        return userDao.findAll().stream().map(User::getUsername).filter(name -> !name.equalsIgnoreCase(principal.getName())
+                                                                            && !name.equalsIgnoreCase("admin")).collect(Collectors.toList());
     }
 
     /**
