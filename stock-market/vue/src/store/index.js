@@ -23,7 +23,8 @@ export default new Vuex.Store({
     registrationStatus: {
       isRPanelActive: false,
       isRegSuccessful: false,
-    }
+    },
+    selectedUsers: []
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -48,6 +49,8 @@ export default new Vuex.Store({
     REG_SUCCESSFUL(state) {
       state.registrationStatus.isRegSuccessful = true;
     },
-
+    SET_SELECTED_USERS(state, users) {
+      state.selectedUsers = users;
+    }
   }
 })
