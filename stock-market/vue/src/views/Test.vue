@@ -1,6 +1,6 @@
 <template>
     <div>
-        <StockCard />
+        <StockCard v-bind='stock' />
     </div>
 </template>
 
@@ -8,7 +8,16 @@
 import StockCard from '../components/StockCard.vue';
 export default {
     components: { StockCard },
-
+    data() {
+        return {
+            stock: {
+                code: 'AAPL',
+                name: 'Apple Inc',
+                mp: '145.93',
+                change: '1.00%',
+            }
+        }
+    }
 }
 </script>
 
