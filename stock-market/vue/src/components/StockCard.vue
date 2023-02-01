@@ -6,7 +6,7 @@
                 <p class="stock-name">{{ name }}</p>
             </h4>
             <p class="stock-price">${{ mp }}</p>
-            <p :class="this.isNegative ? 'change negative' : 'change positive'">{{ getChange() }}</p>
+            <p :class="this.change.startsWith('-') ? 'change negative' : 'change positive'">{{ getChange() }}</p>
         </div>
     </div>
 </template>
@@ -17,17 +17,15 @@ export default {
     props: ['code', 'mp', 'name', 'change'],
     data() {
         return {
-            isNegative: this.change.startsWith('-')
         }
     },
     methods: {
         getChange() {
-            if (this.isNegative) {
-
+            if (this.change.startsWith('-')) {
                 return this.change;
             }
             return "+" + this.change;
-        },
+        }
     }
 }
 </script>
