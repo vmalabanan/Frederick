@@ -9,5 +9,4 @@ export default {
     add(game) {
         return axios.post('/games', game)
     }
-
 }

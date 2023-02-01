@@ -31,6 +31,8 @@
         </select>
         <label for="length" class="sr-only">Game Length</label>
       </div>
+
+      <Users />
       <button
         class="btn btn-lg btn-primary btn-block create-game"
         type="submit"
@@ -43,16 +45,23 @@
 
 <script>
 import gamesService from "../services/GamesService.js";
-
+import Users from "../components/Users.vue"
 export default {
   name: "create",
+  components: {
+    Users
+  },
   data() {
     return {
       game: {
         gameName: "",
         gameLengthDays: 0,
         endDate: 0,
+        players: {
+
+        }
       },
+      users: {},
       createGameErrors: false,
       createGameErrorMsg: "There were problems creating a game."
     };
@@ -81,6 +90,10 @@ export default {
               this.createGameErrorMsg = "Bad Request: Game Creation Errors";
             }
       })
+    },
+
+    getUsers() {
+
     }
   },
 
