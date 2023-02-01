@@ -59,6 +59,7 @@ export default {
       registrationErrorMsg: "There were problems registering this user."
     };
   },
+  props: ['isRPanelActive', 'isRegSuccessful'],
   methods: {
     register() {
       if (this.user.password != this.user.confirmPassword) {
@@ -69,10 +70,10 @@ export default {
           .register(this.user)
           .then(response => {
             if (response.status == 201) {
-              this.$router.push({
-                path: "/login",
-                query: { registration: "success" }
-              });
+              // Switch active panel
+              this.$store.commit("SWITCH_PANEL")
+              // Say it was a success 
+              this.$store.commit("REG_SUCCESSFUL")
             }
           })
           .catch(error => {

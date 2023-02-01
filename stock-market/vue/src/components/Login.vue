@@ -4,7 +4,7 @@
     <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
       Invalid username and password!
     </div>
-    <div class="alert alert-success" role="alert" v-if="this.$route.query.registration">
+    <div class="alert alert-success" role="alert" v-if="this.$store.state.registrationStatus.isRegSuccessful">
       Thank you for registering, please sign in.
     </div>
 

@@ -1,6 +1,7 @@
 <template>
     <div id="login" class="text-center">
-        <div class="container" id="container" :class="{ 'right-panel-active': isRightPanelActive }">
+        <div class="container" id="container"
+            :class="{ 'right-panel-active': this.$store.state.registrationStatus.isRPanelActive }">
             <Register class="form-container sign-up-container" />
             <Login class="form-container sign-in-container" />
             <div class="overlay-container">
@@ -31,12 +32,11 @@ export default {
     },
     data() {
         return {
-            isRightPanelActive: false,
         }
     },
     methods: {
         handleScreenChange() {
-            this.isRightPanelActive = !this.isRightPanelActive;
+            this.$store.commit("SWITCH_PANEL")
         }
 
     },
