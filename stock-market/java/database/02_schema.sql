@@ -38,6 +38,25 @@ CREATE TABLE games (
 	CONSTRAINT PK_game PRIMARY KEY (game_id)
 );
 
+-- create stocks table (for testing only -- to be deleted later)
+DROP TABLE IF EXISTS stocks;
+DROP SEQUENCE IF EXISTS seq_stocks_id;
+
+CREATE SEQUENCE seq_stocks_id
+  INCREMENT BY 1
+  NO MAXVALUE
+  NO MINVALUE
+  CACHE 1;
+
+CREATE TABLE stocks (
+	stock_id int DEFAULT nextval('seq_game_id'::regclass) NOT NULL,
+	name varchar(50) NOT NULL,
+	ticker varchar(10) NOT NULL,
+	price decimal(15, 2) NOT NULL,
+	change decimal(10, 2) NOT NULL,
+	CONSTRAINT PK_stocks PRIMARY KEY (stock_id)
+);
+
 
 -- Add seed data in the 03_data.sql script file
 
