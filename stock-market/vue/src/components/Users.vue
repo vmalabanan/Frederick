@@ -1,5 +1,7 @@
 <template>
-  <div class="form-floating">
+  <div>
+    <label for="userList" class="sr-only">Players</label>
+
     <select
       name="userList"
       id="userList"
@@ -7,9 +9,10 @@
       v-model="selectedUsers"
       multiple
     >
-      <option v-for="user in users" v-bind:key="user.id" value="user">{{ user }}</option>
+      <option v-for="user in users" v-bind:key="user.id" value="user">{{
+        user
+      }}</option>
     </select>
-    <label for="userList" class="sr-only">Players</label>
   </div>
 </template>
 
@@ -31,7 +34,7 @@ export default {
       });
     },
     getSelectedUsers() {
-        return this.selectedUsers;
+      return this.selectedUsers;
     }
   },
   created() {

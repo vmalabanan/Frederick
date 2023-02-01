@@ -94,7 +94,8 @@ const router = new Router({
         requiresAuth: true
       }
     },
-
+    
+    //  do I need the users path here?
     {
       path: "/users",
       name: "users",
