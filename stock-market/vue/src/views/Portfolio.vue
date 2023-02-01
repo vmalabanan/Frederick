@@ -1,13 +1,14 @@
 <template>
-  <!-- <Bar id="my-chart-id" :options="chartOptions" :data="chartData" /> -->
-  <line-chart></line-chart>
+  <div class="portfolio">
+    <div class="chart">
+      <line-chart :styles="chartStyles" :plugins="chartPlugins"></line-chart>
+    </div>
+  </div>
+
 </template>
 
 <script>
-// import { Bar } from 'vue-chartjs'
-// import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
-// ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 import LineChart from "../components/LineChart.vue";
 
 export default {
@@ -15,17 +16,27 @@ export default {
   components: { LineChart },
   data() {
     return {
-      // chartData: {
-      //   labels: ['January', 'February', 'March'],
-      //   datasets: [{ data: [40, 20, 12] }]
-      // },
-      // chartOptions: {
-      //   responsive: true
-      // }
     };
   },
+  computed: {
+    //change chart css here
+    chartStyles() {
+      return {
+        backgroundColor: '#8ECAE6',
+      }
+    }
+  }
 };
 </script>
 
-<style>
+<style scoped>
+.portfolio {
+  display: flex;
+  justify-content: center;
+}
+
+.chart {
+  padding-top: 20px;
+  width: 50%;
+}
 </style>

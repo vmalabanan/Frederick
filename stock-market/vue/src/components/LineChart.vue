@@ -79,9 +79,10 @@ export default {
           {
             label: 'My Portfolio',
             backgroundColor: '#FB8500',
-            data: [100000, 120000, 90000, 95000, 105000, 125000, 150000]
+            data: [100000, 120000, 90000, 95000, 105000, 125000, 150000],
+            borderColor: '#FB8500',
           }
-        ]
+        ],
       },
       chartOptions: {
         responsive: true,
@@ -91,3 +92,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>
