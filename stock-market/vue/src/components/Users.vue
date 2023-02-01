@@ -9,7 +9,7 @@
     >
       <option v-for="user in users" v-bind:key="user.id" value="user">{{ user }}</option>
     </select>
-    <label for="userList" class="sr-only">Add users to game</label>
+    <label for="userList" class="sr-only">Players</label>
   </div>
 </template>
 
@@ -29,6 +29,9 @@ export default {
       userService.getAllUsers().then(response => {
         this.users = response.data;
       });
+    },
+    getSelectedUsers() {
+        return this.selectedUsers;
     }
   },
   created() {

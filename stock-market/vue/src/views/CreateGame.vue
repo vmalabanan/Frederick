@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import gamesService from "../services/GamesService.js";
+import gamesService from "../services/GamesService.js"
 import Users from "../components/Users.vue"
+
 export default {
   name: "create",
   components: {
@@ -61,7 +62,6 @@ export default {
 
         }
       },
-      users: {},
       createGameErrors: false,
       createGameErrorMsg: "There were problems creating a game."
     };
@@ -72,6 +72,9 @@ export default {
       const endDate = new Date();
       endDate.setDate(endDate.getDate() + this.game.gameLengthDays);
       this.game.endDate = endDate;
+
+      // set players
+      // this.game.players = Users.
 
       // send game info to back end
       gamesService.add(this.game).then(response => {
