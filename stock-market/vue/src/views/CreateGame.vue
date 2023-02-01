@@ -58,7 +58,7 @@ export default {
         gameName: "",
         gameLengthDays: 0,
         endDate: 0,
-        players: {}
+        players: []
       },
       createGameErrors: false,
       createGameErrorMsg: "There were problems creating a game."
@@ -72,8 +72,8 @@ export default {
       this.game.endDate = endDate;
 
       // set players
-
-      console.log("players: " + this.game.players);
+      this.players = this.$store.state.selectedUsers;
+      
       // send game info to back end
       gamesService.add(this.game).then(response => {
         if (response.status === 201) {

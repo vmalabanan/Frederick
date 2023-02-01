@@ -19,7 +19,8 @@ if(currentToken != null) {
 export default new Vuex.Store({
   state: {
     token: currentToken || '',
-    user: currentUser || {}
+    user: currentUser || {},
+    selectedUsers: []
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -38,6 +39,8 @@ export default new Vuex.Store({
       state.user = {};
       axios.defaults.headers.common = {};
     },
-    
+    SET_SELECTED_USERS(state, users) {
+      state.selectedUsers = users;
+    }
   }
 })

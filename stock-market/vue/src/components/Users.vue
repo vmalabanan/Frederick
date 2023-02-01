@@ -7,6 +7,7 @@
       id="userList"
       class="form-control"
       v-model="selectedUsers"
+      v-on:change="addSelectedUsersToStore"
       multiple
     >
       <option v-for="user in users" v-bind:key="user">{{
@@ -33,8 +34,8 @@ export default {
         this.users = response.data;
       });
     },
-    getSelectedUsers() {
-      return this.selectedUsers;
+    addSelectedUsersToStore() {
+      this.$store.commit("SET_SELECTED_USERS", this.selectedUsers);
     }
   },
   created() {
