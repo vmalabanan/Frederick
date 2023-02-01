@@ -1,19 +1,18 @@
 <template>
   <div class="portfolio">
-    <div class="chart">
-      <line-chart :styles="chartStyles" :plugins="chartPlugins"></line-chart>
-    </div>
+    <game-account></game-account>
+    <line-chart :styles="chartStyles" :plugins="chartPlugins"></line-chart>
   </div>
 
 </template>
 
 <script>
-
+import GameAccount from "../components/GameAccount.vue"
 import LineChart from "../components/LineChart.vue";
 
 export default {
   name: "portfolio",
-  components: { LineChart },
+  components: { LineChart, GameAccount },
   data() {
     return {
     };
@@ -23,6 +22,7 @@ export default {
     chartStyles() {
       return {
         backgroundColor: '#8ECAE6',
+        flexBasis: '50%'
       }
     }
   }
@@ -32,11 +32,10 @@ export default {
 <style scoped>
 .portfolio {
   display: flex;
-  justify-content: center;
+  gap: 20px;
+  padding-top: 20px;
+  padding-left: 40px;
 }
 
-.chart {
-  padding-top: 20px;
-  width: 50%;
-}
+
 </style>
