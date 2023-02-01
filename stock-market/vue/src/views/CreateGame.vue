@@ -44,8 +44,8 @@
 </template>
 
 <script>
-import gamesService from "../services/GamesService.js"
-import Users from "../components/Users.vue"
+import gamesService from "../services/GamesService.js";
+import Users from "../components/Users.vue";
 
 export default {
   name: "create",
@@ -58,9 +58,7 @@ export default {
         gameName: "",
         gameLengthDays: 0,
         endDate: 0,
-        players: {
-
-        }
+        players: {}
       },
       createGameErrors: false,
       createGameErrorMsg: "There were problems creating a game."
@@ -74,34 +72,29 @@ export default {
       this.game.endDate = endDate;
 
       // set players
-      // this.game.players = Users.
 
       console.log("players: " + this.game.players);
-      console.log("selected users" + Users.getSelectedUsers());
       // send game info to back end
       gamesService.add(this.game).then(response => {
         if (response.status === 201) {
           // set game ID with info from backend
           const id = response.data;
 
-          // redirect user to portfolio screen for newly created game
-          this.$router.push({ name: "portfolio", params: { id: id } });
-        }
-      })
-      .catch(error => {
-            const response = error.response;
-            if (response.status === 400) {
-              this.createGameErrors = true;
-              this.createGameErrorMsg = "Bad Request: Game Creation Errors";
-            }
-      })
+            // redirect user to portfolio screen for newly created game
+            this.$router.push({ name: "portfolio", params: { id: id } });
+          }
+        })
+        .catch(error => {
+          const response = error.response;
+          if (response.status === 400) {
+            this.createGameErrors = true;
+            this.createGameErrorMsg = "Bad Request: Game Creation Errors";
+          }
+        });
     },
 
-    getUsers() {
-
-    }
-  },
-
+    getUsers() {}
+  }
 };
 </script>
 
@@ -125,6 +118,6 @@ export default {
 }
 
 .create-game {
-  margin: 0.25rem;
+  margin-top: 1rem;
 }
 </style>
