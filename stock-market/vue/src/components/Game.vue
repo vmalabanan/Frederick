@@ -1,8 +1,8 @@
 <template>
     <div id="game">
-        <span id="name">{{ this.name }}</span>
-        <span id="type">{{ this.type }}</span>
-        <span id="length">{{ this.duration }}</span>
+        <span id="name" style="width: 200px">{{ game.gameName }}</span>
+        <span id="type" style="width: 60px">Normal</span>
+        <span id="length" style="width: 60px">{{ game.gameLengthDays }} days</span>
         <button id="join" @click="joinGame">Join</button>
     </div>
 </template>
@@ -10,14 +10,10 @@
 <script>
 export default {
     name: 'Game',
-    props: {
-        name: String,
-        type: String,
-        duration: String,
-    },
+    props: ['game'],
     methods: {
         joinGame() {
-            console.log("Joining Game")
+            this.$router.push({ name: "portfolio", params: { id: this.game.gameId } })
         }
     }
 }
