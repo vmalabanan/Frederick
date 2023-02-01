@@ -9,7 +9,7 @@
       v-model="selectedUsers"
       multiple
     >
-      <option v-for="user in users" v-bind:key="user.id" value="user">{{
+      <option v-for="user in users" v-bind:key="user">{{
         user
       }}</option>
     </select>
@@ -23,8 +23,8 @@ export default {
   name: "users",
   data() {
     return {
-      users: {},
-      selectedUsers: {}
+      users: [],
+      selectedUsers: []
     };
   },
   methods: {
@@ -39,7 +39,6 @@ export default {
   },
   created() {
     this.getUsers();
-    console.log("users: " + this.users)
   }
 };
 </script>

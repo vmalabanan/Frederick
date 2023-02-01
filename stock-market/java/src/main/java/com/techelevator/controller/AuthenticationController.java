@@ -87,7 +87,8 @@ public class AuthenticationController {
 //        }
 //
 //        return players;
-        return userDao.findAll().stream().map(User::getUsername).filter(name -> !name.equalsIgnoreCase(principal.getName())
+
+               return userDao.findAll().stream().map(User::getUsername).filter(name -> !name.equalsIgnoreCase(principal.getName())
                                                                             && !name.equalsIgnoreCase("admin")).collect(Collectors.toList());
     }
 
