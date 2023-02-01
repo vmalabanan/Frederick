@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -40,13 +41,19 @@ public class GameController
      */
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<CreateResponse> createGame(@Valid @RequestBody GameDTO gameDto, Principal principal)
+    public int createGame(@Valid @RequestBody GameDTO gameDto, Principal principal)
     {
         int organizerId = userDao.findIdByUsername(principal.getName());
         boolean created = gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays());
-        int newGameId = gameDao.findIdByName(gameDto.getGameName());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        return new ResponseEntity<>(new CreateResponse(newGameId), httpHeaders, HttpStatus.CREATED);
+        if (created)
+        {
+            int newGameId = gameDao.findIdByName(gameDto.getGameName());
+            return newGameId;
+        }
+        return 0;
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        return new ResponseEntity<>(new CreateResponse(newGameId), httpHeaders, HttpStatus.CREATED);
+
     }
 
     /**
@@ -55,9 +62,11 @@ public class GameController
      */
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Game> listGames()
+    public List<Game> listGames(Principal principal)
     {
-        return gameDao.findAll();
+        String username = principal.getName();
+        int organizerId = userDao.findIdByUsername(username);
+        return gameDao.findAll().stream().filter(game -> game.getOrganizerId() != organizerId).collect(Collectors.toList());
     }
 
     /**
@@ -72,25 +81,25 @@ public class GameController
         return gameDao.getGameById(id);
     }
 
-    static class CreateResponse
-    {
-        private int gameId;
-
-        CreateResponse(int gameId)
-        {
-            this.gameId = gameId;
-        }
-
-        @JsonProperty("id")
-        int getGameId()
-        {
-            return gameId;
-        }
-
-        void setGameId(int gameId)
-        {
-            this.gameId = gameId;
-        }
-    }
+//    static class CreateResponse
+//    {
+//        private int gameId;
+//
+//        CreateResponse(int gameId)
+//        {
+//            this.gameId = gameId;
+//        }
+//
+//        @JsonProperty("id")
+//        int getGameId()
+//        {
+//            return gameId;
+//        }
+//
+//        void setGameId(int gameId)
+//        {
+//            this.gameId = gameId;
+//        }
+//    }
 
 }

@@ -84,8 +84,8 @@ public class JdbcGameDao implements GameDao
         String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
                      "VALUES (?, ?, ?, ?) RETURNING game_id";
 
-        int created = jdbcTemplate.queryForObject(sql, int.class, gameName, organizerId, endDate, gameLengthDays);
-        return created > 0;
+        Integer created = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
+        return created != null;
     }
 
     @Override
