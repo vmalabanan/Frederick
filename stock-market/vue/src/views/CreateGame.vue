@@ -76,6 +76,8 @@ export default {
       // set players
       // this.game.players = Users.
 
+      console.log("players: " + this.game.players);
+      console.log("selected users" + Users.getSelectedUsers());
       // send game info to back end
       gamesService.add(this.game).then(response => {
         if (response.status === 201) {
