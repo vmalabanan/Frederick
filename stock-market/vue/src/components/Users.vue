@@ -39,6 +39,7 @@ export default {
   },
   created() {
     this.getUsers();
+    console.log("users: " + this.users)
   }
 };
 </script>
