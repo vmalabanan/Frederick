@@ -93,7 +93,7 @@ export default {
         });
     },
 
-    getUsers() {}
+
   }
 };
 </script>
