@@ -11,7 +11,8 @@
 		</div>
 		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
 		<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
-    <buy-stock v-for="stock in portfolio.cards" :key="stock.id" :stock="stock" v-show="this.$state.showBuyCard"></buy-stock>
+		<buy-stock v-for="stock in portfolio.cards" :key="stock.id" :stock="stock"
+			v-show="this.$state.showBuyCard"></buy-stock>
 
 
 	</div>
