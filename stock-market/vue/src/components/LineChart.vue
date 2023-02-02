@@ -1,16 +1,8 @@
 <template>
   <div class="test">
-    <LineChartGenerator
-      :chart-options="chartOptions"
-      :chart-data="chartData"
-      :chart-id="chartId"
-      :dataset-id-key="datasetIdKey"
-      :plugins="plugins"
-      :css-classes="cssClasses"
-      :styles="styles"
-      :width="width"
-      :height="height"
-    />
+    <LineChartGenerator :chart-options="chartOptions" :chart-data="chartData" :chart-id="chartId"
+      :dataset-id-key="datasetIdKey" :plugins="plugins" :css-classes="cssClasses" :styles="styles" :width="width"
+      :height="height" />
   </div>
 </template>
 
@@ -66,30 +58,31 @@ export default {
     },
     styles: {
       type: Object,
-      default: () => {},
+      default: () => { },
     },
     plugins: {
       type: Array,
       default: () => [],
     },
+    labels: {
+      type: Array,
+      default: () => []
+    },
+    dataPoints: {
+      type: Array,
+      default: () => []
+    }
+
   },
   data() {
     return {
       chartData: {
-        labels: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ],
+        labels: this.labels,
         datasets: [
           {
             label: "My Portfolio",
             backgroundColor: "#FB8500",
-            data: [100000, 120000, 90000, 95000, 105000, 125000, 150000],
+            data: this.dataPoints,
             borderColor: "#FB8500",
           },
         ],
@@ -104,11 +97,11 @@ export default {
 </script>
 
 <style scoped>
-  .test {
-    background-color:#8ECAE6;
-    flex-grow: 2;
-    border-radius: 20px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-        0 10px 10px rgba(0, 0, 0, 0.22);
-  }
+.test {
+  background-color: #8ECAE6;
+  flex-grow: 2;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+    0 10px 10px rgba(0, 0, 0, 0.22);
+}
 </style>
