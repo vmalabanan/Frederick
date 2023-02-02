@@ -65,20 +65,20 @@ public class JdbcGameDao implements GameDao
         }
     }
 
-    @Override
-    public int findIdByName(String gameName)
-    {
-        String sql = "SELECT game_id FROM games WHERE game_name = ?";
-        Integer id = jdbcTemplate.queryForObject(sql, Integer.class, gameName);
-        if (id != null)
-        {
-            return id;
-        }
-        else
-        {
-            throw new RuntimeException("Game was not found");
-        }
-    }
+//    @Override
+//    public int findIdByName(String gameName)
+//    {
+//        String sql = "SELECT game_id FROM games WHERE game_name = ?";
+//        Integer id = jdbcTemplate.queryForObject(sql, Integer.class, gameName);
+//        if (id != null)
+//        {
+//            return id;
+//        }
+//        else
+//        {
+//            throw new RuntimeException("Game was not found");
+//        }
+//    }
 
 //    @Override
 //    public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays)
@@ -91,7 +91,7 @@ public class JdbcGameDao implements GameDao
 //    }
 
     @Override
-    public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players)
+    public int create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players)
     {
         // insert data into games table
         String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
@@ -101,9 +101,8 @@ public class JdbcGameDao implements GameDao
         Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
 
         // add organizer to games_users table and set invitation_status to 2 (Accepted)
-        
-
-
+        sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
+        jdbcTemplate.update(sql, gameId, organizerId, 2);
 
         // for each player in players, add to games_users table and set invitation_status to 1 (Invited)
         for (String player : players) {
@@ -112,7 +111,11 @@ public class JdbcGameDao implements GameDao
             jdbcTemplate.update(sql, gameId, playerID, 1);
         }
 
-        return gameId != null;
+        if (gameId != null) {
+            return gameId;
+        }
+
+        return 0;
     }
 
     @Override

@@ -44,15 +44,8 @@ public class GameController
     public int createGame(@Valid @RequestBody GameDTO gameDto, Principal principal)
     {
         int organizerId = userDao.findIdByUsername(principal.getName());
-        boolean created = gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays(), gameDto.getPlayers());
-        if (created)
-        {
-            int newGameId = gameDao.findIdByName(gameDto.getGameName());
-            return newGameId;
-        }
-        return 0;
-//        HttpHeaders httpHeaders = new HttpHeaders();
-//        return new ResponseEntity<>(new CreateResponse(newGameId), httpHeaders, HttpStatus.CREATED);
+
+        return gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays(), gameDto.getPlayers());
 
     }
 
@@ -80,26 +73,5 @@ public class GameController
     {
         return gameDao.getGameById(id);
     }
-
-//    static class CreateResponse
-//    {
-//        private int gameId;
-//
-//        CreateResponse(int gameId)
-//        {
-//            this.gameId = gameId;
-//        }
-//
-//        @JsonProperty("id")
-//        int getGameId()
-//        {
-//            return gameId;
-//        }
-//
-//        void setGameId(int gameId)
-//        {
-//            this.gameId = gameId;
-//        }
-//    }
 
 }
