@@ -2,20 +2,26 @@
     <div class="card">
         <div class="card-body">
             <div class="card-title">
-                <h2>{{ stock.code }}</h2>
+                <h2>{{ stock.symbol }}</h2>
                 <h2>Buy Stock</h2>
             </div>
-            <h4>${{ stock.mp }}</h4>
+            <h4>${{ stock.price }}</h4>
             <div class="qty-form">
                 <div class="qty-labels">
                     <label for="qty">Shares</label>
                     <label class="cost" for="qty">Cost</label>
                 </div>
-                <input type="number" id="qty">
-            </div>
+                <div class="shares">
+                    <input type="number" id="qty" v-model="qty" min="0" oninput="this.value = Math.abs(this.value)">
+                    <div class="price">${{ getTotalPrice }}</div>
+                </div>
+                
+                <div class="buttons">
+                    <button class="btn btn-lg cancel">Cancel</button>
+                    <button class="btn btn-lg confirm">Confirm</button>
+                </div>
 
-            <button class="btn btn-lg">Cancel</button>
-            <button class="btn btn-lg">Confirm</button>
+            </div>
         </div>
     </div>
 </template>
@@ -26,6 +32,7 @@ export default {
     props: ['stock'],
     data() {
         return {
+            qty: ""
         }
     },
     methods: {
@@ -34,6 +41,12 @@ export default {
                 return this.change;
             }
             return "+" + this.change;
+        }
+    },
+    computed: {
+        getTotalPrice() {
+            const price = this.stock.price * this.qty
+            return price.toFixed(2)
         }
     }
 }
@@ -49,12 +62,6 @@ export default {
         0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-
-}
-
 .card-title {
     display: flex;
     justify-content: space-between;
@@ -67,5 +74,47 @@ export default {
     color: #E54322
 }
 
+.qty-labels {
+    display: flex;
+    justify-content: space-between;
+}
 
+.qty-form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    border-radius: 20px;
+    width: 100%;
+}
+
+.price {
+    margin-top: -27px;
+    margin-right: 20px;
+    text-align: right;
+    color: rgb(172, 171, 171);
+}
+
+.cancel {
+    background-color: #FFB703;
+    color: white;
+}
+
+.confirm {
+    background-color: #FB8500;
+    color: white;
+}
+
+button {
+    border-radius: 20px;
+}
+
+.buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+input::placeholder { text-align:right; }
 </style>
