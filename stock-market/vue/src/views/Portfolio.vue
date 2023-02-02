@@ -1,13 +1,13 @@
 <template>
-  <div class="portfolio-container">
-    <div class="portfolio" @click.capture="switchView">
-      <game-account />
-      <line-chart :styles="chartStyles" :dataPoints="dataPoints" :labels="labels" />
-      <leaderboard />
-    </div>
-    <stock-container :stocks="stocks" class="stocks-search" v-show="!onPortfolio" />
-    <stock-container class="stocks-owned" v-show="onPortfolio" />
-  </div>
+	<div class="portfolio-container">
+		<div class="portfolio" @click.capture="switchView">
+			<game-account />
+			<line-chart :styles="chartStyles" :dataPoints="graphData.dataPoints" :labels="graphData.labels" />
+			<leaderboard />
+		</div>
+		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
+		<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
+	</div>
 </template>
 
 <script>
@@ -15,127 +15,78 @@ import Leaderboard from "../components/Leaderboard.vue"
 import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
 import LineChart from "../components/LineChart.vue";
+import MarketDataService from "../services/MarketDataService";
 
 export default {
-  name: "portfolio",
-  components: { LineChart, GameAccount, StockContainer, Leaderboard },
-  methods: {
-    switchView(event) {
-      // Used innerText to be more specific of where the even it coming from
-      const text = event.target.innerText;
-      if (text == "View Stocks" || text == "View Portfolio") {
-        this.onPortfolio = !this.onPortfolio;
-      }
-    },
-    getRandom(min, max) {
-      return Math.random() * (max - min) + min;
-    },
-    getRandomInt(max) {
-      return Math.floor(Math.random() * max);
-    },
-    getChangePercent(price, previousClose) {
-      let change = price - previousClose;
-      const changePercent = change / previousClose;
-      return changePercent.toFixed(2) + "%"
-    }
-  },
-  created() {
-    setInterval(() => {
-      const stock = this.stocks[this.getRandomInt(this.stocks.length)]
-      stock.mp = this.getRandom(130, 150).toFixed(2);
-      stock.change = this.getChangePercent(stock.mp, stock.previousClose);
-      //random market change
-      this.dataPoints.push(this.getRandomInt(200));
-      this.labels.push(this.date++);
-    }, 0.5 * 1000)
-  },
-  data() {
-    return {
-      onPortfolio: false,
-      stocks: [
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        },
-        {
-          code: 'AAPL',
-          name: 'Apple Inc',
-          previousClose: 140,
-          mp: 145.93,
-          change: '1.00%',
-        }
-      ],
-      dataPoints: [],
-      labels: [],
-      date: 0,
-    };
-  },
-  computed: {
-    //change chart css here
-    chartStyles() {
-      return {
-        backgroundColor: "#8ECAE6",
-        borderRadius: "20px",
-      };
-    },
-  },
+	name: "portfolio",
+	components: { LineChart, GameAccount, StockContainer, Leaderboard },
+	methods: {
+		switchView(event) {
+			// Used innerText to be more specific of where the even it coming from
+			const text = event.target.innerText;
+			if (text == "View Stocks" || text == "View Portfolio") {
+				this.onPortfolio = !this.onPortfolio;
+			}
+		},
+	},
+	created() {
+		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
+			this.portfolio.cards = resp.data;
+		})
+		setInterval(() => {
+			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
+			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
+				const data = resp.data
+				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
+				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
+			})
+		}, 1 * 1000)
+	},
+	data() {
+		return {
+
+			onPortfolio: true,
+			date: 0,
+
+			search: {
+				input: "",
+				symbols: [],
+				cards: []
+			},
+
+			portfolio: {
+				symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN'],
+				cards: [],
+			},
+
+			graphData: {
+				dataPoints: [],
+				time: [],
+			},
+
+		}
+	},
+	computed: {
+		chartStyles() {
+			return {
+				//change chart css here
+				backgroundColor: "#8ECAE6",
+				borderRadius: "20px",
+			};
+		},
+	},
 };
 </script>
 
 <style scoped>
 .portfolio-container {
-  padding: 20px 20px 0px 20px;
-  margin-bottom: 10px;
+	padding: 20px 20px 0px 20px;
+	margin-bottom: 10px;
 }
 
 .portfolio {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+	display: flex;
+	gap: 20px;
+	margin-bottom: 20px;
 }
 </style>

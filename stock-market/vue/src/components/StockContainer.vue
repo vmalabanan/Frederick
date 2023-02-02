@@ -24,6 +24,7 @@ export default {
 #stocks {
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     background-color: #023047;
     height: 500px;
     width: 100%;
