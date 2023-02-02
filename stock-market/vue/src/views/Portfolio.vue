@@ -5,8 +5,14 @@
 			<line-chart :styles="chartStyles" :dataPoints="graphData.dataPoints" :labels="graphData.labels" />
 			<leaderboard />
 		</div>
+		<div v-show="!onPortfolio" id="search">
+			<label for="search">Search</label>
+			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
+		</div>
 		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
 		<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
+
+
 	</div>
 </template>
 
@@ -28,6 +34,17 @@ export default {
 				this.onPortfolio = !this.onPortfolio;
 			}
 		},
+		updateSearch(event) {
+			const symbol = event.target.value;
+			if (symbol == '') {
+				return;
+			}
+			MarketDataService.searchTicker(symbol).then(resp => {
+				const data = resp.data;
+				this.search.symbols = data.map(stock => stock.symbol);
+				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => { this.search.cards = resp.data });
+			});
+		},
 	},
 	created() {
 		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
@@ -40,7 +57,7 @@ export default {
 				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
 				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
 			})
-		}, 1 * 1000)
+		}, 60 * 1000)
 	},
 	data() {
 		return {
@@ -55,7 +72,7 @@ export default {
 			},
 
 			portfolio: {
-				symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN'],
+				symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN', 'HBI'],
 				cards: [],
 			},
 
