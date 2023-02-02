@@ -29,6 +29,4 @@ INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 3, 1
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 4, 1);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 5, 1);
 
--- insert stocks table data (to be deleted later--for testing only)
-INSERT INTO stocks (stock_id, name, ticker, price, change) VALUES (1, 'Apple Inc', 'AAPL', 145.93, 1.37);
-ALTER SEQUENCE seq_game_id RESTART WITH 2;
+
