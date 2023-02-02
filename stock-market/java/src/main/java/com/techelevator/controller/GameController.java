@@ -51,15 +51,51 @@ public class GameController
 
     /**
      *
-     * @return list of all games currently stored in db
+     * @return list of ALL games associated with a user (game status = "Invited," "Accepted," "Rejected")
      */
-    @ResponseStatus(HttpStatus.OK)
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Game> listGames(Principal principal)
+
+    @GetMapping
+    public List<Game> getAllGames(Principal principal)
     {
         String username = principal.getName();
         int organizerId = userDao.findIdByUsername(username);
-        return gameDao.findAll().stream().filter(game -> game.getOrganizerId() != organizerId).collect(Collectors.toList());
+        return gameDao.getAllGames(organizerId);
+    }
+
+    /**
+     *
+     * @return list of user's games with invitation status = "Invited"
+     */
+    @GetMapping(value="/invited")
+    public List<Game> getInvitedGames(Principal principal)
+    {
+        String username = principal.getName();
+        int organizerId = userDao.findIdByUsername(username);
+        return gameDao.getInvitedGames(organizerId);
+    }
+
+    /**
+     *
+     * @return list of user's games with invitation status = "Rejected"
+     */
+    @GetMapping(value="/rejected")
+    public List<Game> getRejectedGames(Principal principal)
+    {
+        String username = principal.getName();
+        int organizerId = userDao.findIdByUsername(username);
+        return gameDao.getRejectedGames(organizerId);
+    }
+
+    /**
+     *
+     * @return list of user's games with invitation status = "Accepted"
+     */
+    @GetMapping(value="/accepted")
+    public List<Game> getAcceptedGames(Principal principal)
+    {
+        String username = principal.getName();
+        int organizerId = userDao.findIdByUsername(username);
+        return gameDao.getAcceptedGames(organizerId);
     }
 
     /**

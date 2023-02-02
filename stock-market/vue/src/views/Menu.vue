@@ -4,7 +4,7 @@
       <button class="btn btn-lg btn-primary" @click="createPage">
         Host Game
       </button>
-      <button class="btn btn-lg btn-warning" @click="gameList">Join Game</button>
+      <button class="btn btn-lg btn-warning" @click="gameList">Game Invites</button>
       <button class="btn btn-lg btn-info" @click="portfolio">My Games</button>
     </div>
   </div>

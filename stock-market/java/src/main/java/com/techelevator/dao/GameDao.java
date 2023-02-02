@@ -8,7 +8,10 @@ import java.util.List;
 public interface GameDao
 {
 
-    List<Game> findAll();
+    List<Game> getAllGames(int userId);
+    List<Game> getInvitedGames(int userId);
+    List<Game> getAcceptedGames(int userId);
+    List<Game> getRejectedGames(int userId);
 
     Game getGameById(int gameId);
 
