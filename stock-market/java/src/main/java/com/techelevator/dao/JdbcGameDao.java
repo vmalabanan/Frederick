@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Game;
+import com.techelevator.model.Invitation;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
@@ -80,6 +81,17 @@ public class JdbcGameDao implements GameDao
     @Override
     public List<Game> getRejectedGames(int userId) {
         return getFilteredGames(userId, 3);
+    }
+
+    @Override
+    public void updateInvitationStatus(Invitation invitation, int userId) {
+        String sql = "UPDATE games_users " +
+                "SET invitation_status_id = ? " +
+                "WHERE game_id = ? " +
+                "AND user_id = ?;";
+
+        jdbcTemplate.update(sql, invitation.getInvitationStatusId(), invitation.getGameId(), userId);
+
     }
 
     @Override
