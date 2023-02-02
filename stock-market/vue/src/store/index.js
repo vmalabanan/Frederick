@@ -24,7 +24,8 @@ export default new Vuex.Store({
       isRPanelActive: false,
       isRegSuccessful: false,
     },
-    selectedUsers: []
+    selectedUsers: [],
+    showBuyCard: false
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
