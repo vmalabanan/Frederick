@@ -38,6 +38,42 @@ CREATE TABLE games (
 	CONSTRAINT PK_game PRIMARY KEY (game_id)
 );
 
+-- create invitation_status table
+DROP TABLE IF EXISTS invitation_status;
+DROP SEQUENCE IF EXISTS seq_invitation_status_id;
+
+CREATE SEQUENCE seq_invitation_status_id
+   INCREMENT BY 1
+   NO MAXVALUE
+   NO MINVALUE
+   CACHE 1;
+
+ CREATE TABLE invitation_status (
+ 	invitation_status_id int DEFAULT nextval('seq_invitation_status_id'::regclass) NOT NULL,
+ 	invitation_status_desc varchar(10) NOT NULL,
+ 	CONSTRAINT PK_invitation_status PRIMARY KEY (invitation_status_id)
+ );
+
+ -- create games_users table
+ DROP TABLE IF EXISTS games_users;
+ DROP SEQUENCE IF EXISTS seq_games_users_id;
+
+ CREATE SEQUENCE seq_games_users_id
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+ CREATE TABLE games_users (
+    game_id int NOT NULL,
+    user_id int NOT NULL,
+ 	invitation_status_id int NOT NULL,
+ 	CONSTRAINT PK_games_users PRIMARY KEY(game_id, user_id),
+    CONSTRAINT FK_games_users_games FOREIGN KEY(game_id) REFERENCES games(game_id),
+    CONSTRAINT FK_games_users_users FOREIGN KEY(user_id) REFERENCES users(user_id),
+ 	CONSTRAINT FK_games_users_invitation_status FOREIGN KEY(invitation_status_id) REFERENCES invitation_status(invitation_status_id)
+ );
+
 -- create stocks table (for testing only -- to be deleted later)
 DROP TABLE IF EXISTS stocks;
 DROP SEQUENCE IF EXISTS seq_stocks_id;

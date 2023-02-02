@@ -12,10 +12,12 @@ import java.util.List;
 public class JdbcGameDao implements GameDao
 {
     private JdbcTemplate jdbcTemplate;
+    private UserDao userDao;
 
-    public JdbcGameDao(JdbcTemplate jdbcTemplate)
+    public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao)
     {
         this.jdbcTemplate = jdbcTemplate;
+        this.userDao = userDao;
     }
 
     @Override
@@ -78,14 +80,39 @@ public class JdbcGameDao implements GameDao
         }
     }
 
-    @Override
-    public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays)
-    {
-        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
-                     "VALUES (?, ?, ?, ?) RETURNING game_id";
+//    @Override
+//    public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays)
+//    {
+//        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
+//                     "VALUES (?, ?, ?, ?) RETURNING game_id";
+//
+//        Integer created = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
+//        return created != null;
+//    }
 
-        Integer created = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
-        return created != null;
+    @Override
+    public boolean create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players)
+    {
+        // insert data into games table
+        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
+                "VALUES (?, ?, ?, ?) RETURNING game_id";
+
+        // get back gameId
+        Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
+
+        // add organizer to games_users table and set invitation_status to 2 (Accepted)
+        
+
+
+
+        // for each player in players, add to games_users table and set invitation_status to 1 (Invited)
+        for (String player : players) {
+            int playerID = userDao.findIdByUsername(player);
+            sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
+            jdbcTemplate.update(sql, gameId, playerID, 1);
+        }
+
+        return gameId != null;
     }
 
     @Override
