@@ -9,7 +9,8 @@
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
+		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio"
+			@click.capture="console.log($event)" />
 		<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
 		<buy-stock v-for="stock in portfolio.cards" :key="stock.id" :stock="stock"
 			v-show="this.$state.showBuyCard"></buy-stock>
@@ -48,6 +49,11 @@ export default {
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => { this.search.cards = resp.data });
 			});
 		},
+		getHistoricalData() {
+			this.graphData.dataPoints = []
+			this.time = []
+			MarketDataService.getHistoricalMinuteDataBySymbol()
+		}
 	},
 	created() {
 		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
@@ -65,6 +71,7 @@ export default {
 	data() {
 		return {
 
+			current: 'portfolio',
 			onPortfolio: true,
 			date: 0,
 
