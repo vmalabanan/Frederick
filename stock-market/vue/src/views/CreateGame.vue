@@ -72,7 +72,7 @@ export default {
       this.game.endDate = endDate;
 
       // set players
-      this.players = this.$store.state.selectedUsers;
+      this.game.players = this.$store.state.selectedUsers;
       
       // send game info to back end
       gamesService.add(this.game).then(response => {
