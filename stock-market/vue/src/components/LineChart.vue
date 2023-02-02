@@ -15,6 +15,8 @@
 </template>
 
 <script>
+//new
+import marketDataService from "../services/MarketDataService"
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 
 import {
@@ -98,8 +100,17 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
       },
+      //new
+      test: {}
     };
   },
+  //new
+  created() {
+    marketDataService.getHistoricalDataBySymbol("AAPL").then( response => {
+      this.test = response.data
+    })
+    console.log(this.test)
+  }
 };
 </script>
 

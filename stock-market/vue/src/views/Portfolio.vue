@@ -2,7 +2,7 @@
   <div class="portfolio-container">
     <div class="portfolio">
       <game-account></game-account>
-      <line-chart :styles="chartStyles" :plugins="chartPlugins"></line-chart>
+      <line-chart :styles="chartStyles"></line-chart>
       <leaderboard></leaderboard>
     </div>
     <stock-container></stock-container>
