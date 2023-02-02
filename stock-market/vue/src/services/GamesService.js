@@ -5,7 +5,7 @@ export default {
         return axios.post('/games', game)
     },
 
-    getGames() {
+    getAllGames() {
         return axios.get('/games')
     },
 

@@ -25,6 +25,8 @@ export default new Vuex.Store({
       isRegSuccessful: false,
     },
     selectedUsers: [],
+    invitedGames: [],
+    acceptedGames: [],
     showBuyCard: false
   },
   mutations: {
@@ -52,6 +54,9 @@ export default new Vuex.Store({
     },
     SET_SELECTED_USERS(state, users) {
       state.selectedUsers = users;
+    },
+    SET_INVITED_GAMES(state, games) {
+      state.invitedGames = games;
     }
   }
 })
