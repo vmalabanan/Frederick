@@ -18,7 +18,7 @@
 import Game from '../components/Game.vue';
 import GamesService from '../services/GamesService';
 export default {
-    name: "GameList",
+    name: "InvitationsList",
     components: {
         Game,
     },
@@ -30,7 +30,6 @@ export default {
     created() {
         GamesService.getGames().then(resp => {
             this.games = resp.data
-            console.log(this.games)
         })
     }
 }
