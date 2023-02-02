@@ -13,6 +13,8 @@ public class GameDTO
     @Min(value = 1)
     private int gameLengthDays;
 
+    private String[] players;
+
     public String getGameName()
     {
         return gameName;
@@ -41,5 +43,13 @@ public class GameDTO
     public void setGameLengthDays(int gameLengthDays)
     {
         this.gameLengthDays = gameLengthDays;
+    }
+
+    public String[] getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(String[] players) {
+        this.players = players;
     }
 }
