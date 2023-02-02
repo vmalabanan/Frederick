@@ -33,7 +33,6 @@ export default {
 <style scoped>
 #stock {
     display: flex;
-    flex-wrap: wrap;
     width: 200px;
     height: 200px;
     margin: 10px;

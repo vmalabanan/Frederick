@@ -2,7 +2,7 @@
   <div class="portfolio-container">
     <div class="portfolio" @click.capture="switchView">
       <game-account />
-      <line-chart :styles="chartStyles"></line-chart>
+      <line-chart :styles="chartStyles" :dataPoints="dataPoints" :labels="labels" />
       <leaderboard />
     </div>
     <stock-container :stocks="stocks" class="stocks-search" v-show="!onPortfolio" />
@@ -26,7 +26,28 @@ export default {
       if (text == "View Stocks" || text == "View Portfolio") {
         this.onPortfolio = !this.onPortfolio;
       }
+    },
+    getRandom(min, max) {
+      return Math.random() * (max - min) + min;
+    },
+    getRandomInt(max) {
+      return Math.floor(Math.random() * max);
+    },
+    getChangePercent(price, previousClose) {
+      let change = price - previousClose;
+      const changePercent = change / previousClose;
+      return changePercent.toFixed(2) + "%"
     }
+  },
+  created() {
+    setInterval(() => {
+      const stock = this.stocks[this.getRandomInt(this.stocks.length)]
+      stock.mp = this.getRandom(130, 150).toFixed(2);
+      stock.change = this.getChangePercent(stock.mp, stock.previousClose);
+      //random market change
+      this.dataPoints.push(this.getRandomInt(200));
+      this.labels.push(this.date++);
+    }, 0.5 * 1000)
   },
   data() {
     return {
@@ -88,7 +109,10 @@ export default {
           mp: 145.93,
           change: '1.00%',
         }
-      ]
+      ],
+      dataPoints: [],
+      labels: [],
+      date: 0,
     };
   },
   computed: {
