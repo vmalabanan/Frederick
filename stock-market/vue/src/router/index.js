@@ -69,7 +69,7 @@ const router = new Router({
     },
 
     {
-      path: "/games",
+      path: "/games/invited",
       name: "gamelist",
       component: GameList,
       meta: {
