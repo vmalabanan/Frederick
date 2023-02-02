@@ -1,13 +1,11 @@
 package com.techelevator.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.techelevator.dao.GameDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Game;
 import com.techelevator.model.GameDTO;
-import org.springframework.http.HttpHeaders;
+import com.techelevator.model.Invitation;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,6 @@ import javax.validation.Valid;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
@@ -96,6 +93,18 @@ public class GameController
         String username = principal.getName();
         int organizerId = userDao.findIdByUsername(username);
         return gameDao.getAcceptedGames(organizerId);
+    }
+
+    /**
+     *
+     * @param invitation Invitation object (only gameId is required)
+     * @param principal logged in user
+     */
+   @PutMapping
+    public void updateInvitationStatus(@RequestBody Invitation invitation, Principal principal) {     // should I add gameId to path?
+       int userId = userDao.findIdByUsername(principal.getName());
+
+        gameDao.updateInvitationStatus(invitation, userId);
     }
 
     /**

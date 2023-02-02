@@ -18,10 +18,10 @@ export default {
       this.$router.push({ name: "createGame" });
     },
     gameList() {
-      this.$router.push({ name: "gamelist" });
+      this.$router.push({ name: "invitationsList" });
     },
     portfolio() {
-      this.$router.push({ name: "portfolio" });
+      this.$router.push({ name: "portfolio" }); // add id param here. should default to one of the player's games
     }
   }
 };

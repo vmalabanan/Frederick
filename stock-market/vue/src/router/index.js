@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Home from '../views/Home.vue'
 import Logout from '../views/Logout.vue'
 import Registration from '../views/Registration'
-import GameList from '../views/GameList.vue'
+import InvitationsList from '../views/InvitationsList.vue'
 import store from '../store/index'
 import Menu from '../views/Menu.vue'
 import CreateGame from '../views/CreateGame.vue'
@@ -70,8 +70,8 @@ const router = new Router({
 
     {
       path: "/games/invited",
-      name: "gamelist",
-      component: GameList,
+      name: "invitationsList",
+      component: InvitationsList,
       meta: {
         requiresAuth: true
       }
