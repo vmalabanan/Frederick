@@ -1,11 +1,12 @@
 <template>
   <div class="portfolio-container">
-    <div class="portfolio">
-      <game-account></game-account>
+    <div class="portfolio" @click.capture="switchView">
+      <game-account />
       <line-chart :styles="chartStyles"></line-chart>
-      <leaderboard></leaderboard>
+      <leaderboard />
     </div>
-    <stock-container></stock-container>
+    <stock-container :stocks="stocks" class="stocks-search" v-show="!onPortfolio" />
+    <stock-container class="stocks-owned" v-show="onPortfolio" />
   </div>
 </template>
 
@@ -18,8 +19,77 @@ import LineChart from "../components/LineChart.vue";
 export default {
   name: "portfolio",
   components: { LineChart, GameAccount, StockContainer, Leaderboard },
+  methods: {
+    switchView(event) {
+      // Used innerText to be more specific of where the even it coming from
+      const text = event.target.innerText;
+      if (text == "View Stocks" || text == "View Portfolio") {
+        this.onPortfolio = !this.onPortfolio;
+      }
+    }
+  },
   data() {
-    return {};
+    return {
+      onPortfolio: false,
+      stocks: [
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        },
+        {
+          code: 'AAPL',
+          name: 'Apple Inc',
+          previousClose: 140,
+          mp: 145.93,
+          change: '1.00%',
+        }
+      ]
+    };
   },
   computed: {
     //change chart css here
@@ -44,5 +114,4 @@ export default {
   gap: 20px;
   margin-bottom: 20px;
 }
-
 </style>
