@@ -44,7 +44,7 @@ public class GameController
     public int createGame(@Valid @RequestBody GameDTO gameDto, Principal principal)
     {
         int organizerId = userDao.findIdByUsername(principal.getName());
-        boolean created = gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays());
+        boolean created = gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays(), gameDto.getPlayers());
         if (created)
         {
             int newGameId = gameDao.findIdByName(gameDto.getGameName());

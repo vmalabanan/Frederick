@@ -13,6 +13,22 @@ INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days)
 INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (2, 'TEBets', 4, '2023-02-14 12:00:00', 14);
 ALTER SEQUENCE seq_game_id RESTART WITH 3;
 
--- insert stocks table data
+-- insert invitation_status table data
+INSERT INTO invitation_status (invitation_status_id, invitation_status_desc) VALUES (1, 'Invited');
+INSERT INTO invitation_status (invitation_status_id, invitation_status_desc) VALUES (2, 'Accepted');
+INSERT INTO invitation_status (invitation_status_id, invitation_status_desc) VALUES (3, 'Rejected');
+ALTER SEQUENCE seq_game_id RESTART WITH 4;
+
+-- insert games_users table data
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (1, 1, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (1, 3, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (1, 4, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (1, 5, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 1, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 3, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 4, 1);
+INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 5, 1);
+
+-- insert stocks table data (to be deleted later--for testing only)
 INSERT INTO stocks (stock_id, name, ticker, price, change) VALUES (1, 'Apple Inc', 'AAPL', 145.93, 1.37);
 ALTER SEQUENCE seq_game_id RESTART WITH 2;
