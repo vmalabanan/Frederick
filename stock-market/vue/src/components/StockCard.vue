@@ -33,8 +33,10 @@ export default {
 <style scoped>
 #stock {
     display: flex;
+    flex-wrap: wrap;
     width: 200px;
     height: 200px;
+    margin: 10px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
         0 10px 10px rgba(0, 0, 0, 0.22);
     border-radius: 25px;
