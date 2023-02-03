@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "chart.js": "^3.8.0",
+    "chartjs-plugin-zoom": "^2.0.0",
     "core-js": "^3.9.1",
     "eslint-plugin-vue": "^6.2.2",
     "vue": "^2.6.12",
