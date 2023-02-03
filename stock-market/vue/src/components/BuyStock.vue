@@ -55,7 +55,7 @@ export default {
         },
 
         stockPrice() {
-            return this.$store.state.stockInfo.price
+            return this.$store.state.stockInfo.price.toFixed(2)
         },
 
         stockSymbol() {

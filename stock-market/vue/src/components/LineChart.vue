@@ -7,7 +7,7 @@
 </template>
 
 <script>
-// import zoom from 'chartjs-plugin-zoom';
+import zoom from 'chartjs-plugin-zoom';
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 
 import {
@@ -29,7 +29,7 @@ ChartJS.register(
 	LinearScale,
 	CategoryScale,
 	PointElement,
-	// zoom
+	zoom
 );
 
 export default {
@@ -97,19 +97,19 @@ export default {
 						display: false
 					}
 				},
-				// plugins: {
-				// 	zoom: {
-				// 		zoom: {
-				// 			wheel: {
-				// 				enabled: true,
-				// 			},
-				// 			drag: {
-				// 				enabled: true
-				// 			},
-				// 			mode: 'xy'
-				// 		}
-				// 	}
-				// }
+				plugins: {
+					zoom: {
+						zoom: {
+							wheel: {
+								enabled: true,
+							},
+							drag: {
+								enabled: true
+							},
+							mode: 'xy'
+						}
+					}
+				}
 			},
 		};
 	},
