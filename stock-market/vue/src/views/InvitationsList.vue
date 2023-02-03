@@ -1,7 +1,8 @@
 <template>
   <div id="GameList">
-    <div class="card w-50">
-      <div
+    <p class="no-invites-msg" v-if="$store.state.invitedGames.length === 0">No invitations to display</p>  
+    <div class="card w-50" v-else>
+      <div 
         class="card-header"
         style="background-color: #FFB703; border-radius:25px; height: 60px"
       >
