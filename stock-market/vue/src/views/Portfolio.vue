@@ -2,15 +2,20 @@
 	<div class="portfolio-container">
 		<div class="portfolio" @click.capture="switchView">
 			<game-account />
-			<line-chart :styles="chartStyles" :dataPoints="graphData.dataPoints" :labels="graphData.labels" />
+			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
+				:labels="graphData.time" />
 			<leaderboard />
 		</div>
 		<div v-show="!onPortfolio" id="search">
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-    <stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
-    <stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
+		<div>
+			<stock-container @currentChanged="updateGraphWith" :stocks="search.cards" class="stocks-search"
+				v-show="!onPortfolio" />
+			<stock-container @currentChanged="updateGraphWith" :stocks="portfolio.cards" class="stocks-owned"
+				v-show="onPortfolio" />
+		</div>
 	</div>
 </template>
 
@@ -24,46 +29,9 @@ import MarketDataService from "../services/MarketDataService";
 export default {
 	name: "portfolio",
 	components: { LineChart, GameAccount, StockContainer, Leaderboard },
-	methods: {
-		switchView(event) {
-			// Used innerText to be more specific of where the even it coming from
-			const text = event.target.innerText;
-			if (text == "View Stocks" || text == "View Portfolio") {
-				this.onPortfolio = !this.onPortfolio;
-			}
-		},
-		updateSearch(event) {
-			const symbol = event.target.value;
-			if (symbol == '') {
-				return;
-			}
-			MarketDataService.searchTicker(symbol).then(resp => {
-				const data = resp.data;
-				this.search.symbols = data.map(stock => stock.symbol);
-				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => { this.search.cards = resp.data });
-			});
-		},
-		getHistoricalData() {
-			this.graphData.dataPoints = []
-			this.time = []
-			MarketDataService.getHistoricalMinuteDataBySymbol()
-		}
-	},
-	created() {
-		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
-			this.portfolio.cards = resp.data;
-		})
-		setInterval(() => {
-			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
-			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
-				const data = resp.data
-				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
-				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
-			})
-		}, 60 * 1000)
-	},
 	data() {
 		return {
+			tempKey: "HBI",
 			onPortfolio: true,
 			date: 0,
 
@@ -85,6 +53,72 @@ export default {
 
 		}
 	},
+	methods: {
+		updateGraphWith(result) {
+			const graphData = this.graphData
+			this.tempKey = result;
+			if (graphData.dataPoints.length > 0) {
+				graphData.dataPoints = []
+				graphData.time = []
+			}
+			MarketDataService.getHistoricalMinuteDataBySymbol(result).then(resp => {
+				const data = resp.data;
+				data.forEach(d => {
+
+					graphData.dataPoints.push(d.low)
+					graphData.time.push(d.date)
+				});
+
+			})
+		},
+		switchView(event) {
+			// Used innerText to be more specific of where the even it coming from
+			const text = event.target.innerText;
+			if (text == "View Stocks" || text == "View Portfolio") {
+				this.onPortfolio = !this.onPortfolio;
+				if (this.onPortfolio) {
+					this.updateGraphWith('HBI')
+				}
+			}
+		},
+		updateSearch(event) {
+			const symbol = event.target.value;
+			if (symbol == '') {
+				return;
+			}
+			MarketDataService.searchTicker(symbol).then(resp => {
+				const data = resp.data;
+				this.search.symbols = data.map(stock => stock.symbol);
+				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => { this.search.cards = resp.data });
+			});
+		},
+		getHistoricalData() {
+			this.graphData.dataPoints = []
+			this.time = []
+			MarketDataService.getHistoricalMinuteDataBySymbol()
+		}
+	},
+	created() {
+		this.updateGraphWith(this.tempKey)
+		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
+			this.portfolio.cards = resp.data;
+		})
+		setInterval(() => {
+			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
+			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
+				const data = resp.data
+				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
+				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
+			})
+
+			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
+				const data = resp.data[0]
+				this.graphData.dataPoints.push(data.price)
+				this.graphData.time.push(data.earningsAnnouncement)
+			})
+
+		}, 10 * 1000)
+	},
 	computed: {
 		chartStyles() {
 			return {
@@ -92,7 +126,7 @@ export default {
 				backgroundColor: "#8ECAE6",
 				borderRadius: "20px",
 			};
-		},
+		}
 	},
 };
 </script>

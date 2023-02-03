@@ -30,17 +30,10 @@
 </template>
 <script>
 import Game from "../components/Game.vue";
-import GamesService from "../services/GamesService";
 export default {
   name: "InvitationsList",
   components: {
     Game
-  },
-  created() {
-    // get list of game invitations and add to store
-    GamesService.getInvitedGames().then(resp => {
-      this.$store.commit("SET_INVITED_GAMES", resp.data);
-    });
   }
 };
 </script>
