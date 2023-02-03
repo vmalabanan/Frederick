@@ -9,10 +9,8 @@
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<div @click="test">
-			<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
-			<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
-		</div>
+    <stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
+    <stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
 	</div>
 </template>
 
