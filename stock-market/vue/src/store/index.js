@@ -20,14 +20,15 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
+    selectedUsers: [],
+    invitedGames: [],
+    acceptedGames: [],
+    showBuyCard: false,
+    currentStock: 'portfolio',
     registrationStatus: {
       isRPanelActive: false,
       isRegSuccessful: false,
     },
-    selectedUsers: [],
-    invitedGames: [],
-    acceptedGames: [],
-    showBuyCard: false
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {

@@ -9,18 +9,14 @@
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio"
-			@click.capture="console.log($event)" />
-		<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
-		<buy-stock v-for="stock in portfolio.cards" :key="stock.id" :stock="stock"
-			v-show="$store.state.showBuyCard"></buy-stock>
-
-
+		<div @click="test">
+			<stock-container :stocks="search.cards" class="stocks-search" v-show="!onPortfolio" />
+			<stock-container :stocks="portfolio.cards" class="stocks-owned" v-show="onPortfolio" />
+		</div>
 	</div>
 </template>
 
 <script>
-import BuyStock from "../components/BuyStock.vue"
 import Leaderboard from "../components/Leaderboard.vue"
 import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
@@ -29,7 +25,7 @@ import MarketDataService from "../services/MarketDataService";
 
 export default {
 	name: "portfolio",
-	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock },
+	components: { LineChart, GameAccount, StockContainer, Leaderboard },
 	methods: {
 		switchView(event) {
 			// Used innerText to be more specific of where the even it coming from
@@ -70,8 +66,6 @@ export default {
 	},
 	data() {
 		return {
-
-			current: 'portfolio',
 			onPortfolio: true,
 			date: 0,
 
