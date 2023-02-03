@@ -40,6 +40,9 @@
         Create Game
       </button>
     </form>
+    <button class="btn btn-lg btn-warning back" @click="$router.go(-1)">
+      Back
+    </button>
   </div>
 </template>
 
@@ -73,12 +76,14 @@ export default {
 
       // set players
       this.game.players = this.$store.state.selectedUsers;
-      
+
       // send game info to back end
-      gamesService.add(this.game).then(response => {
-        if (response.status === 201) {
-          // set game ID with info from backend
-          const id = response.data;
+      gamesService
+        .add(this.game)
+        .then(response => {
+          if (response.status === 201) {
+            // set game ID with info from backend
+            const id = response.data;
 
             // redirect user to portfolio screen for newly created game
             this.$router.push({ name: "portfolio", params: { id: id } });
@@ -91,9 +96,7 @@ export default {
             this.createGameErrorMsg = "Bad Request: Game Creation Errors";
           }
         });
-    },
-
-
+    }
   }
 };
 </script>
@@ -103,7 +106,6 @@ export default {
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  width: 100vw;
   justify-content: center;
   align-items: center;
 }
@@ -118,6 +120,11 @@ export default {
 }
 
 .create-game {
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
+
+.back {
+  width: 30%;
+}
+
 </style>

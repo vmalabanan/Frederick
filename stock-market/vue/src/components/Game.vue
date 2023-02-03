@@ -44,13 +44,16 @@ export default {
         .updateInvitationStatus(this.invitation)
         .then(response => {
           if (response.status === 200) {
-            // if player joins game
+            // if player joins game, redirect to portfolio screen for game
             if (invitationStatusId === 2) {
-              // redirect user to portfolio screen for game
               this.$router.push({
                 name: "portfolio",
                 params: { id: this.game.gameId }
               });
+            }
+            // if player declines game, update list 
+            else if (invitationStatusId === 3) {
+              this.getInvitationsList();
             }
           }
         })
@@ -68,6 +71,12 @@ export default {
     },
     declineGame() {
       this.updateInvitationStatus(3);
+    },
+    getInvitationsList() {
+      // get list of game invitations and add to store
+      gamesService.getInvitedGames().then(resp => {
+        this.$store.commit("SET_INVITED_GAMES", resp.data);
+      });
     }
   }
 };

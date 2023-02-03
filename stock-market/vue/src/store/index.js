@@ -20,12 +20,15 @@ export default new Vuex.Store({
   state: {
     token: currentToken || '',
     user: currentUser || {},
+    selectedUsers: [],
+    invitedGames: [],
+    acceptedGames: [],
+    showBuyCard: false,
+    currentStock: 'portfolio',
     registrationStatus: {
       isRPanelActive: false,
       isRegSuccessful: false,
     },
-    selectedUsers: [],
-    showBuyCard: false
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -52,6 +55,9 @@ export default new Vuex.Store({
     },
     SET_SELECTED_USERS(state, users) {
       state.selectedUsers = users;
+    },
+    SET_INVITED_GAMES(state, games) {
+      state.invitedGames = games;
     }
   }
 })
