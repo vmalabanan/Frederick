@@ -8,6 +8,10 @@
 			<p class="stock-price">${{ price.toFixed(2) }}</p>
 			<p :class="this.changesPercentage < 0 ? 'change negative' : 'change positive'">{{ getChange() }}%
 			</p>
+			<div class="buy-sell">
+				<button class="btn" id="buy">Buy</button>
+				<button class="btn" id="sell">Sell</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -87,5 +91,31 @@ export default {
 
 .negative {
 	color: #E54322
+}
+
+.buy-sell {
+	display: flex;
+	justify-content: left;
+	gap: 20px;
+	margin-top: -10px;
+}
+
+#buy, #sell {
+	border-radius: 10px;
+}
+
+#buy {
+	background-color: #1FCC92;
+}
+
+#sell {
+	background-color: #E54322;
+	color: white;
+}
+
+buy-stock {
+	position: absolute;
+	top: 50%;
+	left: 50%;
 }
 </style>

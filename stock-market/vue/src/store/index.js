@@ -58,6 +58,9 @@ export default new Vuex.Store({
     },
     SET_INVITED_GAMES(state, games) {
       state.invitedGames = games;
+    },
+    SET_ACCEPTED_GAMES(state, games) {
+      state.acceptedGames = games;
     }
   }
 })

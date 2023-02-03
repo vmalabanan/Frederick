@@ -2,10 +2,10 @@
     <div class="card">
         <div class="card-body">
             <div class="card-title">
-                <h2>{{ stock.symbol }}</h2>
-                <h2>Buy Stock</h2>
+                <h2>{{ symbol }}</h2>
+                <h2>{{ getBuySell }}</h2>
             </div>
-            <h4>${{ stock.price }}</h4>
+            <h4>${{ price }}</h4>
             <div class="qty-form">
                 <div class="qty-labels">
                     <label for="qty">Shares</label>
@@ -29,24 +29,26 @@
 <script>
 export default {
     name: 'BuyStock',
-    props: ['stock'],
+	props: ["price", 'symbol', "buySell"],
     data() {
         return {
-            qty: ""
+            qty: "",
+            showForm: true
         }
     },
     methods: {
-        getChange() {
-            if (this.change.startsWith('-')) {
-                return this.change;
-            }
-            return "+" + this.change;
-        }
     },
     computed: {
         getTotalPrice() {
-            const price = this.stock.price * this.qty
+            const price = this.price * this.qty
             return price.toFixed(2)
+        },
+
+        getBuySell() {
+            if (this.buySell) {
+                return "Buy Stocks"
+            }
+            return "Sell Stocks"
         }
     }
 }
@@ -65,13 +67,6 @@ export default {
 .card-title {
     display: flex;
     justify-content: space-between;
-}
-.positive {
-    color: #1FCC92;
-}
-
-.negative {
-    color: #E54322
 }
 
 .qty-labels {
@@ -116,5 +111,4 @@ button {
     justify-content: space-evenly;
 }
 
-input::placeholder { text-align:right; }
 </style>
