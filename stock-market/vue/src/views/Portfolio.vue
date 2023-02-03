@@ -7,11 +7,11 @@
 			<leaderboard />
 		</div>
 
-		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard}">
+		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard }">
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<div :class="{ blurred: this.$store.state.showBuyCard}">
+		<div :class="{ blurred: this.$store.state.showBuyCard }">
 			<stock-container @currentChanged="updateGraphWith" :stocks="search.cards" class="stocks-search"
 				v-show="!onPortfolio" />
 			<stock-container @currentChanged="updateGraphWith" :stocks="portfolio.cards" class="stocks-owned"
@@ -36,7 +36,7 @@ export default {
 		return {
 			tempKey: "HBI",
 			onPortfolio: true,
-			date: 0,
+			showBuySellCard: false,
 
 			search: {
 				input: "",
@@ -110,6 +110,7 @@ export default {
 			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
 			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
 				const data = resp.data
+				// optimized
 				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
 				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
 			})
@@ -120,7 +121,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 10 * 1000)
+		}, 1 * 1000)
 	},
 	computed: {
 		chartStyles() {
@@ -147,7 +148,7 @@ export default {
 }
 
 .blurred {
-    background-color: #ccc;
+	background-color: #ccc;
 	filter: blur(10px)
 }
 </style>
