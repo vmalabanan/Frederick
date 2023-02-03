@@ -1,25 +1,28 @@
 <template>
 	<div class="portfolio-container">
-		<div class="portfolio" @click.capture="switchView">
+		<div class="portfolio" @click.capture="switchView" :class="{ blurred: this.$store.state.showBuyCard}">
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
 				:labels="graphData.time" />
 			<leaderboard />
 		</div>
-		<div v-show="!onPortfolio" id="search">
+
+		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard}">
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<div>
+		<div :class="{ blurred: this.$store.state.showBuyCard}">
 			<stock-container @currentChanged="updateGraphWith" :stocks="search.cards" class="stocks-search"
 				v-show="!onPortfolio" />
 			<stock-container @currentChanged="updateGraphWith" :stocks="portfolio.cards" class="stocks-owned"
 				v-show="onPortfolio" />
 		</div>
+		<buy-stock v-show="this.$store.state.showBuyCard"></buy-stock>
 	</div>
 </template>
 
 <script>
+import BuyStock from "../components/BuyStock.vue"
 import Leaderboard from "../components/Leaderboard.vue"
 import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
@@ -28,7 +31,7 @@ import MarketDataService from "../services/MarketDataService";
 
 export default {
 	name: "portfolio",
-	components: { LineChart, GameAccount, StockContainer, Leaderboard },
+	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock },
 	data() {
 		return {
 			tempKey: "HBI",
@@ -141,5 +144,10 @@ export default {
 	display: flex;
 	gap: 20px;
 	margin-bottom: 20px;
+}
+
+.blurred {
+    background-color: #ccc;
+	filter: blur(10px)
 }
 </style>

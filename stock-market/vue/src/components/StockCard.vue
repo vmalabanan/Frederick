@@ -9,8 +9,8 @@
 			<p :class="this.changesPercentage < 0 ? 'change negative' : 'change positive'">{{ getChange() }}%
 			</p>
 			<div class="buy-sell">
-				<button class="btn" id="buy">Buy</button>
-				<button class="btn" id="sell">Sell</button>
+				<button class="btn" id="buy" @click.prevent="setStockInfo(true)">Buy</button>
+				<button class="btn" id="sell" @click.prevent="setStockInfo(false)">Sell</button>
 			</div>
 		</div>
 	</div>
@@ -36,6 +36,15 @@ export default {
 				return changesPercentage;
 			}
 			return "+" + changesPercentage;
+		},
+		setStockInfo(buy) {
+			let stockInfo = {
+				price: this.price,
+				symbol: this.symbol,
+				buy: buy
+			}
+			this.$store.commit("SET_STOCK_INFO", stockInfo)
+			this.$store.commit("TOGGLE_BUY_SELL_FORM")
 		}
 	},
 	computed: {
