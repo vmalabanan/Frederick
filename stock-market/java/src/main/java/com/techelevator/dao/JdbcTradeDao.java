@@ -4,6 +4,8 @@ import com.techelevator.model.Trade;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class JdbcTradeDao implements TradeDao
 {
@@ -18,7 +20,7 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
-    public int makeTrade(int userId, int gameId, Trade trade) {
+    public void makeTrade(int userId, int gameId, Trade trade) {
         // insert tickerSymbol into stock table if doesn't already exist
         String tickerSymbol = trade.getTickerSymbol();
         String sql = "INSERT INTO stocks (ticker_symbol)  " +
@@ -41,13 +43,26 @@ public class JdbcTradeDao implements TradeDao
 
         Integer tradeTypeId = jdbcTemplate.queryForObject(sql, Integer.class, tradeTypeDesc);
 
-        // insert trade into trades table
-        sql = "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?) " +
-                "RETURNING trade_id;";
+        // insert trade into trades table and update user's cash
+        // calculate trade value; if a Buy transaction, multiply by -1
+        BigDecimal tradeValue = tradeTypeId == 1 ? trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares() * -1)) : trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares()));
 
-        Integer tradeId = jdbcTemplate.queryForObject(sql, Integer.class, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate());
+        sql = "BEGIN; " +
+                "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?); " +
+                "UPDATE CASH " +
+                "SET amount = ( " +
+                    "SELECT amount + ? FROM CASH " +
+                    "WHERE game_id = ? " +
+                    "AND user_id = ? " +
+                ") " +
+                "WHERE game_id = ? " +
+                "AND user_id = ?; " +
+                "COMMIT;";
 
-        return tradeId;
+        jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate(),
+                            tradeValue, gameId, userId,
+                            gameId, userId);
+
     }
 }

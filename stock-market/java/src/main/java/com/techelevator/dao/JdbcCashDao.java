@@ -31,4 +31,6 @@ public class JdbcCashDao implements CashDao
         jdbcTemplate.update(sql, gameId, userId);
 
     }
+
+
 }

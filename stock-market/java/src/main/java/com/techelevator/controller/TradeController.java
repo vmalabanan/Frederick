@@ -27,14 +27,12 @@ public class TradeController {
      * @param gameId the game's ID
      * @param trade accepts valid Trade object from client(tradeDate, sharePrice, numberOfShares, tradeTypeDesc, tickerSymbol)
      * @param principal gets principal user name to set organizer id
-     * @return integer id of newly created game back to client
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/{gameId}")
-    public int makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
+    public void makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
-        return tradeDao.makeTrade(userId, gameId, trade);
-
+        tradeDao.makeTrade(userId, gameId, trade);
     }
 }
