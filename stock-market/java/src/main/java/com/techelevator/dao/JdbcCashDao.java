@@ -17,7 +17,7 @@ public class JdbcCashDao implements CashDao
 
     @Override
     public BigDecimal getCash(int gameId, int userId) {
-        String sql = "SELECT cash FROM cash " +
+        String sql = "SELECT amount FROM cash " +
                 "WHERE game_id = ? " +
                 "AND user_id = ?;";
 
