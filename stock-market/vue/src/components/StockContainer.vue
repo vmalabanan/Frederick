@@ -31,7 +31,7 @@ export default {
 	flex-wrap: wrap;
 	align-content: flex-start;
 	background-color: #023047;
-	height: 500px;
+	min-height: 500px;
 	width: 100%;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
 		0 10px 10px rgba(0, 0, 0, 0.22);
