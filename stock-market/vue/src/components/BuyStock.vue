@@ -48,7 +48,8 @@ export default {
                 tradeDate: date,
                 sharePrice: this.stockPrice(),
                 numberOfShares: this.qty,
-                tradeTypeDesc: buySell
+                tradeTypeDesc: buySell,
+                tickerSymbol: this.stockSymbol()
             }
             tradeService.saveTrade(gameId, trade).then(response => {
                 if (response.status == 201) {
