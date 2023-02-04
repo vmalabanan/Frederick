@@ -52,6 +52,7 @@ export default {
 			graphData: {
 				dataPoints: [],
 				time: [],
+				labels: []
 			},
 
 		}
@@ -63,6 +64,7 @@ export default {
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = []
 				graphData.time = []
+				graphData.labels = []
 			}
 			MarketDataService.getHistoricalMinuteDataBySymbol(result).then(resp => {
 				const data = resp.data;
@@ -70,6 +72,7 @@ export default {
 
 					graphData.dataPoints.push(d.low)
 					graphData.time.push(d.date)
+					graphData.labels.push(d.low)
 				});
 
 			})
