@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<div>
+			<button>Enter Room</button>
+			<input />
+		</div>
 		<h1>This is the current lobby for {{ lobbyName }}</h1>
 		<div>{{ Username }}</div>
 
