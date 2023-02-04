@@ -99,7 +99,7 @@ CREATE SEQUENCE seq_invitation_status_id
 
  CREATE TABLE stocks (
  	stock_id int DEFAULT nextval('seq_stocks_id'::regclass) NOT NULL,
- 	ticker_symbol varchar(10) NOT NULL,
+ 	ticker_symbol varchar(10) UNIQUE NOT NULL,
   	CONSTRAINT PK_stocks PRIMARY KEY(stock_id)
   );
 
