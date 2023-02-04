@@ -39,6 +39,7 @@ export default {
     methods: {
         cancel() {
             this.$store.commit("TOGGLE_BUY_SELL_FORM")
+            this.qty = 1
         },
         confirm() {
             const gameId = this.$route.params.id
