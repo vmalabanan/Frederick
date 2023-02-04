@@ -149,7 +149,8 @@ export default {
 
 .blurred {
 	background-color: #ccc;
-	filter: blur(10px)
+	filter: blur(20px);
+	opacity: 60%;
 }
 
 div#search {

@@ -27,18 +27,37 @@
 </template>
 
 <script>
+import tradeService from "../services/TradeService"
 export default {
     name: 'BuyStock',
-	props: ["price", 'symbol', "buySell"],
+	props: [],
     data() {
         return {
-            qty: "",
-            showForm: true
+            qty: 0
         }
     },
     methods: {
         cancel() {
             this.$store.commit("TOGGLE_BUY_SELL_FORM")
+        },
+        confirm() {
+            const gameId = this.$route.params.id
+            const date = new Date()
+            const buySell = this.$store.state.stockInfo.buy ? "Buy" : "Sell"
+            const trade = {
+                tradeDate: date,
+                sharePrice: this.stockPrice(),
+                numberOfShares: this.qty,
+                tradeTypeDesc: buySell
+            }
+            tradeService.saveTrade(gameId, trade).then(response => {
+                if (response.status == 201) {
+                    alert("Trade Successful")
+                }
+                else {
+                    alert("Trade Failed, Try Again")
+                }
+            })
         }
     },
     computed: {
