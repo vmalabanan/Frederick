@@ -12,13 +12,13 @@
                     <label class="cost" for="qty">Cost</label>
                 </div>
                 <div class="shares">
-                    <input type="number" id="qty" v-model="qty" min="0" oninput="this.value = Math.abs(this.value)">
+                    <input type="number" id="qty" v-model="qty" min="1" oninput="this.value = Math.abs(this.value)">
                     <div class="price">${{ getTotalPrice }}</div>
                 </div>
                 
                 <div class="buttons">
                     <button class="btn btn-lg cancel" @click.prevent="cancel()">Cancel</button>
-                    <button class="btn btn-lg confirm">Confirm</button>
+                    <button class="btn btn-lg confirm" @click.prevent="confirm()">Confirm</button>
                 </div>
 
             </div>
@@ -33,7 +33,7 @@ export default {
 	props: [],
     data() {
         return {
-            qty: 0
+            qty: 1
         }
     },
     methods: {
@@ -44,12 +44,14 @@ export default {
             const gameId = this.$route.params.id
             const date = new Date()
             const buySell = this.$store.state.stockInfo.buy ? "Buy" : "Sell"
+            const price = this.stockPrice
+            const symbol = this.stockSymbol
             const trade = {
                 tradeDate: date,
-                sharePrice: this.stockPrice(),
+                sharePrice: price,
                 numberOfShares: this.qty,
                 tradeTypeDesc: buySell,
-                tickerSymbol: this.stockSymbol()
+                tickerSymbol: symbol
             }
             tradeService.saveTrade(gameId, trade).then(response => {
                 if (response.status == 201) {
@@ -59,6 +61,8 @@ export default {
                     alert("Trade Failed, Try Again")
                 }
             })
+            this.$store.commit("TOGGLE_BUY_SELL_FORM")
+            this.qty = 1
         }
     },
     computed: {
