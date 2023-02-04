@@ -66,7 +66,7 @@ export default {
 			}
 			MarketDataService.getHistoricalMinuteDataBySymbol(result).then(resp => {
 				const data = resp.data;
-				data.forEach(d => {
+				data.reverse().forEach(d => {
 
 					graphData.dataPoints.push(d.low)
 					graphData.time.push(d.date)

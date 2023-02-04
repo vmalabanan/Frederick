@@ -4,7 +4,7 @@
         <p class="values">$100,000.62</p>
         <h4 class="labels">ROI</h4>
         <p class="values">+ 7.2%</p>
-        <h4 class="labels">Buying Power</h4>
+        <h4 class="labels">Cash</h4>
         <p class="values">$50,000.72</p>
         <button class="btn btn-lg" @click="handleClick">{{ this.buttonText }}</button>
     </div>
