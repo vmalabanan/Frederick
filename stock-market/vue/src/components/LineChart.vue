@@ -97,6 +97,7 @@ export default {
 						display: false
 					}
 				},
+				animation: false,
 				plugins: {
 					zoom: {
 						zoom: {
@@ -109,8 +110,13 @@ export default {
 							mode: 'xy'
 						}
 					}
+				},
+				elements: {
+					point: {
+						radius: 0 // default to disabled in all datasets
+					}
 				}
-			},
+				},
 		};
 	},
 };
