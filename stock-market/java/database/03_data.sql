@@ -29,3 +29,6 @@ INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 3, 1
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 4, 1);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 5, 1);
 
+-- insert trade_type table data
+INSERT INTO trade_type (trade_type_id, trade_type_desc) VALUES (1, 'Buy');
+INSERT INTO trade_type (trade_type_id, trade_type_desc) VALUES (2, 'Sell');
