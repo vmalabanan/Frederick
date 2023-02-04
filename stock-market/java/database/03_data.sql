@@ -29,4 +29,3 @@ INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 3, 1
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 4, 1);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (2, 5, 1);
 
-

@@ -74,6 +74,20 @@ CREATE SEQUENCE seq_invitation_status_id
  	CONSTRAINT FK_games_users_invitation_status FOREIGN KEY(invitation_status_id) REFERENCES invitation_status(invitation_status_id)
  );
 
+CREATE TABLE cash (
+    game_id int NOT NULL,
+    user_id int NOT NULL,
+	cash decimal(15, 2) NOT NULL,
+ 	CONSTRAINT PK_cash PRIMARY KEY(game_id, user_id),
+    CONSTRAINT FK_cash_games FOREIGN KEY(game_id) REFERENCES games(game_id),
+    CONSTRAINT FK_cash_users FOREIGN KEY(user_id) REFERENCES users(user_id)
+ );
+
+-- create games_users table
+
+
+
+
 -- Add seed data in the 03_data.sql script file
 
 -- Add Foreign key constraints in the 04_constraints.sql script file
