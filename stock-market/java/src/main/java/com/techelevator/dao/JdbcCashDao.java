@@ -26,7 +26,9 @@ public class JdbcCashDao implements CashDao
 
     @Override
     public void setStartingCash(int gameId, int userId) {
-        String sql = "INSERT INTO cash (game_id, user_id, cash) VALUES (?, ?, 100000);";
+        String sql = "INSERT INTO cash (game_id, user_id, amount) VALUES (?, ?, 100000);";
+
         jdbcTemplate.update(sql, gameId, userId);
+
     }
 }

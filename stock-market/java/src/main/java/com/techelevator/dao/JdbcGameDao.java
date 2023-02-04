@@ -16,10 +16,11 @@ public class JdbcGameDao implements GameDao
     private UserDao userDao;
     private CashDao cashDao;
 
-    public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao)
+    public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao)
     {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
+        this.cashDao = cashDao;
     }
 
     @Override
@@ -144,7 +145,7 @@ public class JdbcGameDao implements GameDao
         sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
         jdbcTemplate.update(sql, gameId, organizerId, 2);
 
-        // set organizer starting cash to 100,000
+        // set organizer's starting cash to 100,000
         cashDao.setStartingCash(gameId, organizerId);
 
         // for each player in players, add to games_users table and set invitation_status to 1 (Invited)

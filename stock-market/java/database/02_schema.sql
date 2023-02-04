@@ -77,7 +77,7 @@ CREATE SEQUENCE seq_invitation_status_id
 CREATE TABLE cash (
     game_id int NOT NULL,
     user_id int NOT NULL,
-	cash decimal(15, 2) NOT NULL,
+	amount decimal(15, 2) NOT NULL,
  	CONSTRAINT PK_cash PRIMARY KEY(game_id, user_id),
     CONSTRAINT FK_cash_games FOREIGN KEY(game_id) REFERENCES games(game_id),
     CONSTRAINT FK_cash_users FOREIGN KEY(user_id) REFERENCES users(user_id)
