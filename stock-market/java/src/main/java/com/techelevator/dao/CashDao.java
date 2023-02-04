@@ -9,4 +9,6 @@ public interface CashDao
 
     BigDecimal getCash(int gameId, int userId);
 
+    void setStartingCash(int gameId, int userId);
+
 }

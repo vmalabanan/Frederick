@@ -23,4 +23,10 @@ public class JdbcCashDao implements CashDao
 
         return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId);
     }
+
+    @Override
+    public void setStartingCash(int gameId, int userId) {
+        String sql = "INSERT INTO cash (game_id, user_id, cash) VALUES (?, ?, 100000);";
+        jdbcTemplate.update(sql, gameId, userId);
+    }
 }

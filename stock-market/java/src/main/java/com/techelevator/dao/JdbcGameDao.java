@@ -14,6 +14,7 @@ public class JdbcGameDao implements GameDao
 {
     private JdbcTemplate jdbcTemplate;
     private UserDao userDao;
+    private CashDao cashDao;
 
     public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao)
     {
@@ -92,6 +93,11 @@ public class JdbcGameDao implements GameDao
 
         jdbcTemplate.update(sql, invitation.getInvitationStatusId(), invitation.getGameId(), userId);
 
+        // if invitation is accepted (invitation_status_id = 2)
+        // set starting cash = 100,000
+        if (invitation.getInvitationStatusId() == 2) {
+            cashDao.setStartingCash(invitation.getGameId(), userId);
+        }
     }
 
     @Override
@@ -137,6 +143,9 @@ public class JdbcGameDao implements GameDao
         // add organizer to games_users table and set invitation_status to 2 (Accepted)
         sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
         jdbcTemplate.update(sql, gameId, organizerId, 2);
+
+        // set organizer starting cash to 100,000
+        cashDao.setStartingCash(gameId, organizerId);
 
         // for each player in players, add to games_users table and set invitation_status to 1 (Invited)
         for (String player : players) {
