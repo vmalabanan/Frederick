@@ -7,9 +7,9 @@
 			<leaderboard />
 		</div>
 
-		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard }">
-			<label for="search">Search</label>
-			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
+		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard }" class="form-floating mb-3">
+			<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput" placeholder="GOOG">
+			<label for="floatingInput">Search Stocks</label>
 		</div>
 		<div :class="{ blurred: this.$store.state.showBuyCard }">
 			<stock-container @currentChanged="updateGraphWith" :stocks="search.cards" class="stocks-search"
@@ -121,7 +121,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 1 * 1000)
+		}, 30 * 1000)
 	},
 	computed: {
 		chartStyles() {
@@ -151,4 +151,13 @@ export default {
 	background-color: #ccc;
 	filter: blur(10px)
 }
+
+div#search {
+	border: 5px solid #023047;
+	border-radius: 10px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 </style>

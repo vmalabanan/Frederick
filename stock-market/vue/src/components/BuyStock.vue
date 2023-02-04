@@ -44,7 +44,7 @@ export default {
     computed: {
         getTotalPrice() {
             const price = this.$store.state.stockInfo.price * this.qty
-            return price.toFixed(2)
+            return parseFloat(price).toFixed(2)
         },
 
         getBuySell() {
@@ -55,7 +55,7 @@ export default {
         },
 
         stockPrice() {
-            return this.$store.state.stockInfo.price.toFixed(2)
+            return parseFloat(this.$store.state.stockInfo.price).toFixed(2)
         },
 
         stockSymbol() {
