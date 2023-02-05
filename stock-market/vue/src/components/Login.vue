@@ -4,7 +4,7 @@
     <div class="alert alert-danger" role="alert" v-if="invalidCredentials">
       Invalid username and password!
     </div>
-    <div class="alert alert-success" role="alert" v-if="this.$store.state.registrationStatus.isRegSuccessful">
+    <div class="alert alert-success" role="alert" v-if="isRegSuccessful">
       Thank you for registering, please sign in.
     </div>
 
@@ -30,6 +30,7 @@ import authService from "../services/AuthService";
 export default {
   name: "login",
   components: {},
+  props: ['isRegSuccessful'],
   data() {
     return {
       user: {

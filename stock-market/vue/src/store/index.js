@@ -23,11 +23,6 @@ export default new Vuex.Store({
     selectedUsers: [],
     invitedGames: [],
     acceptedGames: [],
-    currentStock: 'portfolio',
-    registrationStatus: {
-      isRPanelActive: false,
-      isRegSuccessful: false,
-    },
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -45,12 +40,6 @@ export default new Vuex.Store({
       state.token = '';
       state.user = {};
       axios.defaults.headers.common = {};
-    },
-    SWITCH_PANEL(state) {
-      state.registrationStatus.isRPanelActive = !state.registrationStatus.isRPanelActive;
-    },
-    REG_SUCCESSFUL(state) {
-      state.registrationStatus.isRegSuccessful = true;
     },
     SET_SELECTED_USERS(state, users) {
       state.selectedUsers = users;

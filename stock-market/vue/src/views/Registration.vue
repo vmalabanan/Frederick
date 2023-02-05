@@ -1,9 +1,8 @@
 <template>
     <div id="login" class="text-center">
-        <div class="container" id="container"
-            :class="{ 'right-panel-active': this.$store.state.registrationStatus.isRPanelActive }">
-            <Register class="form-container sign-up-container" />
-            <Login class="form-container sign-in-container" />
+        <div class="container" id="container" :class="{ 'right-panel-active': registration.isRPanelActive }">
+            <Register class="form-container sign-up-container" v-model="registration" />
+            <Login class="form-container sign-in-container" :isRegSuccessful="registration.isRegSuccessful" />
             <div class="overlay-container">
                 <div class="overlay">
                     <div class="overlay-panel overlay-left">
@@ -32,11 +31,16 @@ export default {
     },
     data() {
         return {
+            registration: {
+                isRPanelActive: false,
+                isRegSuccessful: false,
+            }
         }
     },
     methods: {
         handleScreenChange() {
-            this.$store.commit("SWITCH_PANEL")
+
+            this.registration.isRPanelActive = !this.registration.isRPanelActive
         }
 
     },

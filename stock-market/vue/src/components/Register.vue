@@ -59,7 +59,18 @@ export default {
       registrationErrorMsg: "There were problems registering this user."
     };
   },
-  props: ['isRPanelActive', 'isRegSuccessful'],
+  props: ['values'],
+  created: {
+    registration: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
+    }
+
+  },
   methods: {
     register() {
       if (this.user.password != this.user.confirmPassword) {
@@ -70,10 +81,10 @@ export default {
           .register(this.user)
           .then(response => {
             if (response.status == 201) {
-              // Switch active panel
-              this.$store.commit("SWITCH_PANEL")
-              // Say it was a success 
-              this.$store.commit("REG_SUCCESSFUL")
+              this.registration.set({
+                isRPanelActive: true,
+                isRegSuccessful: true
+              })
             }
           })
           .catch(error => {
