@@ -24,7 +24,11 @@ export default {
   data() {
     return {
       header: {
-        home: 'Welcome'
+        home: 'Welcome',
+        createGame: 'Create a Game',
+        invitationsList: 'Join a Game',
+        menu: 'Game Menu',
+        portfolio: 'Game Name goes here'
       },
     }
   },

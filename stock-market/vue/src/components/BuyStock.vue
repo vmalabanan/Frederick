@@ -18,9 +18,9 @@
 
                 <div class="buttons">
                     <button class="btn btn-lg cancel" @click.prevent="cancel">Cancel</button>
-                    <button class="btn btn-lg confirm" @click.prevent="confirm()">Confirm</button>
+                    <button class="btn btn-lg confirm" @click.prevent="confirm()" :class="{disabled : !isValidTrade}">Confirm</button>
                 </div>
-
+                <p id="invalid" v-show="!isValidTrade">-- Invalid Trade --</p>
             </div>
         </div>
     </div>
@@ -33,8 +33,7 @@ export default {
     props: ["value"],
     data() {
         return {
-            qty: 1,
-            validTrade: true
+            qty: 1
         }
     },
     methods: {
@@ -58,6 +57,7 @@ export default {
             tradeService.saveTrade(gameId, trade).then(response => {
                 if (response.status == 201) {
                     alert("Trade Successful")
+                    this.$store.commit("SET_CASH", response.data)
                 }
                 else {
                     alert("Trade Failed, Try Again")
@@ -65,7 +65,8 @@ export default {
             })
             this.buySellCard.show = false
             this.qty = 1
-        }
+        },
+
     },
     computed: {
         buySellCard: {
@@ -84,6 +85,14 @@ export default {
         stockPrice() {
             return this.buySellCard.price.toFixed(2)
         },
+        isValidTrade() {
+            const buySell = this.buySellCard.buySell
+            if (buySell) {
+                return this.$store.state.accountCash > this.getTotalPrice
+            }
+            //implement selling
+            return true
+        }
     }
 }
 </script>
@@ -149,5 +158,11 @@ button {
     margin-top: 20px;
     display: flex;
     justify-content: space-evenly;
+}
+
+#invalid {
+    text-align: center;
+    font-weight: bold;
+    color: red;
 }
 </style>
