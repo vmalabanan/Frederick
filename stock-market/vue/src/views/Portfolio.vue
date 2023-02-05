@@ -7,9 +7,10 @@
 			<leaderboard />
 		</div>
 
-		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }">
-			<label for="search">Search</label>
-			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
+		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
+			<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
+				placeholder="GOOG">
+			<label for="floatingInput">Search Stocks</label>
 		</div>
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
@@ -51,6 +52,7 @@ export default {
 			graphData: {
 				dataPoints: [],
 				time: [],
+				labels: []
 			},
 
 			buySellCard: {
@@ -68,6 +70,7 @@ export default {
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = []
 				graphData.time = []
+				graphData.labels = []
 			}
 			MarketDataService.getHistoricalMinuteDataBySymbol(this.tempKey).then(resp => {
 				const data = resp.data;
@@ -75,6 +78,7 @@ export default {
 
 					graphData.dataPoints.push(d.low)
 					graphData.time.push(d.date)
+					graphData.labels.push(d.low)
 				});
 
 			})
@@ -130,7 +134,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 1 * 1000)
+		}, 30 * 1000)
 	},
 	computed: {
 		chartStyles() {
@@ -158,6 +162,15 @@ export default {
 
 .blurred {
 	background-color: #ccc;
-	filter: blur(10px)
+	filter: blur(20px);
+	opacity: 60%;
+}
+
+div#search {
+	border: 5px solid #023047;
+	border-radius: 10px;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>

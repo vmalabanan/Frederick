@@ -12,13 +12,13 @@
                     <label class="cost" for="qty">Cost</label>
                 </div>
                 <div class="shares">
-                    <input type="number" id="qty" v-model="qty" min="0" oninput="this.value = Math.abs(this.value)">
+                    <input type="number" id="qty" v-model="qty" min="1" oninput="this.value = Math.abs(this.value)">
                     <div class="price">${{ getTotalPrice }}</div>
                 </div>
 
                 <div class="buttons">
-                    <button class="btn btn-lg cancel" @click.prevent="buySellCard.show = false">Cancel</button>
-                    <button class="btn btn-lg confirm">Confirm</button>
+                    <button class="btn btn-lg cancel" @click.prevent="cancel">Cancel</button>
+                    <button class="btn btn-lg confirm" @click.prevent="confirm()">Confirm</button>
                 </div>
 
             </div>
@@ -27,25 +27,46 @@
 </template>
 
 <script>
+import tradeService from "../services/TradeService"
 export default {
     name: 'BuyStock',
     props: ["value"],
     data() {
         return {
-            qty: "",
-            showForm: true
+            qty: 1
         }
     },
     methods: {
+        cancel() {
+            this.buySellCard.show = false
+            this.qty = 1;
+        },
+        confirm() {
+            const gameId = this.$route.params.id
+            const date = new Date()
+            const buySell = this.$store.state.stockInfo.buy ? "Buy" : "Sell"
+            const price = this.stockPrice
+            const symbol = this.stockSymbol
+            const trade = {
+                tradeDate: date,
+                sharePrice: price,
+                numberOfShares: this.qty,
+                tradeTypeDesc: buySell,
+                tickerSymbol: symbol
+            }
+            tradeService.saveTrade(gameId, trade).then(response => {
+                if (response.status == 201) {
+                    alert("Trade Successful")
+                }
+                else {
+                    alert("Trade Failed, Try Again")
+                }
+            })
+            this.buySellCard.show = false
+            this.qty = 1
+        }
     },
     computed: {
-        getTotalPrice() {
-            const price = this.buySellCard.price * this.qty
-            return price.toFixed(2)
-        },
-        stockPrice() {
-            return this.buySellCard.price.toFixed(2)
-        },
         buySellCard: {
             get() {
                 return this.value
@@ -53,8 +74,15 @@ export default {
             set(value) {
                 console.log(value)
                 this.$emit('input', value)
-            }
-        }
+            },
+        },
+        getTotalPrice() {
+            const price = this.buySellCard.price * this.qty
+            return price.toFixed(2)
+        },
+        stockPrice() {
+            return this.buySellCard.price.toFixed(2)
+        },
     }
 }
 </script>

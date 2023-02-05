@@ -5,17 +5,20 @@
         <h4 class="labels">ROI</h4>
         <p class="values">+ 7.2%</p>
         <h4 class="labels">Cash</h4>
-        <p class="values">$50,000.72</p>
+        <p class="values">{{ this.cash }}</p>
         <button class="btn btn-lg" @click="handleClick">{{ this.buttonText }}</button>
     </div>
 </template>
 
 <script>
+import cashService from "../services/CashService"
+
 export default {
     name: 'GameAccount',
     data() {
         return {
-            buttonText: "View Stocks"
+            buttonText: "View Stocks",
+            cash: 0
         }
     },
     methods: {
@@ -28,7 +31,24 @@ export default {
             {
                 this.buttonText = "View Stocks"
             }
+        },
+        getCash() {
+            const gameId = this.$route.params.id
+            cashService.getCashByGameId(gameId).then(response => {
+                let formatting_options = {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 2,
+                }
+                let dollarString = new Intl.NumberFormat( 'en-US', formatting_options );
+                let cashString = dollarString.format(response.data)
+                this.cash = cashString
+            })
+
         }
+    },
+    created() {
+        this.getCash()
     }
 }
 </script>
