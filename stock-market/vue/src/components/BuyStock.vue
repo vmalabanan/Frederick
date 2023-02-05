@@ -44,9 +44,9 @@ export default {
         confirm() {
             const gameId = this.$route.params.id
             const date = new Date()
-            const buySell = this.$store.state.stockInfo.buy ? "Buy" : "Sell"
+            const buySell = this.buySellCard.buySell ? "Buy" : "Sell"
             const price = this.stockPrice
-            const symbol = this.stockSymbol
+            const symbol = this.buySellCard.symbol
             const trade = {
                 tradeDate: date,
                 sharePrice: price,
