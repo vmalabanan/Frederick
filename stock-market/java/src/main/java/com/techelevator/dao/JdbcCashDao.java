@@ -19,7 +19,9 @@ public class JdbcCashDao implements CashDao
     public BigDecimal getCash(int gameId, int userId) {
         String sql = "SELECT amount FROM cash " +
                 "WHERE game_id = ? " +
-                "AND user_id = ?;";
+                "AND user_id = ? " +
+                "ORDER BY effective_date DESC " +
+                "LIMIT 1;";
 
         return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId);
     }

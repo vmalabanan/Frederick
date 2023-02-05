@@ -20,7 +20,7 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
-    public void makeTrade(int userId, int gameId, Trade trade) {
+    public BigDecimal makeTrade(int userId, int gameId, Trade trade) {
         // insert tickerSymbol into stock table if doesn't already exist
         String tickerSymbol = trade.getTickerSymbol();
         String sql = "INSERT INTO stocks (ticker_symbol)  " +
@@ -63,6 +63,9 @@ public class JdbcTradeDao implements TradeDao
         jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate(),
                             tradeValue, gameId, userId,
                             gameId, userId);
+
+        // get cash
+        return cashDao.getCash(gameId, userId);
 
     }
 }

@@ -80,12 +80,12 @@ CREATE SEQUENCE seq_invitation_status_id
  CREATE TABLE cash (
     game_id int NOT NULL,
     user_id int NOT NULL,
-	amount decimal(15, 2) NOT NULL,
- 	CONSTRAINT PK_cash PRIMARY KEY(game_id, user_id),
+ 	amount decimal(15, 2) NOT NULL,
+	effective_date timestamp NOT NULL,
+  	CONSTRAINT PK_cash PRIMARY KEY(game_id, user_id, effective_date),
     CONSTRAINT FK_cash_games FOREIGN KEY(game_id) REFERENCES games(game_id),
     CONSTRAINT FK_cash_users FOREIGN KEY(user_id) REFERENCES users(user_id)
- );
-
+  );
 
  -- create stocks table
  DROP TABLE IF EXISTS stocks;
