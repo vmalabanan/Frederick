@@ -33,7 +33,8 @@ export default {
     props: ["value"],
     data() {
         return {
-            qty: 1
+            qty: 1,
+            validTrade: true
         }
     },
     methods: {

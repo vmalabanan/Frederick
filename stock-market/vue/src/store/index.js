@@ -23,6 +23,7 @@ export default new Vuex.Store({
     selectedUsers: [],
     invitedGames: [],
     acceptedGames: [],
+    accountCash: 0,
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -50,5 +51,11 @@ export default new Vuex.Store({
     SET_ACCEPTED_GAMES(state, games) {
       state.acceptedGames = games;
     },
+    SET_CASH(state, cash) {
+      state.accountCash = cash
+    },
+    UPDATE_CASH(state, amt) {
+      state.acceptedCash += amt
+    }
   }
 })
