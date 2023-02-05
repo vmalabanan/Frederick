@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 
 @RestController
@@ -30,9 +31,9 @@ public class TradeController {
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value="/{gameId}")
-    public void makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
+    public BigDecimal makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
-        tradeDao.makeTrade(userId, gameId, trade);
+        return tradeDao.makeTrade(userId, gameId, trade);
     }
 }
