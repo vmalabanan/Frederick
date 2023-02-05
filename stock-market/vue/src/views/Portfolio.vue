@@ -1,23 +1,23 @@
 <template>
 	<div class="portfolio-container">
-		<div class="portfolio" @click.capture="switchView" :class="{ blurred: this.$store.state.showBuyCard}">
+		<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
 				:labels="graphData.time" />
 			<leaderboard />
 		</div>
 
-		<div v-show="!onPortfolio" id="search" :class="{ blurred: this.$store.state.showBuyCard }">
+		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }">
 			<label for="search">Search</label>
 			<input type="text" name="searchSymbol" @input="updateSearch"><br><br>
 		</div>
-		<div :class="{ blurred: this.$store.state.showBuyCard }">
-			<stock-container @currentChanged="updateGraphWith" :stocks="search.cards" class="stocks-search"
-				v-show="!onPortfolio" />
-			<stock-container @currentChanged="updateGraphWith" :stocks="portfolio.cards" class="stocks-owned"
-				v-show="onPortfolio" />
+		<div :class="{ blurred: buySellCard.show }">
+			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
+				class="stocks-search" v-show="!onPortfolio" />
+			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="portfolio.cards"
+				class="stocks-owned" v-show="onPortfolio" />
 		</div>
-		<buy-stock v-show="this.$store.state.showBuyCard"></buy-stock>
+		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
 	</div>
 </template>
 
@@ -36,7 +36,6 @@ export default {
 		return {
 			tempKey: "HBI",
 			onPortfolio: true,
-			showBuySellCard: false,
 
 			search: {
 				input: "",
@@ -54,17 +53,23 @@ export default {
 				time: [],
 			},
 
+			buySellCard: {
+				show: false,
+				price: 0.0,
+				symbol: "",
+				buySell: false,
+			}
 		}
 	},
 	methods: {
-		updateGraphWith(result) {
+		updateGraphWith(symbol) {
 			const graphData = this.graphData
-			this.tempKey = result;
+			this.tempKey = symbol;
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = []
 				graphData.time = []
 			}
-			MarketDataService.getHistoricalMinuteDataBySymbol(result).then(resp => {
+			MarketDataService.getHistoricalMinuteDataBySymbol(this.tempKey).then(resp => {
 				const data = resp.data;
 				data.reverse().forEach(d => {
 
@@ -73,6 +78,10 @@ export default {
 				});
 
 			})
+		},
+		showCard(state, stockInfo) {
+			this.showBuySellCard = state;
+			this.stockInfo = stockInfo
 		},
 		switchView(event) {
 			// Used innerText to be more specific of where the even it coming from
@@ -130,7 +139,7 @@ export default {
 				backgroundColor: "#8ECAE6",
 				borderRadius: "20px",
 			};
-		}
+		},
 	},
 };
 </script>

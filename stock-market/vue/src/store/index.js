@@ -23,9 +23,6 @@ export default new Vuex.Store({
     selectedUsers: [],
     invitedGames: [],
     acceptedGames: [],
-    showBuyCard: false,
-    stockInfo: {
-    },
     currentStock: 'portfolio',
     registrationStatus: {
       isRPanelActive: false,
@@ -64,11 +61,5 @@ export default new Vuex.Store({
     SET_ACCEPTED_GAMES(state, games) {
       state.acceptedGames = games;
     },
-    TOGGLE_BUY_SELL_FORM(state) {
-      state.showBuyCard = !state.showBuyCard
-    },
-    SET_STOCK_INFO(state, stockInfo) {
-      state.stockInfo = stockInfo
-    }
   }
 })

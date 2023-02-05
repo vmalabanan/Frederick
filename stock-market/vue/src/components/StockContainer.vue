@@ -1,7 +1,7 @@
 <template>
 	<div id="stocks">
 		<stock-card v-for="(stock, index) in stocks" :key="index" v-bind="stock"
-			@click.native="handleChange(stock.symbol)" />
+			@click.native="handleClick(stock.symbol)" v-model="buySellCard" />
 	</div>
 </template>
 
@@ -10,17 +10,26 @@ import StockCard from './StockCard.vue'
 export default {
 	name: 'StockContainer',
 	components: { StockCard },
-	props: ['stocks'],
-	emits: ['currentChanged'],
+	props: ['stocks', 'value'],
+	emits: ['cardClick'],
 	data() {
 		return {
 		}
 	},
 	methods: {
-		handleChange(symbol) {
-			this.$emit('currentChanged', symbol)
+		handleClick(symbol) {
+			this.$emit('cardClick', symbol)
+		},
+	},
+	computed: {
+		buySellCard: {
+			get() {
+				return this.value
+			},
+			set(value) {
+				this.$emit('input', value)
+			}
 		}
-
 	}
 }
 </script>

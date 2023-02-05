@@ -2,8 +2,8 @@
     <div class="card">
         <div class="card-body">
             <div class="card-title">
-                <h2>{{ stockSymbol }}</h2>
-                <h2>{{ getBuySell }}</h2>
+                <h2>{{ buySellCard.symbol }}</h2>
+                <h2>{{ buySellCard.buySell ? "Buy Stocks" : "Sell Stocks" }}</h2>
             </div>
             <h4>${{ stockPrice }}</h4>
             <div class="qty-form">
@@ -15,9 +15,9 @@
                     <input type="number" id="qty" v-model="qty" min="0" oninput="this.value = Math.abs(this.value)">
                     <div class="price">${{ getTotalPrice }}</div>
                 </div>
-                
+
                 <div class="buttons">
-                    <button class="btn btn-lg cancel" @click.prevent="cancel()">Cancel</button>
+                    <button class="btn btn-lg cancel" @click.prevent="buySellCard.show = false">Cancel</button>
                     <button class="btn btn-lg confirm">Confirm</button>
                 </div>
 
@@ -29,7 +29,7 @@
 <script>
 export default {
     name: 'BuyStock',
-	props: ["price", 'symbol', "buySell"],
+    props: ["value"],
     data() {
         return {
             qty: "",
@@ -37,29 +37,23 @@ export default {
         }
     },
     methods: {
-        cancel() {
-            this.$store.commit("TOGGLE_BUY_SELL_FORM")
-        }
     },
     computed: {
         getTotalPrice() {
-            const price = this.$store.state.stockInfo.price * this.qty
+            const price = this.buySellCard.price * this.qty
             return price.toFixed(2)
         },
-
-        getBuySell() {
-            if (this.$store.state.stockInfo.buy) {
-                return "Buy Stocks"
-            }
-            return "Sell Stocks"
-        },
-
         stockPrice() {
-            return this.$store.state.stockInfo.price.toFixed(2)
+            return this.buySellCard.price.toFixed(2)
         },
-
-        stockSymbol() {
-            return this.$store.state.stockInfo.symbol
+        buySellCard: {
+            get() {
+                return this.value
+            },
+            set(value) {
+                console.log(value)
+                this.$emit('input', value)
+            }
         }
     }
 }
@@ -73,10 +67,10 @@ export default {
     border-radius: 25px;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
         0 10px 10px rgba(0, 0, 0, 0.22);
-    position:fixed;
-	top:50%;
-	left:50%;
-	z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
@@ -127,5 +121,4 @@ button {
     display: flex;
     justify-content: space-evenly;
 }
-
 </style>

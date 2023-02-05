@@ -9,8 +9,8 @@
 			<p :class="this.changesPercentage < 0 ? 'change negative' : 'change positive'">{{ getChange() }}%
 			</p>
 			<div class="buy-sell">
-				<button class="btn" id="buy" @click.prevent="setStockInfo(true)">Buy</button>
-				<button class="btn" id="sell" @click.prevent="setStockInfo(false)">Sell</button>
+				<button class="btn" id="buy" @click.stop.prevent="setStockInfo(true)">Buy</button>
+				<button class="btn" id="sell" @click.stop.prevent="setStockInfo(false)">Sell</button>
 			</div>
 		</div>
 	</div>
@@ -24,7 +24,9 @@ export default {
 		name: { type: String, default: "" },
 		price: { type: Number, default: 0 },
 		changesPercentage: { type: Number, default: 0 },
+		value: {},
 	},
+	emit: ['cardButtonClick'],
 	data() {
 		return {
 		}
@@ -38,17 +40,24 @@ export default {
 			return "+" + changesPercentage;
 		},
 		setStockInfo(buy) {
-			let stockInfo = {
+			this.buySellCard = {
+				show: true,
 				price: this.price,
 				symbol: this.symbol,
-				buy: buy
+				buySell: buy
 			}
-			this.$store.commit("SET_STOCK_INFO", stockInfo)
-			this.$store.commit("TOGGLE_BUY_SELL_FORM")
+
 		}
 	},
 	computed: {
-
+		buySellCard: {
+			get() {
+				return this.value
+			},
+			set(value) {
+				this.$emit('input', value)
+			}
+		}
 	}
 }
 </script>
@@ -110,7 +119,8 @@ export default {
 	margin-top: -10px;
 }
 
-#buy, #sell {
+#buy,
+#sell {
 	border-radius: 10px;
 }
 
