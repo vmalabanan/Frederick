@@ -3,7 +3,7 @@
 		<h2 v-show="onPortfolio">My Portfolio</h2>
 		<div id="stocks">
 			<stock-card v-for="(stock, index) in stocks" :key="index" v-bind="stock"
-				@click.native="handleClick(stock.symbol)" v-model="buySellCard" />
+				@click.native="handleClick(stock.symbol)" v-model="buySellCard" :isActive="activeIndex === index" @onToggle="onToggle(index)"/>
 		</div>
 	</div>
 
@@ -18,12 +18,21 @@ export default {
 	emits: ['cardClick'],
 	data() {
 		return {
+			activeIndex: null
 		}
 	},
 	methods: {
 		handleClick(symbol) {
 			this.$emit('cardClick', symbol)
 		},
+		onToggle(index) {
+			if (this.activeIndex === index) {
+				this.activeIndex = null;
+			}
+			else {
+				this.activeIndex = index;
+			}
+		}
 	},
 	computed: {
 		buySellCard: {

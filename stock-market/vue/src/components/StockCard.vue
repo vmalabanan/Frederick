@@ -1,5 +1,5 @@
 <template>
-	<div id="stock" class="card">
+	<div id="stock" class="card" :class="{active : isActive}" @click="setActive()">
 		<div class="card-body">
 			<h4 class="card-title">
 				<span id="stock-code">{{ symbol }}</span>
@@ -25,6 +25,7 @@ export default {
 		price: { type: Number, default: 0 },
 		changesPercentage: { type: Number, default: 0 },
 		value: {},
+		isActive: {}
 	},
 	emit: ['cardButtonClick'],
 	data() {
@@ -47,6 +48,9 @@ export default {
 				buySell: buy
 			}
 
+		},
+		setActive() {
+			this.$emit('onToggle')
 		}
 	},
 	computed: {
@@ -137,5 +141,9 @@ buy-stock {
 	position: absolute;
 	top: 50%;
 	left: 50%;
+}
+
+.active {
+	background-color: #8ECAE6;
 }
 </style>
