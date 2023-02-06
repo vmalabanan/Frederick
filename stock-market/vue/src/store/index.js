@@ -54,8 +54,5 @@ export default new Vuex.Store({
     SET_CASH(state, cash) {
       state.accountCash = cash
     },
-    UPDATE_CASH(state, amt) {
-      state.acceptedCash += amt
-    }
   }
 })

@@ -12,12 +12,14 @@
 				placeholder="GOOG">
 			<label for="floatingInput">Search Stocks</label>
 		</div>
+
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
 				class="stocks-search" v-show="!onPortfolio" />
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="portfolio.cards"
 				class="stocks-owned" v-show="onPortfolio" />
 		</div>
+
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
 	</div>
 </template>

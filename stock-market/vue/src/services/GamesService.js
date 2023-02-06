@@ -25,5 +25,9 @@ export default {
         return axios.put('/games', invitation);
     },
 
+    getGameById(gameId) {
+        return axios.get("/games/" + gameId)
+    }
+
 
 }
