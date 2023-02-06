@@ -15,9 +15,9 @@
 
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
-				class="stocks-search" v-show="!onPortfolio" />
+				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false"/>
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="portfolio.cards"
-				class="stocks-owned" v-show="onPortfolio" />
+				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true"/>
 		</div>
 
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>

@@ -55,7 +55,7 @@ export default {
                 tickerSymbol: symbol
             }
             tradeService.saveTrade(gameId, trade).then(response => {
-                if (response.status == 201) {
+                if (response.status == 200) {
                     alert("Trade Successful")
                     this.$store.commit("SET_CASH", response.data)
                 }
