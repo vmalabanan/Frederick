@@ -1,62 +1,105 @@
 <template>
 	<div>
-		<h1>Chat Client</h1>
-		<br />
-
-		<h1>{{ socketMessage }}</h1>
-		<input id="msg" class="input-xlarge" type="text" v-model="message" />
-		<button type="button" @click="sendMessage" class="btn" id="send">Send</button>
+		<div id="main-content" class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="connect">WebSocket connection:</label>
+							<button id="connect" class="btn btn-default" type="submit" :disabled="connected == true"
+								@click.prevent="connect">Connect</button>
+							<button id="disconnect" class="btn btn-default" type="submit" :disabled="connected == false"
+								@click.prevent="disconnect">Disconnect
+							</button>
+						</div>
+					</form>
+				</div>
+				<div class="col-md-6">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="name">Say Hello!</label>
+							<input type="text" id="name" class="form-control" v-model="sendMessage">
+						</div>
+						<button id="send" class="btn btn-default" type="submit" @click.prevent="send">Send</button>
+					</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table id="conversation" class="table table-striped">
+						<thead>
+							<tr>
+								<th>Chat</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="item in receivedMessages" :key="item">
+								<td>{{ item }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-import io from "socket.io-client"
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
+
 export default {
 	name: "test",
 	data() {
 		return {
-			socket: {},
-			message: "",
-			socketMessage: "exzadsgfghj"
-		}
-	},
-	sockets: {
-		chat(data) {
-			this.socketMessage = data
-		}
+			receivedMessages: [],
+			sendMessage: "",
+			connected: false
+		};
 	},
 	methods: {
-		sendMessage() {
-			this.socket.emit('chat', this.message)
+		send() {
+			console.log("Send message:" + this.sendMessage);
+			if (this.stompClient && this.stompClient.connected) {
+				const msg = { fromUser: this.$store.state.user.username, content: this.sendMessage };
+				this.stompClient.send("/app/game", JSON.stringify(msg), {});
+			}
+		},
+		connect() {
+			this.socket = new SockJS("http://localhost:8080/");
+			this.stompClient = Stomp.over(this.socket);
+			this.stompClient.connect(
+				{},
+				frame => {
+					this.connected = true;
+					console.log(frame);
+					this.stompClient.subscribe("/topic/chat", tick => {
+						const body = JSON.parse(tick.body)
+						this.receivedMessages.push(`${body.fromUser}: ${body.content}`);
+					});
+				},
+				error => {
+					console.log(error);
+					this.connected = false;
+				}
+			);
+		},
+		disconnect() {
+			if (this.stompClient) {
+				this.stompClient.disconnect();
+			}
+			this.connected = false;
+		},
+		tickleConnection() {
+			this.connected ? this.disconnect() : this.connect();
 		}
 	},
-	created() {
-		this.socket = io("http://localhost:9090", {
-			transports: ['polling', 'websocket']
-		});
+	mounted() {
+		// this.connect();
 	}
-}
+};
 </script>
 
-<style>
-body {
-	padding: 20px;
-}
+<style scoped>
 
-#console {
-	height: 400px;
-	overflow: auto;
-}
-
-.username-msg {
-	color: orange;
-}
-
-.connect-msg {
-	color: green;
-}
-
-.disconnect-msg {
-	color: red;
-}
 </style>
