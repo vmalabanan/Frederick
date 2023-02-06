@@ -56,6 +56,8 @@ export default {
                 if (response.status == 200) {
                     alert("Trade Successful")
                     this.$store.commit("SET_CASH", response.data.cash)
+                    const symbols = response.data.stocks.map(stock => stock.tickerSymbol)
+                    this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
                 }
                 else {
                     alert("Trade Failed, Try Again")
