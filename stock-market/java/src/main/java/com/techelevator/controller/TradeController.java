@@ -4,6 +4,7 @@ import com.techelevator.dao.TradeDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Portfolio;
 import com.techelevator.model.PortfolioDTO;
+import com.techelevator.model.PortfolioHistoryDTO;
 import com.techelevator.model.Trade;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,15 @@ public class TradeController {
         return tradeDao.getCurrentPortfolio(userId, gameId);
     }
 
+    //    Should the path actually be /{gameId} ?
+    @GetMapping(value="/{gameId}/all")
+    public List<PortfolioDTO> getCurrentPortfolioAllPlayers(@PathVariable int gameId, Principal principal) {
+        int userId = userDao.findIdByUsername(principal.getName());
+
+        return tradeDao.getCurrentPortfolioAllPlayers(gameId);
+    }
+
+
     //    Should the path actually be /{gameId}/{username}/{day} ?
     @GetMapping(value="/{gameId}/{day}")
     public Portfolio getPortfolioByDay(@PathVariable int gameId, @PathVariable int day, Principal principal) {
@@ -66,7 +76,7 @@ public class TradeController {
 
     //    Should the path actually be /{gameId}/history ?
     @GetMapping(value="/{gameId}/history/all")
-    public List<PortfolioDTO> getPortfolioHistoryAllPlayers(@PathVariable int gameId, Principal principal) {
+    public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(@PathVariable int gameId, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
         return tradeDao.getPortfolioHistoryAllPlayers(gameId);
