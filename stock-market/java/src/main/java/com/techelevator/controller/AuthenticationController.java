@@ -2,6 +2,8 @@ package com.techelevator.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +35,11 @@ public class AuthenticationController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
     private UserDao userDao;
 
-    public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
+    public AuthenticationController(TokenProvider tokenProvider,
+            AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDao = userDao;
@@ -44,13 +48,13 @@ public class AuthenticationController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginDTO loginDto) {
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                loginDto.getUsername(), loginDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.createToken(authentication, false);
-        
+
         User user = userDao.findByUsername(loginDto.getUsername());
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -63,33 +67,38 @@ public class AuthenticationController {
     public void register(@Valid @RequestBody RegisterUserDTO newUser) {
         try {
             User user = userDao.findByUsername(newUser.getUsername());
+            log.debug("User: [{}] already exist", newUser.getUsername());
             throw new UserAlreadyExistsException();
         } catch (UsernameNotFoundException e) {
-            //added first and last to userDao.create params
-            userDao.create(newUser.getUsername(),newUser.getPassword(), newUser.getRole(), newUser.getFirstName(), newUser.getLastName());
+            // added first and last to userDao.create params
+            log.debug("User: [{}] created", newUser.getUsername());
+            userDao.create(newUser.getUsername(), newUser.getPassword(), newUser.getRole(), newUser.getFirstName(),
+                    newUser.getLastName());
         }
     }
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     @PreAuthorize("isAuthenticated()")
-    public List<String> getAllPlayerNames(Principal principal)
-    {
-//        List<User> users = userDao.findAll();
-//        List<String> players = new ArrayList<>();
-//
-//        for(User user : users)
-//        {
-//            if (!user.getUsername().equalsIgnoreCase(principal.getName()) && !user.getUsername().equalsIgnoreCase("admin"))
-//            {
-//                players.add(user.getUsername());
-//            }
-//        }
-//
-//        return players;
+    public List<String> getAllPlayerNames(Principal principal) {
+        // List<User> users = userDao.findAll();
+        // List<String> players = new ArrayList<>();
+        //
+        // for(User user : users)
+        // {
+        // if (!user.getUsername().equalsIgnoreCase(principal.getName()) &&
+        // !user.getUsername().equalsIgnoreCase("admin"))
+        // {
+        // players.add(user.getUsername());
+        // }
+        // }
+        //
+        // return players;
 
-               return userDao.findAll().stream().map(User::getUsername).filter(name -> !name.equalsIgnoreCase(principal.getName())
-                                                                            && !name.equalsIgnoreCase("admin")).collect(Collectors.toList());
+        return userDao.findAll().stream().map(User::getUsername)
+                .filter(name -> !name.equalsIgnoreCase(principal.getName())
+                        && !name.equalsIgnoreCase("admin"))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -115,13 +124,12 @@ public class AuthenticationController {
         }
 
         @JsonProperty("user")
-		public User getUser() {
-			return user;
-		}
+        public User getUser() {
+            return user;
+        }
 
-		public void setUser(User user) {
-			this.user = user;
-		}
+        public void setUser(User user) {
+            this.user = user;
+        }
     }
 }
-

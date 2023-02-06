@@ -45,6 +45,7 @@ import authService from "../services/AuthService";
 
 export default {
   name: "register",
+  props: ['value'],
   data() {
     return {
       user: {
@@ -59,8 +60,7 @@ export default {
       registrationErrorMsg: "There were problems registering this user."
     };
   },
-  props: ['values'],
-  created: {
+  computed: {
     registration: {
       get() {
         return this.value
@@ -80,18 +80,21 @@ export default {
         authService
           .register(this.user)
           .then(response => {
-            if (response.status == 201) {
-              this.registration.set({
-                isRPanelActive: true,
+            const status = response.status
+            if (status == 201) {
+              this.registration = {
+                isRPanelActive: false,
                 isRegSuccessful: true
-              })
+              }
             }
           })
           .catch(error => {
+            console.log(error)
             const response = error.response;
+            const status = response.status
             this.registrationErrors = true;
-            if (response.status === 400) {
-              this.registrationErrorMsg = "Bad Request: Validation Errors";
+            if (status == 400) {
+              this.registrationErrorMsg = "Bad Request: User already exist";
             }
           });
       }
