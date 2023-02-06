@@ -47,7 +47,7 @@ export default {
   created() {
     this.getGameName()
   },
-  computed: {
+  methods: {
     getGameName() {
         if (this.$route.name == 'portfolio') {
         const gameId = this.$route.params.id
