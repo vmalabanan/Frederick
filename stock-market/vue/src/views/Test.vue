@@ -52,10 +52,18 @@ export default {
 	name: "test",
 	data() {
 		return {
+			socket: SockJS,
 			receivedMessages: [],
 			sendMessage: "",
 			connected: false
 		};
+	},
+	created() {
+		this.socket = new SockJS("http://localhost:8080/");
+		this.socket.onopen = function () {
+			console.log('connected!')
+			this.connect = true
+		}
 	},
 	methods: {
 		send() {
