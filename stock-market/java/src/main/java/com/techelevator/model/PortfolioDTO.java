@@ -1,11 +1,9 @@
 package com.techelevator.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
+// used when sending all users' current portfolios back to the client
 public class PortfolioDTO {
     String username;
-    List<Portfolio> portfolioHistory = new ArrayList<>();
+    Portfolio portfolio;
 
     public String getUsername() {
         return username;
@@ -15,7 +13,11 @@ public class PortfolioDTO {
         this.username = username;
     }
 
-    public List<Portfolio> getPortfolioList() {
-        return portfolioHistory;
+    public Portfolio getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(Portfolio portfolio) {
+        this.portfolio = portfolio;
     }
 }

@@ -52,23 +52,22 @@ public class JdbcTradeDao implements TradeDao
 
         sql = "BEGIN; " +
                 "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?); " +
+                "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP); " +
                 "INSERT INTO cash (game_id, user_id, amount, effective_date) " +
                 "VALUES (?, ?, (SELECT amount + ? FROM cash " +
                                 "WHERE game_id = ? " +
                                 "AND user_id = ? " +
                                 "ORDER BY effective_date DESC " +
                                 "LIMIT 1) " +
-                                ", ?);" +
+                                ", CURRENT_TIMESTAMP);" +
                 "COMMIT;";
 
-        jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate(),
+        jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(),
                             gameId, userId, tradeValue,
                             gameId,
-                            userId,
-                            trade.getTradeDate());
+                            userId);
 
-        // get current cash
+        // return current portfolio
         return getCurrentPortfolio(userId, gameId);
 
     }
@@ -150,7 +149,12 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
-    public List<PortfolioDTO> getPortfolioHistoryAllPlayers(int gameId) {
+    public List<PortfolioDTO> getCurrentPortfolioAllPlayers(int gameId) {
+        return null;
+    }
+
+    @Override
+    public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(int gameId) {
         return null;
     }
 
