@@ -30,6 +30,7 @@ public class JdbcGameDao implements GameDao
         String sql = "SELECT g.game_id " +
                 ", g.game_name " +
                 ", g.organizer_id " +
+                ", g.start_date " +
                 ", g.end_date " +
                 ", g.game_length_days " +
                 "FROM games as g " +
@@ -54,6 +55,7 @@ public class JdbcGameDao implements GameDao
                 ", g.game_name " +
                 ", g.organizer_id " +
                 ", g.end_date " +
+                ", g.start_date " +
                 ", g.game_length_days " +
                 "FROM games as g " +
                 "JOIN games_users as gu " +
@@ -134,12 +136,15 @@ public class JdbcGameDao implements GameDao
     @Override
     public int create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players)
     {
-        // insert data into games table
-        String sql = "INSERT INTO games (game_name, organizer_id, end_date, game_length_days) " +
-                "VALUES (?, ?, ?, ?) RETURNING game_id";
+        // sql query to insert data into games table
+        String sql = "INSERT INTO games (game_name, organizer_id, start_date, end_date, game_length_days) " +
+                "VALUES (?, ?, ?, ?, ?) RETURNING game_id";
 
-        // get back gameId
-        Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, endDate, gameLengthDays);
+        // set start date
+        LocalDateTime startDate = endDate.minusDays(gameLengthDays);
+
+        // run query and get back gameId
+        Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, startDate, endDate, gameLengthDays);
 
         // add organizer to games_users table and set invitation_status to 2 (Accepted)
         sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
@@ -175,9 +180,10 @@ public class JdbcGameDao implements GameDao
         int gameId = rs.getInt("game_id");
         String gameName = rs.getString("game_name");
         int organizerId = rs.getInt("organizer_id");
+        LocalDateTime startDate = rs.getTimestamp("start_date").toLocalDateTime();
         LocalDateTime endDate = rs.getTimestamp("end_date").toLocalDateTime();
         int gameLengthDays = rs.getInt("game_length_days");
 
-        return new Game(gameId, gameName, organizerId, endDate, gameLengthDays);
+        return new Game(gameId, gameName, organizerId, startDate, endDate, gameLengthDays);
     }
 }

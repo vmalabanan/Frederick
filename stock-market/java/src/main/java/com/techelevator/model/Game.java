@@ -6,14 +6,15 @@ public class Game
     private int gameId;
     private String gameName;
     private int organizerId;
+    private LocalDateTime startDate;
     private LocalDateTime endDate;
     private int gameLengthDays;
 
-    public Game(int gameId, String game_name, int organizerId, LocalDateTime endDate, int gameLengthDays)
-    {
+    public Game(int gameId, String gameName, int organizerId, LocalDateTime startDate, LocalDateTime endDate, int gameLengthDays) {
         this.gameId = gameId;
-        this.gameName = game_name;
+        this.gameName = gameName;
         this.organizerId = organizerId;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.gameLengthDays = gameLengthDays;
     }
@@ -46,6 +47,18 @@ public class Game
     public void setOrganizerId(int organizerId)
     {
         this.organizerId = organizerId;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public LocalDateTime getEndDate()
