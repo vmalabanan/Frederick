@@ -40,10 +40,10 @@ public class JdbcCashDao implements CashDao
                 "WHERE game_id = ? " +
                 "AND user_id = ? " +
                 "AND effective_date < (SELECT start_date FROM GAMES " +
-                                      "WHERE game_id = ?) + INTERVAL '? day' " +
+                                      "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
                 "ORDER BY effective_date DESC " +
                 "LIMIT 1;";
 
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId, day);
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId);
     }
 }
