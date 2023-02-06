@@ -9,8 +9,8 @@ ALTER SEQUENCE seq_user_id RESTART WITH 6;
 
 
 -- insert games table data
-INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (1, 'TE to the moon', 3, '2023-02-07 12:00:00', 7);
-INSERT INTO games (game_id, game_name, organizer_id, end_date, game_length_days) VALUES (2, 'TEBets', 4, '2023-02-14 12:00:00', 14);
+INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days) VALUES (1, 'TE to the moon', 3, '2023-01-31 12:00:00', '2023-02-07 12:00:00', 7);
+INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days) VALUES (2, 'TEBets', 4, '2023-01-31 12:00:00', '2023-02-14 12:00:00', 14);
 ALTER SEQUENCE seq_game_id RESTART WITH 3;
 
 -- insert invitation_status table data
