@@ -9,9 +9,10 @@ public class Trade {
     String tradeTypeDesc;
     int numberOfShares;
     BigDecimal sharePrice;
-    LocalDateTime tradeDate;
+
 
     // Since front end won't be sending this info, won't include for now
+//    LocalDateTime tradeDate;
 //    int gameId;
 //    int userId;
 
@@ -56,11 +57,4 @@ public class Trade {
         this.sharePrice = sharePrice;
     }
 
-    public LocalDateTime getTradeDate() {
-        return tradeDate;
-    }
-
-    public void setTradeDate(LocalDateTime tradeDate) {
-        this.tradeDate = tradeDate;
-    }
 }

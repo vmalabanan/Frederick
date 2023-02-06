@@ -57,7 +57,7 @@ export default {
             tradeService.saveTrade(gameId, trade).then(response => {
                 if (response.status == 200) {
                     alert("Trade Successful")
-                    this.$store.commit("SET_CASH", response.data)
+                    this.$store.commit("SET_CASH", response.data.cash)
                 }
                 else {
                     alert("Trade Failed, Try Again")
