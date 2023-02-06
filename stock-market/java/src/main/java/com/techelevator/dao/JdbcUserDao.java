@@ -89,7 +89,32 @@ public class JdbcUserDao implements UserDao {
         return userCreated;
     }
 
-    //edited map row to user
+    @Override
+    public List<User> getAllUsersByGame(int gameId) {
+        List<User> users = new ArrayList<>();
+
+        String sql = "SELECT u.user_id " +
+                ", u.username " +
+                ", u.password_hash " +
+                ", u.role " +
+                ", u.first_name " +
+                ", u.last_name " +
+                "FROM users as u " +
+                "JOIN games_users as gu " +
+                "ON u.user_id = gu.user_id " +
+                "WHERE gu.game_id = ?;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId);
+
+        while (results.next()) {
+            User user = mapRowToUser(results);
+            users.add(user);
+        }
+
+        return users;
+
+    }
+
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getLong("user_id"));

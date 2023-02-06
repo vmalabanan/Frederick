@@ -16,4 +16,6 @@ public interface UserDao {
 
     //Edited interface to for first and last
     boolean create(String username, String password, String role, String firstName, String lastName);
+
+    List<User> getAllUsersByGame(int gameId);
 }
