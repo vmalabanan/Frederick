@@ -43,12 +43,10 @@ export default {
         },
         confirm() {
             const gameId = this.$route.params.id
-            const date = new Date()
             const buySell = this.buySellCard.buySell ? "Buy" : "Sell"
             const price = this.stockPrice
             const symbol = this.buySellCard.symbol
             const trade = {
-                tradeDate: date,
                 sharePrice: price,
                 numberOfShares: this.qty,
                 tradeTypeDesc: buySell,
