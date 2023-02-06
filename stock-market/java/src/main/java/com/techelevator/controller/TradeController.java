@@ -48,7 +48,7 @@ public class TradeController {
         return tradeDao.getCurrentPortfolio(userId, gameId);
     }
 
-    // For testing only
+    //    Should the path actually be /{gameId}/{username}/{day} ?
     @GetMapping(value="/{gameId}/{day}")
     public Portfolio getPortfolioByDay(@PathVariable int gameId, @PathVariable int day, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());

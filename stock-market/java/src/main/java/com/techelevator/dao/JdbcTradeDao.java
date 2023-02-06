@@ -105,7 +105,7 @@ public class JdbcTradeDao implements TradeDao
         List<Portfolio> portfolioHistory = new ArrayList<>();
 
         // for days 1-7, set portfolio holdings (as of end of day)
-        for (int i = 0; i < 7; i++) {
+        for (int i = 1; i <= 7; i++) {
             Portfolio portfolio = getPortfolioByDay(i, userId, gameId);
 
             portfolioHistory.add(portfolio);
@@ -131,14 +131,18 @@ public class JdbcTradeDao implements TradeDao
                 "WHERE t.game_id = ? " +
                 "AND t.user_id = ? " +
                 "AND t.trade_date < (SELECT start_date FROM GAMES " +
-                                    "WHERE game_id = ?) + INTERVAL '? day' " +
+                                    "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
                 "GROUP BY s.ticker_symbol;";
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId, day);
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId);
 
-        while (results.next()) {
-            Stock stock = mapRowToStock(results);
-            portfolio.getStocks().add(stock);
+            while (results.next()) {
+                Stock stock = mapRowToStock(results);
+                portfolio.getStocks().add(stock);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         return portfolio;
