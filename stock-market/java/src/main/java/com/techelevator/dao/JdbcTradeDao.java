@@ -23,7 +23,7 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
-    public BigDecimal makeTrade(int userId, int gameId, Trade trade) {
+    public Portfolio makeTrade(int userId, int gameId, Trade trade) {
         // insert tickerSymbol into stock table if doesn't already exist
         String tickerSymbol = trade.getTickerSymbol();
         String sql = "INSERT INTO stocks (ticker_symbol)  " +
@@ -53,22 +53,23 @@ public class JdbcTradeDao implements TradeDao
         sql = "BEGIN; " +
                 "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?); " +
-                "UPDATE CASH " +
-                "SET amount = ( " +
-                    "SELECT amount + ? FROM CASH " +
-                    "WHERE game_id = ? " +
-                    "AND user_id = ? " +
-                ") " +
-                "WHERE game_id = ? " +
-                "AND user_id = ?; " +
+                "INSERT INTO cash (game_id, user_id, amount, effective_date) " +
+                "VALUES (?, ?, (SELECT amount + ? FROM cash " +
+                                "WHERE game_id = ? " +
+                                "AND user_id = ? " +
+                                "ORDER BY effective_date DESC " +
+                                "LIMIT 1) " +
+                                ", ?);" +
                 "COMMIT;";
 
         jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate(),
-                            tradeValue, gameId, userId,
-                            gameId, userId);
+                            gameId, userId, tradeValue,
+                            gameId,
+                            userId,
+                            trade.getTradeDate());
 
         // get current cash
-        return cashDao.getCash(gameId, userId);
+        return getCurrentPortfolio(userId, gameId);
 
     }
 

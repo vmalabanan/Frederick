@@ -34,7 +34,7 @@ public class TradeController {
 
     //    Should the path actually be /{gameId}/{username} ?
     @PostMapping(value="/{gameId}")
-    public BigDecimal makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
+    public Portfolio makeTrade(@PathVariable int gameId, @RequestBody Trade trade, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
         return tradeDao.makeTrade(userId, gameId, trade);
@@ -58,7 +58,7 @@ public class TradeController {
 
     //    Should the path actually be /{gameId}/history/{username} ?
     @GetMapping(value="/{gameId}/history")
-    public List<Portfolio> getTradesHistory(@PathVariable int gameId, Principal principal) {
+    public List<Portfolio> getPortfolioHistory(@PathVariable int gameId, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
         return tradeDao.getPortfolioHistory(userId, gameId);
@@ -66,7 +66,7 @@ public class TradeController {
 
     //    Should the path actually be /{gameId}/history ?
     @GetMapping(value="/{gameId}/history/all")
-    public List<PortfolioDTO> getTradesHistoryAllPlayers(@PathVariable int gameId, Principal principal) {
+    public List<PortfolioDTO> getPortfolioHistoryAllPlayers(@PathVariable int gameId, Principal principal) {
         int userId = userDao.findIdByUsername(principal.getName());
 
         return tradeDao.getPortfolioHistoryAllPlayers(gameId);
