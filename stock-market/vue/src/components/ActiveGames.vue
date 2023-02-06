@@ -53,13 +53,13 @@ export default {
     top: 85px;
     display: flex;
     flex-direction: column;
-    background-color: rgba(251, 133, 0, 0.9);
+    background-color: rgba(2, 48, 71, 0.9);
     border-radius: 15px;
     border: 2px solid black;
 }
 
 .dropdown-item {
-    color: black;
+    color: whitesmoke;
     padding: 10px;
     text-decoration: underline;
     text-align: center;
