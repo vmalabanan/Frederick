@@ -50,7 +50,7 @@ export default {
 
 .dropdown-content {
     position: absolute;
-    top: 85px;
+    top: 90px;
     display: flex;
     flex-direction: column;
     background-color: rgba(2, 48, 71, 0.9);

@@ -1,15 +1,11 @@
 package com.techelevator.dao;
 
-import com.techelevator.model.Game;
-import com.techelevator.model.Portfolio;
-import com.techelevator.model.Stock;
-import com.techelevator.model.Trade;
+import com.techelevator.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +23,7 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
-    public BigDecimal makeTrade(int userId, int gameId, Trade trade) {
+    public Portfolio makeTrade(int userId, int gameId, Trade trade) {
         // insert tickerSymbol into stock table if doesn't already exist
         String tickerSymbol = trade.getTickerSymbol();
         String sql = "INSERT INTO stocks (ticker_symbol)  " +
@@ -57,22 +53,23 @@ public class JdbcTradeDao implements TradeDao
         sql = "BEGIN; " +
                 "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?); " +
-                "UPDATE CASH " +
-                "SET amount = ( " +
-                    "SELECT amount + ? FROM CASH " +
-                    "WHERE game_id = ? " +
-                    "AND user_id = ? " +
-                ") " +
-                "WHERE game_id = ? " +
-                "AND user_id = ?; " +
+                "INSERT INTO cash (game_id, user_id, amount, effective_date) " +
+                "VALUES (?, ?, (SELECT amount + ? FROM cash " +
+                                "WHERE game_id = ? " +
+                                "AND user_id = ? " +
+                                "ORDER BY effective_date DESC " +
+                                "LIMIT 1) " +
+                                ", ?);" +
                 "COMMIT;";
 
         jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(), trade.getTradeDate(),
-                            tradeValue, gameId, userId,
-                            gameId, userId);
+                            gameId, userId, tradeValue,
+                            gameId,
+                            userId,
+                            trade.getTradeDate());
 
         // get current cash
-        return cashDao.getCash(gameId, userId);
+        return getCurrentPortfolio(userId, gameId);
 
     }
 
@@ -101,21 +98,59 @@ public class JdbcTradeDao implements TradeDao
             portfolio.getStocks().add(stock);
         }
 
-        // troubleshooting to figure out why I'm not getting any results back -- to be deleted later
-        System.out.println("size of stocks " + portfolio.getStocks().size());
+        return portfolio;
+    }
 
-        Stock stock = new Stock("TEST", 20);
+    @Override
+    public List<Portfolio> getPortfolioHistory(int userId, int gameId) {
+        List<Portfolio> portfolioHistory = new ArrayList<>();
 
-        portfolio.getStocks().add(stock);
+        // for days 1-7, set portfolio holdings (as of end of day)
+        for (int i = 1; i <= 7; i++) {
+            Portfolio portfolio = getPortfolioByDay(i, userId, gameId);
 
-        System.out.println("size of stocks " + portfolio.getStocks().size());
-        System.out.println("userId: " + userId + "gameId: " + gameId);
+            portfolioHistory.add(portfolio);
+
+        }
+
+        return portfolioHistory;
+    }
+
+    @Override
+    public Portfolio getPortfolioByDay(int day, int userId, int gameId) {
+        Portfolio portfolio = new Portfolio();
+
+        // set cash
+        portfolio.setCash(cashDao.getCashByDay(day, gameId, userId));
+
+        // set stock holdings
+        String sql = "SELECT s.ticker_symbol " +
+                ", (SUM (CASE WHEN t.trade_type_id = 1 THEN t.number_of_shares END) - SUM (CASE WHEN t.trade_type_id = 2 THEN t.number_of_shares ELSE 0 END)) as total_shares " +
+                "FROM trades as t " +
+                "JOIN stocks as s " +
+                "ON t.stock_id = s.stock_id " +
+                "WHERE t.game_id = ? " +
+                "AND t.user_id = ? " +
+                "AND t.trade_date < (SELECT start_date FROM GAMES " +
+                                    "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
+                "GROUP BY s.ticker_symbol;";
+
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId);
+
+            while (results.next()) {
+                Stock stock = mapRowToStock(results);
+                portfolio.getStocks().add(stock);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         return portfolio;
     }
 
     @Override
-    public List<Portfolio> getTradesHistory(int userId, int gameId) {
+    public List<PortfolioDTO> getPortfolioHistoryAllPlayers(int gameId) {
         return null;
     }
 

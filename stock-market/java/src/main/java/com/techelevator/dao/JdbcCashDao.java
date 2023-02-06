@@ -34,5 +34,16 @@ public class JdbcCashDao implements CashDao
 
     }
 
+    @Override
+    public BigDecimal getCashByDay(int day, int gameId, int userId) {
+        String sql = "SELECT amount FROM cash " +
+                "WHERE game_id = ? " +
+                "AND user_id = ? " +
+                "AND effective_date < (SELECT start_date FROM GAMES " +
+                                      "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
+                "ORDER BY effective_date DESC " +
+                "LIMIT 1;";
 
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId);
+    }
 }
