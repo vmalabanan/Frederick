@@ -4,6 +4,11 @@ public class Message {
 
     private String content;
 
+    public Message(String fromUser, String content) {
+        this.fromUser = fromUser;
+        this.content = content;
+    }
+
     public String getContent() {
         return content;
     }
@@ -23,11 +28,6 @@ public class Message {
     private String fromUser;
 
     public Message() {
-    }
-
-    public Message(String fromUser, String content) {
-        this.fromUser = fromUser;
-        this.content = content;
     }
 
 }

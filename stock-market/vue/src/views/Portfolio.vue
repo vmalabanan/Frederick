@@ -15,9 +15,9 @@
 
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
-				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false"/>
+				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="portfolio.cards"
-				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true"/>
+				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true" />
 		</div>
 
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
@@ -47,8 +47,8 @@ export default {
 			},
 
 			portfolio: {
-				symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN', 'HBI'],
-				cards: [],
+				symbols: this.$store.state.portfolio.symbols,
+				cards: this.$store.state.portfolio.cards,
 			},
 
 			graphData: {

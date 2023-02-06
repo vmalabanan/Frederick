@@ -24,6 +24,10 @@ export default new Vuex.Store({
     invitedGames: [],
     acceptedGames: [],
     accountCash: 0,
+    portfolio: {
+      symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN', 'HBI'],
+      cards: [],
+    }
   },
   mutations: {
     SET_AUTH_TOKEN(state, token) {
@@ -41,6 +45,12 @@ export default new Vuex.Store({
       state.token = '';
       state.user = {};
       axios.defaults.headers.common = {};
+    },
+    SET_PORTFOLIO_SYMBOLS(state, symbols) {
+      state.portfolio.symbols = symbols
+    },
+    SET_PORTFOLIO_CARDS(state, cards) {
+      state.portfolio.cards = cards
     },
     SET_SELECTED_USERS(state, users) {
       state.selectedUsers = users;
