@@ -83,7 +83,7 @@ export default {
             const status = response.status
             if (status == 201) {
               this.registration = {
-                isRPanelActive: true,
+                isRPanelActive: false,
                 isRegSuccessful: true
               }
             }
@@ -94,7 +94,7 @@ export default {
             const status = response.status
             this.registrationErrors = true;
             if (status == 400) {
-              this.registrationErrorMsg = "Bad Request: Validation Errors";
+              this.registrationErrorMsg = "Bad Request: User already exist";
             }
           });
       }
