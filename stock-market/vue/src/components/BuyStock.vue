@@ -58,6 +58,8 @@ export default {
                     this.$store.commit("SET_CASH", response.data.cash)
                     const symbols = response.data.stocks.map(stock => stock.tickerSymbol)
                     this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
+                    const trades = response.data.stocks
+                    this.$store.commit("SET_PORTFOLIO_TRADES", trades)
                 }
                 else {
                     alert("Trade Failed, Try Again")
@@ -89,8 +91,15 @@ export default {
             if (buySell) {
                 return this.$store.state.accountCash > this.getTotalPrice
             }
-            //implement selling
-            return true
+            else {
+                const symbol = this.buySellCard.symbol
+                if (!this.$store.state.portfolio.symbols.includes(symbol)) {
+                    return false
+                }
+                const index = this.$store.state.portfolio.symbols.indexOf(symbol)
+                const sharesAlreadyPurchased = this.$store.state.portfolio.trades[index].numberOfShares
+                return this.qty <= sharesAlreadyPurchased
+            }
         }
     }
 }
