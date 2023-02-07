@@ -8,18 +8,19 @@ const API_KEY = "apikey=4694ab156015fcae69356511ac9a8a36"
 export default {
 
 	//gets minimum last 6 days of data
-	getHistoricalDailyDataBySymbol(symbol) {
-		let url = "historical-price-full/" + symbol + "?from=";
-		let today = new Date();
-		let week = new Date();
-		week.setDate(week.getDate() - 8)
-		let todayString = today.toISOString()
-		let delimiter = todayString.indexOf("T")
-		const endDate = todayString.substring(0, delimiter)
-		let fromString = week.toISOString()
-		delimiter = fromString.indexOf("T")
-		const fromDate = fromString.substring(0, delimiter)
-		url += fromDate + "&to=" + endDate + "&" + API_KEY
+	getHistoricalDailyDataBySymbol(fromDate, endDate, ...symbols ) {
+		let url = "historical-price-full/"
+		symbols.forEach(symbol => {
+			url += symbol + ","
+		})
+		url += "?from="
+		let fromString = fromDate.toISOString()
+		let delimiter = fromString.indexOf("T")
+		const startDate = fromString.substring(0, delimiter)
+		let toString = endDate.toISOString()
+		delimiter = toString.indexOf("T")
+		const lastDate = fromString.substring(0, delimiter)
+		url += startDate + "&to=" + lastDate + "&" + API_KEY
 		return http.get(url)
 	},
 
