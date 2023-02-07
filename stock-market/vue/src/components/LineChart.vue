@@ -73,6 +73,10 @@ export default {
 		dataPoints: {
 			type: Array,
 			default: () => []
+		},
+		graphLabel: {
+			type: String,
+			default: ""
 		}
 
 	},
@@ -82,7 +86,7 @@ export default {
 				labels: this.labels,
 				datasets: [
 					{
-						label: "My Portfolio",
+						label: this.graphLabel,
 						backgroundColor: "#FB8500",
 						data: this.dataPoints,
 						borderColor: "#FB8500",

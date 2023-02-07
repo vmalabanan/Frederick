@@ -3,7 +3,7 @@
 		<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
-				:labels="graphData.time" />
+				:labels="graphData.time" :graphLabel="this.graphLabel"/>
 			<leaderboard :gameId="gameId"/>
 		</div>
 
@@ -60,13 +60,15 @@ export default {
 				price: 0.0,
 				symbol: "",
 				buySell: false,
+			},
 
-			}
+			graphLabel: {}
 		}
 	},
 	methods: {
 		updateGraphWith(symbol) {
 			const graphData = this.graphData
+			this.graphLabel = symbol
 			this.tempKey = symbol;
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = []
