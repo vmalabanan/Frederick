@@ -12,11 +12,11 @@
 				placeholder="GOOG">
 			<label for="floatingInput">Search Stocks</label>
 		</div>
-
+		
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
 				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
-			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="portfolio.cards"
+			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="this.$store.state.portfolio.cards"
 				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true" />
 		</div>
 
@@ -48,9 +48,6 @@ export default {
 				cards: []
 			},
 
-			portfolio: {
-				cards: []
-			},
 
 			graphData: {
 				dataPoints: [],
@@ -129,7 +126,10 @@ export default {
 
 		this.updateGraphWith(this.tempKey)
 		MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
-			this.portfolio.cards = resp.data;
+			// this.portfolio.cards = resp.data;
+			//testing
+			const cardData = resp.data
+			this.$store.commit("SET_PORTFOLIO_CARDS", cardData)
 		})
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
@@ -146,7 +146,8 @@ export default {
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
 				// optimized
-				this.portfolio.cards = data.filter(stock => {
+				//test below
+				const filteredData = data.filter(stock => {
 					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
 						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
 						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
@@ -154,6 +155,7 @@ export default {
 					}
 					return false
 					})
+				this.$store.commit("SET_PORTFOLIO_CARDS", filteredData)
 			})
 	
 

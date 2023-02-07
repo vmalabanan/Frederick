@@ -1,11 +1,11 @@
 <template>
   <div id="account">
     <h4 class="labels">Account Value</h4>
-    <p class="values">$100,000.62</p>
+    <p class="values">{{ getAccountValue }}</p>
     <h4 class="labels">ROI</h4>
     <p class="values">+ 7.2%</p>
     <h4 class="labels">Cash</h4>
-    <p class="values">{{ getCashString }}</p>
+    <p class="values">{{ getCash }}</p>
     <button class="btn btn-lg" @click="handleClick">
       {{ this.buttonText }}
     </button>
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       buttonText: "View Stocks",
-      cash: "",
+      accountValue: 0
     };
   },
   methods: {
@@ -32,15 +32,13 @@ export default {
         this.buttonText = "View Stocks";
       }
     },
-    getCash() {
+    setCash() {
       const gameId = this.$route.params.id;
       cashService.getCashByGameId(gameId).then((response) => {
         this.$store.commit("SET_CASH", response.data);
       });
     },
-  },
-  computed: {
-    getCashString() {
+    getCashString(cash) {
       let formatting_options = {
         style: "currency",
         currency: "USD",
@@ -48,12 +46,37 @@ export default {
       };
 
       let dollarString = new Intl.NumberFormat("en-US", formatting_options);
-      let cashString = dollarString.format(this.$store.state.accountCash);
+      let cashString = dollarString.format(cash);
       return cashString
     },
+    getROI() {
+
+    },
+
+  },
+  computed: {
+    getAccountValue() {
+      let sum = 0
+      const trades = this.$store.state.portfolio.trades
+      const cards = this.$store.state.portfolio.cards
+      
+      trades.forEach(trade => {
+        const symbol = trade.tickerSymbol
+        const qty = trade.numberOfShares
+        if (qty > 0) {
+          const currentPrice = cards.find(card => card.symbol == symbol).price
+          sum += (qty * currentPrice)
+        }
+      })
+      const totalValue = sum + this.$store.state.accountCash
+      return this.getCashString(totalValue)
+    },
+    getCash() {
+      return this.getCashString(this.$store.state.accountCash)
+    }
   },
   created() {
-    this.getCash();
+    this.setCash()
   },
 };
 </script>
