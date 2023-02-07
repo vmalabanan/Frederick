@@ -8,8 +8,7 @@ public class GameDTO
 {
     @NotEmpty
     private String gameName;
-//    @NotEmpty
-    private LocalDateTime endDate;
+
     @Min(value = 1)
     private int gameLengthDays;
 
@@ -23,16 +22,6 @@ public class GameDTO
     public void setGameName(String gameName)
     {
         this.gameName = gameName;
-    }
-
-    public LocalDateTime getEndDate()
-    {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate)
-    {
-        this.endDate = endDate;
     }
 
     public int getGameLengthDays()

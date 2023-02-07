@@ -40,7 +40,7 @@ public class GameController {
     public int createGame(@Valid @RequestBody GameDTO gameDto, Principal principal) {
         int organizerId = userDao.findIdByUsername(principal.getName());
 
-        return gameDao.create(gameDto.getGameName(), organizerId, gameDto.getEndDate(), gameDto.getGameLengthDays(),
+        return gameDao.create(gameDto.getGameName(), organizerId, gameDto.getGameLengthDays(),
                 gameDto.getPlayers());
 
     }

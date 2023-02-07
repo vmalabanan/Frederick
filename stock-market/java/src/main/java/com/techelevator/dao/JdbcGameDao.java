@@ -134,17 +134,14 @@ public class JdbcGameDao implements GameDao
     }
 
     @Override
-    public int create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players)
+    public int create(String gameName, int organizerId, int gameLengthDays, String[] players)
     {
         // sql query to insert data into games table
         String sql = "INSERT INTO games (game_name, organizer_id, start_date, end_date, game_length_days) " +
-                "VALUES (?, ?, ?, ?, ?) RETURNING game_id";
-
-        // set start date
-        LocalDateTime startDate = endDate.minusDays(gameLengthDays);
+                "VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '" + gameLengthDays + " days', ?) RETURNING game_id";
 
         // run query and get back gameId
-        Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, startDate, endDate, gameLengthDays);
+        Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, gameLengthDays);
 
         // add organizer to games_users table and set invitation_status to 2 (Accepted)
         sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";

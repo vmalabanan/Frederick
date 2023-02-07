@@ -130,6 +130,11 @@ public class JdbcTradeDao implements TradeDao
     public List<Portfolio> getPortfolioHistory(int userId, int gameId) {
         List<Portfolio> portfolioHistory = new ArrayList<>();
 
+        // TODO: instead of always sending back a list of size 7, only send back the history for the number of days that have elapsed since game started
+        // if game endDate > currentTimeStamp, get time that has elapsed since game started
+
+        // set number of days equal to the lesser of gameLengthDays or number of days that have elapsed since game started
+
         // for days 1-7, set portfolio holdings (as of end of day)
         for (int i = 1; i <= 7; i++) {
             Portfolio portfolio = getPortfolioByDay(i, userId, gameId);
@@ -173,7 +178,25 @@ public class JdbcTradeDao implements TradeDao
 
     @Override
     public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(int gameId) {
-        return null;
+        List<PortfolioHistoryDTO> portfolioHistoryAllPlayers = new ArrayList<>();
+
+        // get list of all players
+        List<User> users = userDao.getAllUsersByGame(gameId);
+
+        for (User user : users) {
+            // get each player's portfolio history
+            List<Portfolio> portfolioHistory = getPortfolioHistory(Math.toIntExact(user.getId()), gameId);
+
+            // create/set portfolioHistoryDTO object (portfolioHistoryDTO is an object comprised of username + List<Portfolio>)
+            PortfolioHistoryDTO portfolioHistoryDTO = new PortfolioHistoryDTO();
+            portfolioHistoryDTO.setUsername(user.getUsername());
+            portfolioHistoryDTO.setPortfolioHistory(portfolioHistory);
+
+            // push portfolioHistoryDTO to portfolioHistoryAllPlayers
+            portfolioHistoryAllPlayers.add(portfolioHistoryDTO);
+        }
+
+        return portfolioHistoryAllPlayers;
     }
 
     private Stock mapRowToStock(SqlRowSet rs)
