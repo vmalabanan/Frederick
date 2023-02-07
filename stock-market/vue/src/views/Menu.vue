@@ -14,7 +14,7 @@
       <button
         class="btn btn-lg btn-info"
         v-if="$store.state.acceptedGames.length > 0"
-        @click="portfolio"
+        @click="gamesList"
       >
         My Games
       </button>
@@ -34,12 +34,8 @@ export default {
     invitationsList() {
       this.$router.push({ name: "invitationsList" });
     },
-    portfolio() {
-      const firstGame = this.$store.state.acceptedGames[0];
-      this.$router.push({
-        name: "portfolio",
-        params: { id: firstGame.gameId }
-      }); 
+    gamesList() {
+        this.$router.push({ name: "gamesList" });
     }
   },
   created() {
