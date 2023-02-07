@@ -82,6 +82,4 @@ public class TradeController {
         return tradeDao.getPortfolioHistoryAllPlayers(gameId);
     }
 
-
-
 }
