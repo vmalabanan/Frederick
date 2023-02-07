@@ -2,14 +2,9 @@
 	<div class="portfolio-container">
 		<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 			<game-account />
-			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
-<<<<<<< HEAD
-				:labels="graphData.time" />
+			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints" :labels="graphData.time"
+				:graphLabel="this.graphLabel" />
 			<leaderboard :gameId="gameId" />
-=======
-				:labels="graphData.time" :graphLabel="this.graphLabel"/>
-			<leaderboard :gameId="gameId"/>
->>>>>>> e5fff576bf864bd2c5e540604a1f5508193791ba
 		</div>
 
 		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -17,12 +12,13 @@
 				placeholder="GOOG">
 			<label for="floatingInput">Search Stocks</label>
 		</div>
-		
+
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
 				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
-			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="this.$store.state.portfolio.cards"
-				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true" />
+			<stock-container @cardClick="updateGraphWith" v-model="buySellCard"
+				:stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio"
+				:onPortfolio="true" />
 		</div>
 
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
@@ -44,7 +40,7 @@ export default {
 	data() {
 		return {
 			gameId: this.$route.params.id,
-			tempKey: "HBI",
+			tempKey: "portfolio",
 			onPortfolio: true,
 
 			search: {
@@ -101,7 +97,7 @@ export default {
 			if (text == "View Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.updateGraphWith('')
+					this.updateGraphWith('portfolio')
 					this.search.symbols = []
 				}
 			}
@@ -152,25 +148,16 @@ export default {
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
 				// optimized
-<<<<<<< HEAD
-				this.portfolio.cards = data.filter(stock => {
-					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
-=======
 				//test below
 				const filteredData = data.filter(stock => {
-					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
->>>>>>> e5fff576bf864bd2c5e540604a1f5508193791ba
+					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
 						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
 						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
 						return sharesOwned > 0
 					}
 					return false
-<<<<<<< HEAD
 				})
-=======
-					})
 				this.$store.commit("SET_PORTFOLIO_CARDS", filteredData)
->>>>>>> e5fff576bf864bd2c5e540604a1f5508193791ba
 			})
 
 
