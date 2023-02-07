@@ -31,13 +31,13 @@ export default {
 		this.socket = new SockJS("http://localhost:8080/");
 		this.stompClient = Stomp.over(this.socket);
 		this.stompClient.connect({},
-			frame => {
-				console.log(frame)
+			() => {
+				// console.log(frame)
 				this.connected = true
 				this.stompClient.subscribe('/topic/chat', resp => this.handleMessage(resp))
 			},
-			error => {
-				console.log(error);
+			() => {
+				// console.log(error);
 				this.connected = false
 			}
 		)

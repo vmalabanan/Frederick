@@ -11,6 +11,7 @@ import CreateGame from '../views/CreateGame.vue'
 import Portfolio from '../views/Portfolio.vue'
 import Users from '../components/Users.vue'
 import Test from '../views/Test.vue'
+import TestLobby from '../views/TestLobby.vue'
 
 Vue.use(Router)
 
@@ -99,6 +100,14 @@ const router = new Router({
       path: "/test",
       name: "test",
       component: Test,
+      meta: {
+        requiresAuth: false
+      }
+    },
+    {
+      path: "/test-lobby/:gameId",
+      name: "test-lobby ",
+      component: TestLobby,
       meta: {
         requiresAuth: false
       }
