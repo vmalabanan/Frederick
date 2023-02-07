@@ -1,19 +1,19 @@
 <template>
   <div id="GameList">
-    <p class="no-invites-msg" v-if="$store.state.invitedGames.length === 0">No invitations to display</p>  
+    <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">No games to display</p>  
     <div class="card w-50" v-else>
       <div 
         class="card-header"
         style="background-color: #FFB703; border-radius:25px; height: 60px"
       >
-        <span style="width: 140px">Game Name</span>
-        <span style="width: 40px">Type</span>
-        <span style="width: 130px">Length</span>
+        <span style="width: 330px">Game Name</span>
+        <span style="width: 170px">Type</span>
+        <span style="width: 200px">Length</span>
         <span style="width: 100px"></span>
       </div>
       <div id="games" class="card-body">
-        <GameInvite
-          v-for="(game, index) in $store.state.invitedGames"
+        <Game
+          v-for="(game, index) in $store.state.acceptedGames"
           :key="index"
           :game="game"
         />
@@ -29,11 +29,11 @@
   </div>
 </template>
 <script>
-import GameInvite from "../components/GameInvite.vue";
+import Game from "../components/Game.vue";
 export default {
-  name: "InvitationsList",
+  name: "GamesList",
   components: {
-    GameInvite
+    Game
   }
 };
 </script>

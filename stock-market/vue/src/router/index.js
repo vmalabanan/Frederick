@@ -11,6 +11,7 @@ import CreateGame from '../views/CreateGame.vue'
 import Portfolio from '../views/Portfolio.vue'
 import Users from '../components/Users.vue'
 import Test from '../views/Test.vue'
+import GamesList from '../views/GamesList.vue'
 
 Vue.use(Router)
 
@@ -72,6 +73,15 @@ const router = new Router({
       path: "/games/invited",
       name: "invitationsList",
       component: InvitationsList,
+      meta: {
+        requiresAuth: true
+      }
+    },
+
+    {
+      path: "/games/list",
+      name: "gamesList",
+      component: GamesList,
       meta: {
         requiresAuth: true
       }
