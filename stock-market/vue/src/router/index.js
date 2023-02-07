@@ -5,8 +5,8 @@ import Home from '../views/Home.vue'
 import store from '../store/index'
 
 // Registration
-import Logout from '../views/Logout.vue'
-import Registration from '../views/Registration'
+import Logout from '../views/Logout.vue' // drop and turn into a button and send to home page
+import Registration from '../views/Registration' // intergrate with home page as modal
 
 // Menu -> Invites & Create & My Games
 import Menu from '../views/Menu.vue'
@@ -15,11 +15,11 @@ import CreateGame from '../views/CreateGame.vue'
 import GamesList from '../views/GamesList.vue'
 
 // Game page
+import Lobby from '../components/Lobby.vue' // temp intergrate with portfolio before game start?
 import Portfolio from '../views/Portfolio.vue'
 
 // Testing
 import Test from '../test-views/Test.vue'
-import TestLobby from '../test-views/TestLobby.vue'
 
 Vue.use(Router)
 
@@ -112,9 +112,9 @@ const router = new Router({
       }
     },
     {
-      path: "/test-lobby/:gameId",
-      name: "test-lobby ",
-      component: TestLobby,
+      path: "/lobby/:gameId",
+      name: "lobby ",
+      component: Lobby,
       meta: {
         requiresAuth: false
       }

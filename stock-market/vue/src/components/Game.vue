@@ -1,10 +1,6 @@
 <template>
   <div id="game">
-    <div
-      class="alert alert-danger"
-      role="alert"
-      v-if="respondToInvitationErrors"
-    >
+    <div class="alert alert-danger" role="alert" v-if="respondToInvitationErrors">
       {{ respondToInvitationErrorMsg }}
     </div>
     <span id="name" style="width: 200px">{{ game.gameName }}</span>
@@ -22,11 +18,11 @@ export default {
   name: "GameInvite",
   props: ["game"],
   methods: {
-      viewGame() {
-           this.$router.push({ 
-               name: "portfolio", params: { id: this.game.gameId  }
-               });
-      }
+    viewGame() {
+      this.$router.push({
+        name: "portfolio", params: { id: this.game.gameId }
+      });
+    }
   }
 };
 </script>
@@ -44,7 +40,7 @@ div#game {
   margin: 10px;
 }
 
-div#button-container > button#view-game {
+div#button-container>button#view-game {
   background-color: #fb8500;
   border-radius: 15px;
   border: none;
@@ -52,5 +48,4 @@ div#button-container > button#view-game {
   height: 50px;
   margin-right: 20px;
 }
-
 </style>

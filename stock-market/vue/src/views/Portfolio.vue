@@ -4,7 +4,7 @@
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
 				:labels="graphData.time" />
-			<leaderboard :gameId="gameId"/>
+			<leaderboard :gameId="gameId" />
 		</div>
 
 		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -97,7 +97,7 @@ export default {
 			if (text == "View Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.updateGraphWith('HBI')
+					this.updateGraphWith('')
 					this.search.symbols = []
 				}
 			}
@@ -133,8 +133,7 @@ export default {
 		})
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
-			if (this.search.symbols)
-			{
+			if (this.search.symbols) {
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
 					const data = resp.data
 					// optimized
@@ -147,15 +146,15 @@ export default {
 				const data = resp.data
 				// optimized
 				this.portfolio.cards = data.filter(stock => {
-					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
 						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
 						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
 						return sharesOwned > 0
 					}
 					return false
-					})
+				})
 			})
-	
+
 
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
