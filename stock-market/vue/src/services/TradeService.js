@@ -11,14 +11,14 @@ export default {
     },
 
     getPortfolioAllPlayers(gameId) {
-        return axios.get("/trades" + gameId + "/all")
+        return axios.get("/trades/" + gameId + "/all")
     },
 
     getPortfolioHistory(gameId) {
-        return axios.get("/trades" + gameId + "/history")
+        return axios.get("/trades/" + gameId + "/history")
     },
 
     getPortfolioHistoryAllPlayers(gameId) {
-        return axios.get("/trades" + gameId + "/history/all")
+        return axios.get("/trades/" + gameId + "/history/all")
     }
 }

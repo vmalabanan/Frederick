@@ -1,11 +1,11 @@
 <template>
   <div id="account">
     <h4 class="labels">Account Value</h4>
-    <p class="values">$100,000.62</p>
+    <p class="values">{{ getCashString(getAccountValue) }}</p>
     <h4 class="labels">ROI</h4>
-    <p class="values">+ 7.2%</p>
+    <p class="values" :class="this.getChangePercentage < 0 ? 'negative' : 'positive'">{{ getChange() }}</p>
     <h4 class="labels">Cash</h4>
-    <p class="values">{{ getCashString }}</p>
+    <p class="values">{{ getCash }}</p>
     <button class="btn btn-lg" @click="handleClick">
       {{ this.buttonText }}
     </button>
@@ -20,7 +20,7 @@ export default {
   data() {
     return {
       buttonText: "View Stocks",
-      cash: "",
+      accountValue: 0
     };
   },
   methods: {
@@ -32,15 +32,13 @@ export default {
         this.buttonText = "View Stocks";
       }
     },
-    getCash() {
+    setCash() {
       const gameId = this.$route.params.id;
       cashService.getCashByGameId(gameId).then((response) => {
         this.$store.commit("SET_CASH", response.data);
       });
     },
-  },
-  computed: {
-    getCashString() {
+    getCashString(cash) {
       let formatting_options = {
         style: "currency",
         currency: "USD",
@@ -48,12 +46,46 @@ export default {
       };
 
       let dollarString = new Intl.NumberFormat("en-US", formatting_options);
-      let cashString = dollarString.format(this.$store.state.accountCash);
+      let cashString = dollarString.format(cash);
       return cashString
+    },
+    getChange() {
+      if (this.getChangePercentage < 0) {
+        return this.getChangePercentage + "%"
+      }
+      return "+" + this.getChangePercentage + "%"
+    }
+
+  },
+  computed: {
+    getAccountValue() {
+      let sum = 0
+      const trades = this.$store.state.portfolio.trades
+      const cards = this.$store.state.portfolio.cards
+      
+      cards.forEach(card => {
+        const trade = trades.find(trade => trade.tickerSymbol == card.symbol)
+        const qty = trade.numberOfShares
+        if (qty > 0) {
+          sum += (qty * card.price)
+        }
+      })
+      const totalValue = sum + this.$store.state.accountCash
+      return totalValue
+    },
+    getCash() {
+      return this.getCashString(this.$store.state.accountCash)
+    },
+    getChangePercentage() {
+      const STARTING_CASH = 100000.00
+      const net = this.getAccountValue - STARTING_CASH
+      const percentage = (net / STARTING_CASH * 100).toFixed(2)
+      return percentage
+      
     },
   },
   created() {
-    this.getCash();
+    this.setCash()
   },
 };
 </script>
@@ -95,5 +127,15 @@ button:hover {
   background-color: #fb8500;
   color: white;
   border: 2px solid rgb(68, 68, 68);
+}
+
+.positive {
+	color: #1FCC92;
+  font-size: 20px;
+}
+
+.negative {
+	color: #E54322;
+  font-size: 20px;
 }
 </style>

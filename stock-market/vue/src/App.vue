@@ -4,6 +4,10 @@
       <img src="./img/frederick_logo.svg" alt="Frederick the goldfish!" />
       <active-games v-if="this.$route.name == 'portfolio'"></active-games>
       <span>{{ this.header[this.$route.name] }}</span>
+       <div id="nav" v-if="$store.state.token != ''">
+        <router-link tag="span" v-bind:to="{ name: 'menu' }" v-if="this.$route.name == 'portfolio'">Game Menu</router-link>&nbsp;
+        <router-link tag="span" v-bind:to="{ name: 'home' }">Logout</router-link>
+      </div>
       <img
         style="transform: scaleX(-1)"
         src="./img/frederick_logo.svg"
@@ -34,6 +38,7 @@ export default {
         home: 'Welcome',
         createGame: 'Create a Game',
         invitationsList: 'Join a Game',
+        gamesList: "Join a Game",
         menu: 'Game Menu',
         portfolio: ''
       }
@@ -67,5 +72,9 @@ header {
   color: #fb8500;
   font-size: 60px;
   font-weight: bold;
+}
+
+#nav > span {
+  cursor: pointer;
 }
 </style>

@@ -27,6 +27,9 @@ export default {
     handleClick() {
       this.$router.push({ name: 'registration' });
     }
+  },
+  created() {
+    this.$store.commit("LOGOUT");
   }
 }
 </script>
