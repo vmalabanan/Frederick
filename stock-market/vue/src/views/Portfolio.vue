@@ -40,8 +40,8 @@ export default {
 	data() {
 		return {
 			gameId: this.$route.params.id,
-			tempKey: "portfolio",
-			onPortfolio: true,
+			tempKey: "AAPL",
+			onPortfolio: false,
 
 			search: {
 				input: "",
@@ -67,6 +67,19 @@ export default {
 		}
 	},
 	methods: {
+		getPortfolioGraph() {
+			let data = [];
+			let week = new Date();
+			let today = new Date();
+			week.setDate(week.getDate() - 8);
+			MarketDataService.getHistoricalDailyDataBySymbol(week, today, this.$store.state.portfolio.symbols).then(resp => {
+				data = resp.data;
+				console.log(data)
+
+			})
+			return data;
+
+		},
 		updateGraphWith(symbol) {
 			const graphData = this.graphData
 			this.graphLabel = symbol
@@ -98,6 +111,7 @@ export default {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
 					this.updateGraphWith('portfolio')
+					this.getPortfolioGraph()
 					this.search.symbols = []
 				}
 			}
@@ -136,10 +150,13 @@ export default {
 		})
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
+
+
+
+
 			if (this.search.symbols) {
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
 					const data = resp.data
-					// optimized
 					this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
 				})
 			}
@@ -147,8 +164,6 @@ export default {
 
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
-				// optimized
-				//test below
 				const filteredData = data.filter(stock => {
 					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
 						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
@@ -163,7 +178,10 @@ export default {
 
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
-				const data = resp.data[0]
+				if (this.tempKey == "portfolio") {
+					return;
+				}
+				const data = resp.data[0];
 				this.graphData.dataPoints.push(data.price)
 				this.graphData.time.push(data.earningsAnnouncement)
 			})

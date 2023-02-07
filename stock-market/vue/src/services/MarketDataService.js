@@ -1,70 +1,44 @@
 import axios from 'axios';
-
 const http = axios.create({
 	baseURL: "https://financialmodelingprep.com/api/v3/"
 });
 
 const API_KEY = "apikey=4694ab156015fcae69356511ac9a8a36"
+
+Date.prototype.toApiString = function () {
+	let result = this.toISOString();
+	return result.substring(0, result.indexOf("T"));
+}
+
+
 export default {
-
 	//gets minimum last 6 days of data
-	getHistoricalDailyDataBySymbol(fromDate, endDate, ...symbols ) {
-		let url = "historical-price-full/"
-		symbols.forEach(symbol => {
-			url += symbol + ","
-		})
-		url += "?from="
-		let fromString = fromDate.toISOString()
-		let delimiter = fromString.indexOf("T")
-		const startDate = fromString.substring(0, delimiter)
-		let toString = endDate.toISOString()
-		delimiter = toString.indexOf("T")
-		const lastDate = fromString.substring(0, delimiter)
-		url += startDate + "&to=" + lastDate + "&" + API_KEY
+	getHistoricalDailyDataBySymbol(fromDate, endDate, ...symbols) {
+		let url = `historical-price-full/${symbols.join(",")}?from=${fromDate.toApiString()}&to=${endDate.toApiString()}&${API_KEY}`
 		return http.get(url)
 	},
 
-    getHistoricalHourDataBySymbol(symbol) {
-		let url = "historical-chart/1hour/" + symbol + "?from=";
-		let today = new Date();
+	getHistoricalHourDataBySymbol(symbol) {
 		let week = new Date();
 		week.setDate(week.getDate() - 8)
-		let todayString = today.toISOString()
-		let delimiter = todayString.indexOf("T")
-		const endDate = todayString.substring(0, delimiter)
-		let fromString = week.toISOString()
-		delimiter = fromString.indexOf("T")
-		const fromDate = fromString.substring(0, delimiter)
-		url += fromDate + "&to=" + endDate + "&" + API_KEY
+		let url = `historical-chart/1hour/${symbol}?from=${week.toApiString()}&to=${new Date().toApiString()}&${API_KEY}`
 		return http.get(url)
 	},
 
-    getHistoricalMinuteDataBySymbol(symbol) {
-		let url = "historical-chart/1min/" + symbol + "?from=";
-		let today = new Date();
+	getHistoricalMinuteDataBySymbol(symbol) {
 		let week = new Date();
 		week.setDate(week.getDate() - 8)
-		let todayString = today.toISOString()
-		let delimiter = todayString.indexOf("T")
-		const endDate = todayString.substring(0, delimiter)
-		let fromString = week.toISOString()
-		delimiter = fromString.indexOf("T")
-		const fromDate = fromString.substring(0, delimiter)
-		url += fromDate + "&to=" + endDate + "&" + API_KEY
+		let url = `historical-chart/1min/${symbol}?from=${week.toApiString()}&to=${new Date().toApiString()}&${API_KEY}`
 		return http.get(url)
 	},
 
 	getRealTimeStockPrice(...symbols) {
-		let url = "quote/"
-		symbols.forEach(symbol => {
-			url += symbol + ","
-		})
-		url += "?" + API_KEY
+		let url = `quote/${symbols.join(",")}?${API_KEY}`
 		return http.get(url)
 	},
 
 	searchTicker(symbol) {
-		let url = "search?query=" + symbol + "&limit=5&exchange=NASDAQ&" + API_KEY
+		let url = `search?query=${symbol}&limit=5&exchange=NASDAQ&${API_KEY}`
 		return http.get(url)
 	}
 

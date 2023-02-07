@@ -2,10 +2,8 @@ package com.techelevator.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDateTime;
 
-public class GameDTO
-{
+public class GameDTO {
     @NotEmpty
     private String gameName;
 
@@ -14,23 +12,19 @@ public class GameDTO
 
     private String[] players;
 
-    public String getGameName()
-    {
+    public String getGameName() {
         return gameName;
     }
 
-    public void setGameName(String gameName)
-    {
+    public void setGameName(String gameName) {
         this.gameName = gameName;
     }
 
-    public int getGameLengthDays()
-    {
+    public int getGameLengthDays() {
         return gameLengthDays;
     }
 
-    public void setGameLengthDays(int gameLengthDays)
-    {
+    public void setGameLengthDays(int gameLengthDays) {
         this.gameLengthDays = gameLengthDays;
     }
 

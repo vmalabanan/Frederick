@@ -1,7 +1,6 @@
 package com.techelevator.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 public class Trade {
     int tradeId;
@@ -10,12 +9,10 @@ public class Trade {
     int numberOfShares;
     BigDecimal sharePrice;
 
-
     // Since front end won't be sending this info, won't include for now
-//    LocalDateTime tradeDate;
-//    int gameId;
-//    int userId;
-
+    // LocalDateTime tradeDate;
+    // int gameId;
+    // int userId;
 
     public int getTradeId() {
         return tradeId;

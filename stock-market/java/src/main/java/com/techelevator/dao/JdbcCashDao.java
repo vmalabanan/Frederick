@@ -1,14 +1,12 @@
 package com.techelevator.dao;
 
-
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 
-
 @Service
-public class JdbcCashDao implements CashDao
-{
+public class JdbcCashDao implements CashDao {
     private JdbcTemplate jdbcTemplate;
 
     public JdbcCashDao(JdbcTemplate jdbcTemplate) {
@@ -22,8 +20,11 @@ public class JdbcCashDao implements CashDao
                 "AND user_id = ? " +
                 "ORDER BY effective_date DESC " +
                 "LIMIT 1;";
-
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId);
+        try {
+            return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId);
+        } catch (EmptyResultDataAccessException e) {
+            return BigDecimal.valueOf(0);
+        }
     }
 
     @Override
@@ -40,7 +41,7 @@ public class JdbcCashDao implements CashDao
                 "WHERE game_id = ? " +
                 "AND user_id = ? " +
                 "AND effective_date < (SELECT start_date FROM GAMES " +
-                                      "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
+                "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
                 "ORDER BY effective_date DESC " +
                 "LIMIT 1;";
 

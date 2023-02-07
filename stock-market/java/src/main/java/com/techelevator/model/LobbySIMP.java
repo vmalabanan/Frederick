@@ -2,11 +2,11 @@ package com.techelevator.model;
 
 import java.util.List;
 
-public class Lobby {
+public class LobbySIMP {
     private String gameId;
     private List<String> players;
 
-    public Lobby(String gameId, List<String> players) {
+    public LobbySIMP(String gameId, List<String> players) {
         this.gameId = gameId;
         this.players = players;
 

@@ -1,9 +1,12 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -11,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class JdbcTradeDao implements TradeDao
-{
+public class JdbcTradeDao implements TradeDao {
     private JdbcTemplate jdbcTemplate;
     private UserDao userDao;
     private CashDao cashDao;
+
+    private static final Logger log = LoggerFactory.getLogger(JdbcTradeDao.class);
 
     public JdbcTradeDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao) {
         this.jdbcTemplate = jdbcTemplate;
@@ -49,24 +53,27 @@ public class JdbcTradeDao implements TradeDao
 
         // insert trade into trades table and update user's cash
         // calculate trade value; if a Buy transaction, multiply by -1
-        BigDecimal tradeValue = tradeTypeId == 1 ? trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares() * -1)) : trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares()));
+        BigDecimal tradeValue = tradeTypeId == 1
+                ? trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares() * -1))
+                : trade.getSharePrice().multiply(BigDecimal.valueOf(trade.getNumberOfShares()));
 
         sql = "BEGIN; " +
-                "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) " +
+                "INSERT INTO trades (game_id, user_id, stock_id, trade_type_id, number_of_shares, share_price, trade_date) "
+                +
                 "VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP); " +
                 "INSERT INTO cash (game_id, user_id, amount, effective_date) " +
                 "VALUES (?, ?, (SELECT amount + ? FROM cash " +
-                                "WHERE game_id = ? " +
-                                "AND user_id = ? " +
-                                "ORDER BY effective_date DESC " +
-                                "LIMIT 1) " +
-                                ", CURRENT_TIMESTAMP);" +
+                "WHERE game_id = ? " +
+                "AND user_id = ? " +
+                "ORDER BY effective_date DESC " +
+                "LIMIT 1) " +
+                ", CURRENT_TIMESTAMP);" +
                 "COMMIT;";
 
         jdbcTemplate.update(sql, gameId, userId, stockId, tradeTypeId, trade.getNumberOfShares(), trade.getSharePrice(),
-                            gameId, userId, tradeValue,
-                            gameId,
-                            userId);
+                gameId, userId, tradeValue,
+                gameId,
+                userId);
 
         // return current portfolio
         return getCurrentPortfolio(userId, gameId);
@@ -78,11 +85,13 @@ public class JdbcTradeDao implements TradeDao
         Portfolio portfolio = new Portfolio();
 
         // set current cash
+        log.debug("Setting Cash for UserId:{} in Game: {}", gameId, userId);
         portfolio.setCash(cashDao.getCash(gameId, userId));
 
         // sql query to get current stock holdings
         String sql = "SELECT s.ticker_symbol " +
-                ", (SUM (CASE WHEN t.trade_type_id = 1 THEN t.number_of_shares END) - SUM (CASE WHEN t.trade_type_id = 2 THEN t.number_of_shares ELSE 0 END)) as total_shares " +
+                ", (SUM (CASE WHEN t.trade_type_id = 1 THEN t.number_of_shares END) - SUM (CASE WHEN t.trade_type_id = 2 THEN t.number_of_shares ELSE 0 END)) as total_shares "
+                +
                 "FROM trades as t " +
                 "JOIN stocks as s " +
                 "ON t.stock_id = s.stock_id " +
@@ -92,7 +101,6 @@ public class JdbcTradeDao implements TradeDao
                 "GROUP BY s.ticker_symbol;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId);
-
         while (results.next()) {
             Stock stock = mapRowToStock(results);
             portfolio.getStocks().add(stock);
@@ -112,7 +120,8 @@ public class JdbcTradeDao implements TradeDao
             // get each player's portfolio
             Portfolio portfolio = getCurrentPortfolio(Math.toIntExact(user.getId()), gameId);
 
-            // create/set portfolioDTO object (portfolioDTO is an object comprised of username + portfolio)
+            // create/set portfolioDTO object (portfolioDTO is an object comprised of
+            // username + portfolio)
             PortfolioDTO portfolioDTO = new PortfolioDTO();
             portfolioDTO.setUsername(user.getUsername());
             portfolioDTO.setPortfolio(portfolio);
@@ -125,15 +134,17 @@ public class JdbcTradeDao implements TradeDao
         return portfolioAllPlayers;
     }
 
-
     @Override
     public List<Portfolio> getPortfolioHistory(int userId, int gameId) {
         List<Portfolio> portfolioHistory = new ArrayList<>();
 
-        // TODO: instead of always sending back a list of size 7, only send back the history for the number of days that have elapsed since game started
-        // if game endDate > currentTimeStamp, get time that has elapsed since game started
+        // TODO: instead of always sending back a list of size 7, only send back the
+        // history for the number of days that have elapsed since game started
+        // if game endDate > currentTimeStamp, get time that has elapsed since game
+        // started
 
-        // set number of days equal to the lesser of gameLengthDays or number of days that have elapsed since game started
+        // set number of days equal to the lesser of gameLengthDays or number of days
+        // that have elapsed since game started
 
         // for days 1-7, set portfolio holdings (as of end of day)
         for (int i = 1; i <= 7; i++) {
@@ -152,18 +163,20 @@ public class JdbcTradeDao implements TradeDao
         // set cash
         portfolio.setCash(cashDao.getCashByDay(day, gameId, userId));
 
+        log.debug("Getting results");
+
         // set stock holdings
         String sql = "SELECT s.ticker_symbol " +
-                ", (SUM (CASE WHEN t.trade_type_id = 1 THEN t.number_of_shares END) - SUM (CASE WHEN t.trade_type_id = 2 THEN t.number_of_shares ELSE 0 END)) as total_shares " +
+                ", (SUM (CASE WHEN t.trade_type_id = 1 THEN t.number_of_shares END) - SUM (CASE WHEN t.trade_type_id = 2 THEN t.number_of_shares ELSE 0 END)) as total_shares "
+                +
                 "FROM trades as t " +
                 "JOIN stocks as s " +
                 "ON t.stock_id = s.stock_id " +
                 "WHERE t.game_id = ? " +
                 "AND t.user_id = ? " +
                 "AND t.trade_date < (SELECT start_date FROM GAMES " +
-                                    "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
+                "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
                 "GROUP BY s.ticker_symbol;";
-
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId);
 
@@ -174,7 +187,6 @@ public class JdbcTradeDao implements TradeDao
 
         return portfolio;
     }
-
 
     @Override
     public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(int gameId) {
@@ -187,7 +199,8 @@ public class JdbcTradeDao implements TradeDao
             // get each player's portfolio history
             List<Portfolio> portfolioHistory = getPortfolioHistory(Math.toIntExact(user.getId()), gameId);
 
-            // create/set portfolioHistoryDTO object (portfolioHistoryDTO is an object comprised of username + List<Portfolio>)
+            // create/set portfolioHistoryDTO object (portfolioHistoryDTO is an object
+            // comprised of username + List<Portfolio>)
             PortfolioHistoryDTO portfolioHistoryDTO = new PortfolioHistoryDTO();
             portfolioHistoryDTO.setUsername(user.getUsername());
             portfolioHistoryDTO.setPortfolioHistory(portfolioHistory);
@@ -199,8 +212,7 @@ public class JdbcTradeDao implements TradeDao
         return portfolioHistoryAllPlayers;
     }
 
-    private Stock mapRowToStock(SqlRowSet rs)
-    {
+    private Stock mapRowToStock(SqlRowSet rs) {
         String tickerSymbol = rs.getString("ticker_symbol");
         int totalShares = rs.getInt("total_shares");
 

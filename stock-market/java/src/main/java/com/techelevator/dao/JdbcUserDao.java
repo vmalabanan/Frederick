@@ -27,16 +27,16 @@ public class JdbcUserDao implements UserDao {
         return jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
     }
 
-	@Override
-	public User getUserById(Long userId) {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-		if(results.next()) {
-			return mapRowToUser(results);
-		} else {
-			throw new RuntimeException("userId "+userId+" was not found.");
-		}
-	}
+    @Override
+    public User getUserById(Long userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        if (results.next()) {
+            return mapRowToUser(results);
+        } else {
+            throw new RuntimeException("userId " + userId + " was not found.");
+        }
+    }
 
     @Override
     public List<User> findAll() {
@@ -44,7 +44,7 @@ public class JdbcUserDao implements UserDao {
         String sql = "select * from users";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-        while(results.next()) {
+        while (results.next()) {
             User user = mapRowToUser(results);
             users.add(user);
         }
@@ -55,14 +55,14 @@ public class JdbcUserDao implements UserDao {
     @Override
     public User findByUsername(String username) throws UsernameNotFoundException {
         for (User user : this.findAll()) {
-            if( user.getUsername().toLowerCase().equals(username.toLowerCase())) {
+            if (user.getUsername().toLowerCase().equals(username.toLowerCase())) {
                 return user;
             }
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
     }
 
-    //changes made to reflect interface
+    // changes made to reflect interface
     @Override
     public boolean create(String username, String password, String role, String firstName, String lastName) {
         boolean userCreated = false;
@@ -75,16 +75,15 @@ public class JdbcUserDao implements UserDao {
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         String id_column = "user_id";
         userCreated = jdbcTemplate.update(con -> {
-                    PreparedStatement ps = con.prepareStatement(insertUser, new String[]{id_column});
-                    ps.setString(1, username);
-                    ps.setString(2, password_hash);
-                    ps.setString(3, ssRole);
-                    ps.setString(4, firstName);
-                    ps.setString(5, lastName);
-                    return ps;
-                }
-                , keyHolder) == 1;
-        int newUserId = (int) keyHolder.getKeys().get(id_column);
+            PreparedStatement ps = con.prepareStatement(insertUser, new String[] { id_column });
+            ps.setString(1, username);
+            ps.setString(2, password_hash);
+            ps.setString(3, ssRole);
+            ps.setString(4, firstName);
+            ps.setString(5, lastName);
+            return ps;
+        }, keyHolder) == 1;
+        // int newUserId = (int) keyHolder.getKeys().get(id_column);
 
         return userCreated;
     }
