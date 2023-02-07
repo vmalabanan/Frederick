@@ -4,7 +4,7 @@
 			<h4 class="card-title">
 				<div class="header-container">
 					<span id="stock-code">{{ symbol }}</span>
-					<span id="qty-owned"> Qty: {{ getQuantityOwned() }}</span>
+					<span id="qty-owned" v-show="getQuantityOwned() > 0"> Owned: {{ getQuantityOwned() }}</span>
 				</div>
 				<p class="stock-name">{{ name }}</p>
 			</h4>
@@ -33,7 +33,6 @@ export default {
 	emit: ['cardButtonClick'],
 	data() {
 		return {
-			qtyOwned: 0
 		}
 	},
 	methods: {
@@ -168,7 +167,13 @@ buy-stock {
 }
 
 #qty-owned {
-	font-size: 16px;
-	font-weight: bold
+	font-size: 15px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #023047;
+	background-color: #FB8500;
+	padding: 5px;
 }
 </style>
