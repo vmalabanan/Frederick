@@ -97,6 +97,7 @@ export default {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
 					this.updateGraphWith('HBI')
+					this.search.symbols = []
 				}
 			}
 		},
@@ -130,11 +131,15 @@ export default {
 		})
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
-			MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
-				const data = resp.data
-				// optimized
-				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
-			})
+			if (this.search.symbols)
+			{
+				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
+					const data = resp.data
+					// optimized
+					this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
+				})
+			}
+
 
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
@@ -148,7 +153,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 5 * 1000)
+		}, 10 * 1000)
 	},
 	computed: {
 		chartStyles() {
