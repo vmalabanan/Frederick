@@ -1,27 +1,17 @@
 <template>
   <div id="GameList">
-    <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">No games to display</p>  
+    <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">No games to display</p>
     <div class="card w-50" v-else>
-      <div 
-        class="card-header"
-        style="background-color: #FFB703; border-radius:25px; height: 60px"
-      >
+      <div class="card-header" style="background-color: #FFB703; border-radius:25px; height: 60px">
         <span style="width: 330px">Game Name</span>
         <span style="width: 170px">Type</span>
         <span style="width: 200px">Length</span>
         <span style="width: 100px"></span>
       </div>
       <div id="games" class="card-body">
-        <Game
-          v-for="(game, index) in $store.state.acceptedGames"
-          :key="index"
-          :game="game"
-        />
+        <Game v-for="(game, index) in $store.state.acceptedGames" :key="index" :game="game" />
       </div>
-      <div
-        class="card-footer"
-        style="background-color: #FFB703; border-radius:25px; height: 60px"
-      />
+      <div class="card-footer" style="background-color: #FFB703; border-radius:25px; height: 60px" />
     </div>
     <button class="btn btn-lg btn-info" id="back" @click="$router.go(-1)">
       Back
@@ -46,7 +36,7 @@ div#GameList {
   margin-top: 5%;
 }
 
-div#GameList > div {
+div#GameList>div {
   background-color: #8ecae6;
   border-radius: 25px;
   margin: 0 auto;
@@ -59,7 +49,7 @@ div.card-header {
   align-items: center;
 }
 
-div#GameList > #back {
-    margin-top: 20px;
+div#GameList>#back {
+  margin-top: 20px;
 }
 </style>

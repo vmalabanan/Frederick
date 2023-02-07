@@ -2,9 +2,9 @@
 	<div class="portfolio-container">
 		<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 			<game-account />
-			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
-				:labels="graphData.time" :graphLabel="this.graphLabel"/>
-			<leaderboard :gameId="gameId"/>
+			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints" :labels="graphData.time"
+				:graphLabel="this.graphLabel" />
+			<leaderboard :gameId="gameId" />
 		</div>
 
 		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -12,12 +12,13 @@
 				placeholder="GOOG">
 			<label for="floatingInput">Search Stocks</label>
 		</div>
-		
+
 		<div :class="{ blurred: buySellCard.show }">
 			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
 				class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
-			<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="this.$store.state.portfolio.cards"
-				class="stocks-owned" v-show="onPortfolio" :onPortfolio="true" />
+			<stock-container @cardClick="updateGraphWith" v-model="buySellCard"
+				:stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio"
+				:onPortfolio="true" />
 		</div>
 
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
@@ -39,7 +40,7 @@ export default {
 	data() {
 		return {
 			gameId: this.$route.params.id,
-			tempKey: "HBI",
+			tempKey: "portfolio",
 			onPortfolio: true,
 
 			search: {
@@ -96,7 +97,7 @@ export default {
 			if (text == "View Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.updateGraphWith('HBI')
+					this.updateGraphWith('portfolio')
 					this.search.symbols = []
 				}
 			}
@@ -135,8 +136,7 @@ export default {
 		})
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
-			if (this.search.symbols)
-			{
+			if (this.search.symbols) {
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
 					const data = resp.data
 					// optimized
@@ -150,16 +150,16 @@ export default {
 				// optimized
 				//test below
 				const filteredData = data.filter(stock => {
-					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
 						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
 						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
 						return sharesOwned > 0
 					}
 					return false
-					})
+				})
 				this.$store.commit("SET_PORTFOLIO_CARDS", filteredData)
 			})
-	
+
 
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
