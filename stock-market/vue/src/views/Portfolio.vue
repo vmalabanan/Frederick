@@ -146,7 +146,14 @@ export default {
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
 				// optimized
-				this.portfolio.cards = data.filter(stock => this.$store.state.portfolio.symbols.includes(stock.symbol))
+				this.portfolio.cards = data.filter(stock => {
+					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
+						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
+						return sharesOwned > 0
+					}
+					return false
+					})
 			})
 	
 
