@@ -2,17 +2,24 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store/index'
+
+// Registration
 import Logout from '../views/Logout.vue'
 import Registration from '../views/Registration'
-import InvitationsList from '../views/InvitationsList.vue'
-import store from '../store/index'
+
+// Menu -> Invites & Create & My Games
 import Menu from '../views/Menu.vue'
+import InvitationsList from '../views/InvitationsList.vue'
 import CreateGame from '../views/CreateGame.vue'
-import Portfolio from '../views/Portfolio.vue'
-import Users from '../components/Users.vue'
-import Test from '../views/Test.vue'
-import TestLobby from '../views/TestLobby.vue'
 import GamesList from '../views/GamesList.vue'
+
+// Game page
+import Portfolio from '../views/Portfolio.vue'
+
+// Testing
+import Test from '../test-views/Test.vue'
+import TestLobby from '../test-views/TestLobby.vue'
 
 Vue.use(Router)
 
@@ -94,16 +101,6 @@ const router = new Router({
       component: Portfolio,
       meta: {
         requiresAuth: false
-      }
-    },
-
-    //  do I need the users path here?
-    {
-      path: "/users",
-      name: "users",
-      component: Users,
-      meta: {
-        requiresAuth: true
       }
     },
     {
