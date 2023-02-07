@@ -1,9 +1,9 @@
 <template>
   <div id="account">
     <h4 class="labels">Account Value</h4>
-    <p class="values">{{ getAccountValue }}</p>
+    <p class="values">{{ getCashString(getAccountValue) }}</p>
     <h4 class="labels">ROI</h4>
-    <p class="values">+ 7.2%</p>
+    <p class="values" :class="this.getChangePercentage < 0 ? 'negative' : 'positive'">{{ getChange() }}</p>
     <h4 class="labels">Cash</h4>
     <p class="values">{{ getCash }}</p>
     <button class="btn btn-lg" @click="handleClick">
@@ -49,9 +49,12 @@ export default {
       let cashString = dollarString.format(cash);
       return cashString
     },
-    getROI() {
-
-    },
+    getChange() {
+      if (this.getChangePercentage < 0) {
+        return this.getChangePercentage + "%"
+      }
+      return "+" + this.getChangePercentage + "%"
+    }
 
   },
   computed: {
@@ -68,11 +71,18 @@ export default {
         }
       })
       const totalValue = sum + this.$store.state.accountCash
-      return this.getCashString(totalValue)
+      return totalValue
     },
     getCash() {
       return this.getCashString(this.$store.state.accountCash)
-    }
+    },
+    getChangePercentage() {
+      const STARTING_CASH = 100000.00
+      const net = this.getAccountValue - STARTING_CASH
+      const percentage = (net / STARTING_CASH * 100).toFixed(2)
+      return percentage
+      
+    },
   },
   created() {
     this.setCash()
@@ -117,5 +127,15 @@ button:hover {
   background-color: #fb8500;
   color: white;
   border: 2px solid rgb(68, 68, 68);
+}
+
+.positive {
+	color: #1FCC92;
+  font-size: 20px;
+}
+
+.negative {
+	color: #E54322;
+  font-size: 20px;
 }
 </style>
