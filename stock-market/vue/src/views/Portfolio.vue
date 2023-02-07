@@ -31,6 +31,7 @@ import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
 import LineChart from "../components/LineChart.vue";
 import MarketDataService from "../services/MarketDataService";
+import tradeService from "../services/TradeService"
 
 export default {
 	name: "portfolio",
@@ -47,8 +48,7 @@ export default {
 			},
 
 			portfolio: {
-				symbols: this.$store.state.portfolio.symbols,
-				cards: this.$store.state.portfolio.cards,
+				cards: []
 			},
 
 			graphData: {
@@ -62,6 +62,7 @@ export default {
 				price: 0.0,
 				symbol: "",
 				buySell: false,
+
 			}
 		}
 	},
@@ -117,17 +118,28 @@ export default {
 		}
 	},
 	created() {
+		const gameId = this.$route.params.id
+		tradeService.getPortfolio(gameId).then(resp => {
+			const symbols = resp.data.stocks.map(stock => stock.tickerSymbol)
+			this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
+		})
+
 		this.updateGraphWith(this.tempKey)
-		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
+		MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 			this.portfolio.cards = resp.data;
 		})
 		setInterval(() => {
-			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
-			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
+			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
+			MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
 				const data = resp.data
 				// optimized
 				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
-				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
+			})
+
+			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
+				const data = resp.data
+				// optimized
+				this.portfolio.cards = data.filter(stock => this.$store.state.portfolio.symbols.includes(stock.symbol))
 			})
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
@@ -136,7 +148,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 30 * 1000)
+		}, 5 * 1000)
 	},
 	computed: {
 		chartStyles() {

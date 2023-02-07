@@ -43,12 +43,10 @@ export default {
         },
         confirm() {
             const gameId = this.$route.params.id
-            const date = new Date()
             const buySell = this.buySellCard.buySell ? "Buy" : "Sell"
             const price = this.stockPrice
             const symbol = this.buySellCard.symbol
             const trade = {
-                tradeDate: date,
                 sharePrice: price,
                 numberOfShares: this.qty,
                 tradeTypeDesc: buySell,
@@ -58,6 +56,8 @@ export default {
                 if (response.status == 200) {
                     alert("Trade Successful")
                     this.$store.commit("SET_CASH", response.data.cash)
+                    const symbols = response.data.stocks.map(stock => stock.tickerSymbol)
+                    this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
                 }
                 else {
                     alert("Trade Failed, Try Again")

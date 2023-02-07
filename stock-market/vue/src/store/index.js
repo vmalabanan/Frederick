@@ -25,7 +25,7 @@ export default new Vuex.Store({
     acceptedGames: [],
     accountCash: 0,
     portfolio: {
-      symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN', 'HBI'],
+      symbols: [],
       cards: [],
     }
   },
