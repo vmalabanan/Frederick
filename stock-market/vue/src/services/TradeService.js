@@ -8,5 +8,17 @@ export default {
 
     getPortfolio(gameId) {
         return axios.get("/trades/" + gameId)
+    },
+
+    getPortfolioAllPlayers(gameId) {
+        return axios.get("/trades" + gameId + "/all")
+    },
+
+    getPortfolioHistory(gameId) {
+        return axios.get("/trades" + gameId + "/history")
+    },
+
+    getPortfolioHistoryAllPlayers(gameId) {
+        return axios.get("/trades" + gameId + "/history/all")
     }
 }

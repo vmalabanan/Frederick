@@ -1,12 +1,17 @@
 <template>
-  <div id="leaderboard"></div>
+  <div id="leaderboard">hello!</div>
 </template>
+
+import tradeService from "../services/TradeService"
 
 <script>
 export default {
   name: "Leaderboard",
   data() {
     return {};
+  },
+  created() {
+
   },
   methods: {},
 };
