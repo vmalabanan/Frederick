@@ -146,6 +146,8 @@ export default {
 				// optimized
 				this.portfolio.cards = data.filter(stock => this.$store.state.portfolio.symbols.includes(stock.symbol))
 			})
+	
+
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
 				const data = resp.data[0]
@@ -153,7 +155,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 10 * 1000)
+		}, 5 * 1000)
 	},
 	computed: {
 		chartStyles() {
