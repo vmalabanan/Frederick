@@ -123,6 +123,8 @@ export default {
 		tradeService.getPortfolio(gameId).then(resp => {
 			const symbols = resp.data.stocks.map(stock => stock.tickerSymbol)
 			this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
+			const trades = resp.data.stocks
+			this.$store.commit("SET_PORTFOLIO_TRADES", trades)
 		})
 
 		this.updateGraphWith(this.tempKey)
