@@ -60,12 +60,11 @@ export default {
       const trades = this.$store.state.portfolio.trades
       const cards = this.$store.state.portfolio.cards
       
-      trades.forEach(trade => {
-        const symbol = trade.tickerSymbol
+      cards.forEach(card => {
+        const trade = trades.find(trade => trade.tickerSymbol == card.symbol)
         const qty = trade.numberOfShares
         if (qty > 0) {
-          const currentPrice = cards.find(card => card.symbol == symbol).price
-          sum += (qty * currentPrice)
+          sum += (qty * card.price)
         }
       })
       const totalValue = sum + this.$store.state.accountCash

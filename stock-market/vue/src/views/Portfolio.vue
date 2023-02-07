@@ -166,7 +166,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 5 * 1000)
+		}, 3 * 1000)
 	},
 	computed: {
 		chartStyles() {
