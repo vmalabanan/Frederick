@@ -25,8 +25,9 @@ export default new Vuex.Store({
     acceptedGames: [],
     accountCash: 0,
     portfolio: {
-      symbols: ['META', 'AAPL', 'NFLX', 'GOOG', 'AMZN', 'HBI'],
+      symbols: [],
       cards: [],
+      trades: []
     }
   },
   mutations: {
@@ -51,6 +52,9 @@ export default new Vuex.Store({
     },
     SET_PORTFOLIO_CARDS(state, cards) {
       state.portfolio.cards = cards
+    },
+    SET_PORTFOLIO_TRADES(state, trades) {
+      state.portfolio.trades = trades
     },
     SET_SELECTED_USERS(state, users) {
       state.selectedUsers = users;

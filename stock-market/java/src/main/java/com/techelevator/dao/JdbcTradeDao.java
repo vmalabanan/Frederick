@@ -3,6 +3,7 @@ package com.techelevator.dao;
 import com.techelevator.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -101,15 +102,44 @@ public class JdbcTradeDao implements TradeDao
     }
 
     @Override
+    public List<PortfolioDTO> getCurrentPortfolioAllPlayers(int gameId) {
+        List<PortfolioDTO> portfolioAllPlayers = new ArrayList<>();
+
+        // get list of all players
+        List<User> users = userDao.getAllUsersByGame(gameId);
+
+        for (User user : users) {
+            // get each player's portfolio
+            Portfolio portfolio = getCurrentPortfolio(Math.toIntExact(user.getId()), gameId);
+
+            // create/set portfolioDTO object (portfolioDTO is an object comprised of username + portfolio)
+            PortfolioDTO portfolioDTO = new PortfolioDTO();
+            portfolioDTO.setUsername(user.getUsername());
+            portfolioDTO.setPortfolio(portfolio);
+
+            // push portfolioDTO to portfolioAllPlayers
+            portfolioAllPlayers.add(portfolioDTO);
+
+        }
+
+        return portfolioAllPlayers;
+    }
+
+
+    @Override
     public List<Portfolio> getPortfolioHistory(int userId, int gameId) {
         List<Portfolio> portfolioHistory = new ArrayList<>();
+
+        // TODO: instead of always sending back a list of size 7, only send back the history for the number of days that have elapsed since game started
+        // if game endDate > currentTimeStamp, get time that has elapsed since game started
+
+        // set number of days equal to the lesser of gameLengthDays or number of days that have elapsed since game started
 
         // for days 1-7, set portfolio holdings (as of end of day)
         for (int i = 1; i <= 7; i++) {
             Portfolio portfolio = getPortfolioByDay(i, userId, gameId);
 
             portfolioHistory.add(portfolio);
-
         }
 
         return portfolioHistory;
@@ -134,28 +164,39 @@ public class JdbcTradeDao implements TradeDao
                                     "WHERE game_id = ?) + INTERVAL '" + day + " days' " +
                 "GROUP BY s.ticker_symbol;";
 
-        try {
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId);
 
-            while (results.next()) {
-                Stock stock = mapRowToStock(results);
-                portfolio.getStocks().add(stock);
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId, userId, gameId);
+
+        while (results.next()) {
+            Stock stock = mapRowToStock(results);
+            portfolio.getStocks().add(stock);
         }
 
         return portfolio;
     }
 
-    @Override
-    public List<PortfolioDTO> getCurrentPortfolioAllPlayers(int gameId) {
-        return null;
-    }
 
     @Override
     public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(int gameId) {
-        return null;
+        List<PortfolioHistoryDTO> portfolioHistoryAllPlayers = new ArrayList<>();
+
+        // get list of all players
+        List<User> users = userDao.getAllUsersByGame(gameId);
+
+        for (User user : users) {
+            // get each player's portfolio history
+            List<Portfolio> portfolioHistory = getPortfolioHistory(Math.toIntExact(user.getId()), gameId);
+
+            // create/set portfolioHistoryDTO object (portfolioHistoryDTO is an object comprised of username + List<Portfolio>)
+            PortfolioHistoryDTO portfolioHistoryDTO = new PortfolioHistoryDTO();
+            portfolioHistoryDTO.setUsername(user.getUsername());
+            portfolioHistoryDTO.setPortfolioHistory(portfolioHistory);
+
+            // push portfolioHistoryDTO to portfolioHistoryAllPlayers
+            portfolioHistoryAllPlayers.add(portfolioHistoryDTO);
+        }
+
+        return portfolioHistoryAllPlayers;
     }
 
     private Stock mapRowToStock(SqlRowSet rs)

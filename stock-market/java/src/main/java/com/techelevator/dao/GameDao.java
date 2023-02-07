@@ -20,9 +20,7 @@ public interface GameDao
 
     Game findByGameName(String gameName);
 
-//    int findIdByName(String gameName);
-
-    int create(String gameName, int organizerId, LocalDateTime endDate, int gameLengthDays, String[] players);
+    int create(String gameName, int organizerId, int gameLengthDays, String[] players);
 
 
     boolean delete(int gameId);

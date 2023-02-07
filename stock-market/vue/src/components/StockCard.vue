@@ -2,7 +2,10 @@
 	<div id="stock" class="card" :class="{active : isActive}" @click="setActive()">
 		<div class="card-body">
 			<h4 class="card-title">
-				<span id="stock-code">{{ symbol }}</span>
+				<div class="header-container">
+					<span id="stock-code">{{ symbol }}</span>
+					<span id="qty-owned" v-show="getQuantityOwned() > 0"> Owned: {{ getQuantityOwned() }}</span>
+				</div>
 				<p class="stock-name">{{ name }}</p>
 			</h4>
 			<p class="stock-price">${{ price.toFixed(2) }}</p>
@@ -51,6 +54,14 @@ export default {
 		},
 		setActive() {
 			this.$emit('onToggle')
+		},
+		getQuantityOwned() {
+			if (!this.$store.state.portfolio.symbols.includes(this.symbol)) {
+				return 0
+			}
+			const index = this.$store.state.portfolio.symbols.indexOf(this.symbol)
+			const sharesAlreadyPurchased = this.$store.state.portfolio.trades[index].numberOfShares
+			return sharesAlreadyPurchased
 		}
 	},
 	computed: {
@@ -62,6 +73,9 @@ export default {
 				this.$emit('input', value)
 			}
 		}
+	},
+	created() {
+		
 	}
 }
 </script>
@@ -145,5 +159,21 @@ buy-stock {
 
 .active {
 	background-color: #8ECAE6;
+}
+
+.header-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+#qty-owned {
+	font-size: 15px;
+	border-radius: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #023047;
+	background-color: #FB8500;
+	padding: 5px;
 }
 </style>

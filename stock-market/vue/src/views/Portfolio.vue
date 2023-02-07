@@ -4,7 +4,7 @@
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
 				:labels="graphData.time" />
-			<leaderboard />
+			<leaderboard :gameId="gameId"/>
 		</div>
 
 		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -31,12 +31,14 @@ import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
 import LineChart from "../components/LineChart.vue";
 import MarketDataService from "../services/MarketDataService";
+import tradeService from "../services/TradeService"
 
 export default {
 	name: "portfolio",
 	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock },
 	data() {
 		return {
+			gameId: this.$route.params.id,
 			tempKey: "HBI",
 			onPortfolio: true,
 
@@ -47,8 +49,7 @@ export default {
 			},
 
 			portfolio: {
-				symbols: this.$store.state.portfolio.symbols,
-				cards: this.$store.state.portfolio.cards,
+				cards: []
 			},
 
 			graphData: {
@@ -62,6 +63,7 @@ export default {
 				price: 0.0,
 				symbol: "",
 				buySell: false,
+
 			}
 		}
 	},
@@ -96,6 +98,7 @@ export default {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
 					this.updateGraphWith('HBI')
+					this.search.symbols = []
 				}
 			}
 		},
@@ -117,18 +120,43 @@ export default {
 		}
 	},
 	created() {
+		tradeService.getPortfolio(this.gameId).then(resp => {
+			const symbols = resp.data.stocks.map(stock => stock.tickerSymbol)
+			this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
+			const trades = resp.data.stocks
+			this.$store.commit("SET_PORTFOLIO_TRADES", trades)
+		})
+
 		this.updateGraphWith(this.tempKey)
-		MarketDataService.getRealTimeStockPrice(this.portfolio.symbols).then(resp => {
+		MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 			this.portfolio.cards = resp.data;
 		})
 		setInterval(() => {
-			const allSymbols = this.portfolio.symbols.concat(this.search.symbols)
-			MarketDataService.getRealTimeStockPrice(allSymbols).then(resp => {
+			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
+			if (this.search.symbols)
+			{
+				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(resp => {
+					const data = resp.data
+					// optimized
+					this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
+				})
+			}
+
+
+			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
 				const data = resp.data
 				// optimized
-				this.search.cards = data.filter(stock => this.search.symbols.includes(stock.symbol))
-				this.portfolio.cards = data.filter(stock => this.portfolio.symbols.includes(stock.symbol))
+				this.portfolio.cards = data.filter(stock => {
+					if(this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+						const index = this.$store.state.portfolio.symbols.indexOf(stock.symbol)
+						const sharesOwned = this.$store.state.portfolio.trades[index].numberOfShares
+						return sharesOwned > 0
+					}
+					return false
+					})
 			})
+	
+
 
 			MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
 				const data = resp.data[0]
@@ -136,7 +164,7 @@ export default {
 				this.graphData.time.push(data.earningsAnnouncement)
 			})
 
-		}, 30 * 1000)
+		}, 5 * 1000)
 	},
 	computed: {
 		chartStyles() {

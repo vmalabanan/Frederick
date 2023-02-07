@@ -20,4 +20,8 @@ public class PortfolioHistoryDTO {
     public List<Portfolio> getPortfolioHistory() {
         return portfolioHistory;
     }
+
+    public void setPortfolioHistory(List<Portfolio> portfolioHistory) {
+        this.portfolioHistory = portfolioHistory;
+    }
 }
