@@ -4,7 +4,7 @@
 			<game-account />
 			<line-chart :key="tempKey" :styles="chartStyles" :dataPoints="graphData.dataPoints"
 				:labels="graphData.time" />
-			<leaderboard />
+			<leaderboard :gameId="gameId"/>
 		</div>
 
 		<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -38,6 +38,7 @@ export default {
 	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock },
 	data() {
 		return {
+			gameId: this.$route.params.id,
 			tempKey: "HBI",
 			onPortfolio: true,
 
@@ -119,8 +120,7 @@ export default {
 		}
 	},
 	created() {
-		const gameId = this.$route.params.id
-		tradeService.getPortfolio(gameId).then(resp => {
+		tradeService.getPortfolio(this.gameId).then(resp => {
 			const symbols = resp.data.stocks.map(stock => stock.tickerSymbol)
 			this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols)
 			const trades = resp.data.stocks
