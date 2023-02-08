@@ -103,7 +103,7 @@ export default {
   position: fixed; /* Make it stick/fixed */
   top: 0; /* Stay on top */
   width: 100%; /* Full width */
-  z-index: 10;
+  z-index: 20;
 }
 
 #nav > span {
