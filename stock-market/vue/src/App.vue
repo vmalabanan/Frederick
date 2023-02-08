@@ -100,9 +100,9 @@ export default {
   height: 4.3rem;
   box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.3);
   transition: top 0.6s;
-  position: fixed; /* Make it stick/fixed */
-  top: 0; /* Stay on top */
-  width: 100%; /* Full width */
+  position: sticky; 
+  top: 0; 
+  width: 100%; 
   z-index: 150;
 }
 
