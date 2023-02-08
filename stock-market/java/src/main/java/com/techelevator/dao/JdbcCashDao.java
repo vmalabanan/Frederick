@@ -47,7 +47,7 @@ public class JdbcCashDao implements CashDao {
                 "LIMIT 1;";
 
         BigDecimal cash;
-        
+
         try{
             cash = jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId);
         } catch (Exception e) {
