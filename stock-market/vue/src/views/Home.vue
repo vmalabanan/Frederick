@@ -70,7 +70,7 @@ export default {
 
 .apple {
   height: 30%;
-  margin-right: -8rem;
+  margin-right: -7rem;
   z-index: 10;
 }
 
@@ -80,8 +80,9 @@ export default {
 }
 
 .btn {
-	margin-top: -7rem;
+	margin-top: -12rem;
 	width: 15rem;
+	font-size: 1.25rem;
 }
 /* div.home {
   background-image: url('https://i.gifer.com/9IeY.gif'); */
