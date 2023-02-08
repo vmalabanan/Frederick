@@ -65,18 +65,18 @@ export default {
 }
 
 .fishbowl {
-  height: 100%;
+  height: 70%;
 }
 
 .apple {
-  height: 35%;
-  margin-right: -10rem;
+  height: 30%;
+  margin-right: -8rem;
   z-index: 10;
 }
 
 .netflix {
   height: 30%;
-  margin-left: -17rem;
+  margin-left: -13rem;
 }
 
 .btn {
