@@ -161,4 +161,5 @@ ul:nth-child(even) {
 .col-3 {
   width: 44%;
 }
+
 </style>
