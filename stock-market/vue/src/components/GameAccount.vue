@@ -19,17 +19,17 @@ export default {
   name: "GameAccount",
   data() {
     return {
-      buttonText: "View Stocks",
+      buttonText: "Buy Stocks",
       accountValue: 0
     };
   },
   methods: {
     handleClick() {
       //change router later
-      if (this.buttonText == "View Stocks") {
+      if (this.buttonText == "Buy Stocks") {
         this.buttonText = "View Portfolio";
       } else {
-        this.buttonText = "View Stocks";
+        this.buttonText = "Buy Stocks";
       }
     },
     setCash() {

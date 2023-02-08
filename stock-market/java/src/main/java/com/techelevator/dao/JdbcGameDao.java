@@ -76,7 +76,30 @@ public class JdbcGameDao implements GameDao
 
     @Override
     public List<Game> getInvitedGames(int userId) {
-        return getFilteredGames(userId, 1);
+//        return getFilteredGames(userId, 1);
+
+        // return only games that haven't ended
+        List<Game> games = new ArrayList<>();
+        String sql = "SELECT g.game_id " +
+                ", g.game_name " +
+                ", g.organizer_id " +
+                ", g.end_date " +
+                ", g.start_date " +
+                ", g.game_length_days " +
+                "FROM games as g " +
+                "JOIN games_users as gu " +
+                "ON g.game_id = gu.game_id " +
+                "WHERE gu.user_id = ?" +
+                "AND gu.invitation_status_id = 1" +
+                "AND CURRENT_TIMESTAMP < g.end_date;";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        while (results.next())
+        {
+            Game game = mapRowToGame(results);
+            games.add(game);
+        }
+        return games;
     }
 
     @Override
