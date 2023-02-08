@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +31,11 @@ public class ApiStockDao implements StockDao {
         return restTemplate.getForObject(uri, StockHistory[].class);
     }
 
-    public Stock[] getQuote(String symbol) {
+    public List<Stock> getQuote(String symbol) {
         String uri = String.format("%s/quote/%s?%s", BASE_URL, symbol, API_KEY);
         log.debug("[Get Quote] Making a call to {}", uri);
-        return restTemplate.getForObject(uri, Stock[].class);
+        List<Stock> data = Arrays.asList(restTemplate.getForObject(uri, Stock[].class));
+        return data;
     }
 
     public Stock[] searchSymbol(String query) {

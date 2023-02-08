@@ -1,9 +1,11 @@
 package com.techelevator.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,90 +30,119 @@ import com.techelevator.model.Stock;
 
 @Controller
 public class RoomController {
-    // @MessageMapping("/game")
-    // @SendTo("/topic/chat")
-    // public Message broadcastMessage(Message message) {
-    // return message;
-    // }
+	// @MessageMapping("/game")
+	// @SendTo("/topic/chat")
+	// public Message broadcastMessage(Message message) {
+	// return message;
+	// }
 
-    private static final Logger log = LoggerFactory.getLogger(RoomController.class);
-    private final SimpMessagingTemplate simpMessagingTemplate;
+	private static final Logger log = LoggerFactory.getLogger(RoomController.class);
+	private final SimpMessagingTemplate simpMessagingTemplate;
 
-    private static Map<String, List<String>> rooms = new HashMap<>();
-    private TradeDao tradeDao;
-    private StockDao stockDao;
+	private static Map<String, List<String>> rooms = new HashMap<>();
+	private TradeDao tradeDao;
+	private StockDao stockDao;
 
-    @Autowired
-    public RoomController(StockDao stockDao, TradeDao tradeDao, SimpMessagingTemplate simpMessagingTemplate) {
-        this.simpMessagingTemplate = simpMessagingTemplate;
-        this.tradeDao = tradeDao;
-        this.stockDao = stockDao;
-    }
+	@Autowired
+	public RoomController(StockDao stockDao, TradeDao tradeDao, SimpMessagingTemplate simpMessagingTemplate) {
+		this.simpMessagingTemplate = simpMessagingTemplate;
+		this.tradeDao = tradeDao;
+		this.stockDao = stockDao;
+	}
 
-    @MessageMapping("/room-{gameId}/join")
-    public LobbySIMP joinRoom(@DestinationVariable String gameId, String username) {
-        log.debug("[Room {} JOIN]: {}", gameId, username);
-        if (!rooms.containsKey(gameId)) {
-            rooms.put(gameId, new ArrayList<String>());
-        }
-        List<String> players = rooms.get(gameId);
-        if (players.contains(username)) {
-            log.debug("[Room {}] {} already exist", gameId, username);
-            return new LobbySIMP(gameId, players);
-        }
-        players.add(username);
-        rooms.put(gameId, players);
-        log.debug("[Room {}]: {} players ", gameId, players);
-        return new LobbySIMP(gameId, players);
-    }
+	@MessageMapping("/room-{gameId}/join")
+	public LobbySIMP joinRoom(@DestinationVariable String gameId, String username) {
+		log.debug("[Room {} JOIN]: {}", gameId, username);
+		if (!rooms.containsKey(gameId)) {
+			rooms.put(gameId, new ArrayList<String>());
+		}
+		List<String> players = rooms.get(gameId);
+		if (players.contains(username)) {
+			log.debug("[Room {}] {} already exist", gameId, username);
+			return new LobbySIMP(gameId, players);
+		}
+		players.add(username);
+		rooms.put(gameId, players);
+		log.debug("[Room {}]: {} players ", gameId, players);
+		return new LobbySIMP(gameId, players);
+	}
 
-    @MessageMapping("room-{gameId}/invite")
-    public void inviteUser(@DestinationVariable String gameId, @Payload InviteSIMP invite) {
+	@MessageMapping("room-{gameId}/invite")
+	public void inviteUser(@DestinationVariable String gameId, @Payload InviteSIMP invite) {
 
-    }
+	}
 
-    @MessageMapping("room-{gameId}/leave")
-    public LobbySIMP leaveRoom(@DestinationVariable String gameId, String username) {
-        log.debug("[Room {} LEAVE]: {} Left", gameId, username);
-        List<String> players = rooms.get(gameId);
-        players.remove(username);
-        rooms.put(gameId, players);
-        log.debug("[Room {}]: {} players ", gameId, players);
-        return new LobbySIMP(gameId, players);
-    }
+	@MessageMapping("room-{gameId}/leave")
+	public LobbySIMP leaveRoom(@DestinationVariable String gameId, String username) {
+		log.debug("[Room {} LEAVE]: {} Left", gameId, username);
+		List<String> players = rooms.get(gameId);
+		players.remove(username);
+		rooms.put(gameId, players);
+		log.debug("[Room {}]: {} players ", gameId, players);
+		return new LobbySIMP(gameId, players);
+	}
 
-    private List<String> getOwnedSymbols(String gameId) {
-        List<String> allSymbols = new ArrayList<>();
-        Integer id = Integer.parseInt(gameId);
-        List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
-        for (PortfolioDTO portfolio : portfolios) {
-            portfolio.getPortfolio().getStocks().stream().forEach(s -> allSymbols.add(s.getTickerSymbol()));
-        }
-        return allSymbols;
-    }
+	private List<String> getOwnedSymbols(String gameId) {
+		List<String> allSymbols = new ArrayList<>();
+		Integer id = Integer.parseInt(gameId);
+		List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
+		for (PortfolioDTO portfolio : portfolios) {
+			portfolio.getPortfolio().getStocks().stream().forEach(s -> allSymbols.add(s.getTickerSymbol()));
+		}
+		return allSymbols;
+	}
 
-    @Scheduled(fixedRate = 1000)
-    public void stockUpdatePerSec() {
-        List<String> allSymbols = new ArrayList<>();
-        for (String gameId : rooms.keySet()) {
-            List<String> members = rooms.get(gameId);
-            if (members.size() == 0) {
-                continue;
-            }
-            allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
-                    .collect(Collectors.toList());
-        }
-        if (allSymbols.size() == 0) {
-            return;
-        }
-        log.debug("[PORTFOLIO UPDATE]: {}", allSymbols);
-        simpMessagingTemplate.convertAndSend("/topic/update", stockDao.getQuote(String.join(",", allSymbols)));
-    }
+	@Scheduled(fixedRate = 1000)
+	public void stockUpdatePerSec() {
+		List<String> allSymbols = new ArrayList<>();
+		List<Leaderboard> leaderboards = new ArrayList<>();
 
-    // payload:
-    // {
-    // GameId: Number
-    // Stocks: []
-    // }
+		for (String gameId : rooms.keySet()) {
+			List<String> members = rooms.get(gameId);
+			if (members.size() == 0) {
+				continue;
+			}
+			allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
+					.collect(Collectors.toList());
+		}
+		if (allSymbols.size() == 0) {
+			return;
+		}
+		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
 
+		for (String gameId : rooms.keySet()) {
+			List<String> members = rooms.get(gameId);
+			if (members.size() == 0) {
+				continue;
+			}
+			// Calculate each active game leaderboard
+
+		}
+
+		log.debug("[PORTFOLIO UPDATE]: {}", allSymbols);
+
+		simpMessagingTemplate.convertAndSend("/topic/update", data);
+	}
+
+	public static class Leaderboard {
+		private int gameId;
+		private Map<String, BigDecimal> players = new HashMap<>();
+
+		public int getGameId() {
+			return this.gameId;
+		}
+
+		public void setGameId(int gameId) {
+			this.gameId = gameId;
+		}
+
+		public Map<String, BigDecimal> getPlayers() {
+			return this.players;
+		}
+
+		public void setPlayers(Map<String, BigDecimal> players) {
+			this.players = players;
+		}
+
+	}
 }

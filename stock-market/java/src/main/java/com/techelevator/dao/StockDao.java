@@ -1,5 +1,7 @@
 package com.techelevator.dao;
 
+import java.util.List;
+
 import com.techelevator.dao.ApiStockDao.FullStockHistoryWrap;
 import com.techelevator.dao.ApiStockDao.Stock;
 import com.techelevator.dao.ApiStockDao.StockHistory;
@@ -9,7 +11,7 @@ public interface StockDao {
 
     public StockHistory[] getHistoricalDataBySymbol(String duration, String symbol);
 
-    public Stock[] getQuote(String symbol);
+    public List<Stock> getQuote(String symbol);
 
     public Stock[] searchSymbol(String query);
 }
