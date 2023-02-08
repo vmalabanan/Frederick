@@ -50,30 +50,32 @@ export default {
 
 <style scoped>
 .options-container {
-	margin-top: 4rem;
+	margin-top: 9rem;
 	display: flex;
 	justify-content: center;
+  align-items: center;
 }
 
 .options-holder {
-	width: 900px;
-	background-color: #8ECAE6;
-	border-radius: 25px;
-	height: 800px;
+	width: 50rem;
+	/* background-color: #8ECAE6; */
+  border: 1rem solid #8ECAE6;
+	border-radius: 2rem;
+	height: 30rem;
 	display: flex;
 }
 
 .options {
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
-	height: 500px;
-	width: 500px;
+	gap: 1rem;
+	height: 15rem;
+	width: 25rem;
 	align-self: center;
 }
 
 button {
-	font-size: 50px;
+	font-size: 2rem;
 	border-radius: 20px;
 }
 </style>
