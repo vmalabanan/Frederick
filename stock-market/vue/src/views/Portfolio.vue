@@ -21,11 +21,18 @@
 				:onPortfolio="true" />
 		</div>
 
+
+		<div :class="{ blurred: buySellCard.show }">
+			<chat-container></chat-container>
+		</div>
+
 		<buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
+
 	</div>
 </template>
 
 <script>
+import ChatContainer from "../components/ChatContainer.vue"
 import BuyStock from "../components/BuyStock.vue"
 import Leaderboard from "../components/Leaderboard.vue"
 import StockContainer from "../components/StockContainer.vue";
@@ -36,7 +43,7 @@ import tradeService from "../services/TradeService"
 
 export default {
 	name: "portfolio",
-	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock },
+	components: { LineChart, GameAccount, StockContainer, Leaderboard, BuyStock, ChatContainer },
 	data() {
 		return {
 			gameId: this.$route.params.id,
@@ -207,4 +214,5 @@ div#search {
 	margin-left: auto;
 	margin-right: auto;
 }
+
 </style>
