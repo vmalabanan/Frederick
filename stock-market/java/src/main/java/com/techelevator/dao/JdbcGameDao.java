@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -176,10 +177,10 @@ public class JdbcGameDao implements GameDao
     @Override
     public boolean isGameEnded(int gameId) {
         String sql = "SELECT CURRENT_TIMESTAMP > end_date FROM GAMES WHERE game_id = ?;";
-
         Boolean isGameEnded = jdbcTemplate.queryForObject(sql, Boolean.class, gameId);
 
         return isGameEnded;
+
     }
 
     private Game mapRowToGame(SqlRowSet rs)
