@@ -11,16 +11,16 @@
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" />
+					placeholder="GOOG" :value="search.input"/>
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
-					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
+					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" :graphLabel="graphLabel"/>
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard"
 					:stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio"
-					:onPortfolio="true" />
+					:onPortfolio="true" :graphLabel="graphLabel"/>
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
@@ -63,7 +63,6 @@ export default {
 			onPortfolio: true,
 			stompClient: SocketService.startConnection(),
 			connection: false,
-
 			search: {
 				input: "",
 				symbols: [],
@@ -153,17 +152,18 @@ export default {
 			if (text == "Buy Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.getPortfolioGraph();
-					this.search.symbols = [];
+					this.getPortfolioGraph()
+					this.search.symbols = []
+					this.search.input = ""
 				}
 			}
 		},
 		updateSearch(event) {
-			const symbol = event.target.value;
-			if (symbol == "") {
+			this.search.input = event.target.value;
+			if (this.search.input == "") {
 				return;
 			}
-			MarketDataService.searchTicker(symbol).then(resp => {
+			MarketDataService.searchTicker(this.search.input).then(resp => {
 				const data = resp.data;
 				this.search.symbols = data.map(stock => stock.symbol);
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(
