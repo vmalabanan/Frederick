@@ -4,8 +4,8 @@
 		<div class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 				<game-account />
-				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="graphData.dataPoints"
-					:labels="graphData.time" :graphLabel="this.graphLabel" />
+				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
+					:labels="getGraphXAxis" :graphLabel="this.graphLabel" />
 				<leaderboard :gameId="gameId" />
 			</div>
 
@@ -69,11 +69,18 @@ export default {
 				cards: []
 			},
 
-			graphData: {
-				dataPoints: [],
-				time: [],
-				labels: []
-			},
+			graphData: [
+				{
+					dataPoints: [],
+					time: [],
+					labels: [],
+				},
+				{
+					portfolioDataPoints: [],
+					portfolioTime: [],
+					portfolioLabels: [],
+				}
+			],
 
 			buySellCard: {
 				show: false,
@@ -106,25 +113,25 @@ export default {
 			// })
 			// return data;
 			this.graphLabel = "My Portfolio"
-			this.graphData.dataPoints = []
-			this.graphData.time = []
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
+			this.graphData[1].dataPoints = []
+			this.graphData[1].portfolioTime = []
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
 		},
 		updateGraphWith(symbol) {
-			const graphData = this.graphData;
+			const graphData = this.graphData[0];
 			this.graphLabel = symbol;
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = [];
@@ -271,8 +278,8 @@ export default {
 		if (this.graphLabel != "My Portfolio") {
 			MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
 			const data = resp.data[0];
-			this.graphData.dataPoints.push(data.price);
-			this.graphData.time.push(new Date());
+			this.graphData[0].dataPoints.push(data.price);
+			this.graphData[0].time.push(new Date());
 			});
 		}
 
@@ -285,6 +292,22 @@ export default {
 				backgroundColor: "#8ECAE6",
 				borderRadius: "20px"
 			};
+		},
+		getGraphDataPoints() {
+			if (this.graphLabel == "My Portfolio") {
+				return this.graphData[1].portfolioDataPoints
+			}
+			else {
+				return this.graphData[0].dataPoints
+			}
+		},
+		getGraphXAxis() {
+			if (this.graphLabel == "My Portfolio") {
+				return this.graphData[1].portfolioTime
+			}
+			else {
+				return this.graphData[0].time
+			}
 		}
 	}
 };
