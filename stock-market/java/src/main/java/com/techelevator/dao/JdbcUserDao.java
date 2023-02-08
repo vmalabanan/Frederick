@@ -101,7 +101,8 @@ public class JdbcUserDao implements UserDao {
                 "FROM users as u " +
                 "JOIN games_users as gu " +
                 "ON u.user_id = gu.user_id " +
-                "WHERE gu.game_id = ?;";
+                "WHERE gu.game_id = ? " +
+                "AND gu.invitation_status_id = 2;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId);
 
