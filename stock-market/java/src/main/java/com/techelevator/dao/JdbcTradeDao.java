@@ -18,13 +18,15 @@ public class JdbcTradeDao implements TradeDao {
     private JdbcTemplate jdbcTemplate;
     private UserDao userDao;
     private CashDao cashDao;
+    private GameDao gameDao;
 
     private static final Logger log = LoggerFactory.getLogger(JdbcTradeDao.class);
 
-    public JdbcTradeDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao) {
+    public JdbcTradeDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao, GameDao gameDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
         this.cashDao = cashDao;
+        this.gameDao = gameDao;
     }
 
     @Override
@@ -137,17 +139,28 @@ public class JdbcTradeDao implements TradeDao {
     @Override
     public List<Portfolio> getPortfolioHistory(int userId, int gameId) {
         List<Portfolio> portfolioHistory = new ArrayList<>();
+        // check whether the game has ended
+        boolean isGameEnded = gameDao.isGameEnded(gameId);
 
-        // TODO: instead of always sending back a list of size 7, only send back the
-        // history for the number of days that have elapsed since game started
-        // if game endDate > currentTimeStamp, get time that has elapsed since game
-        // started
+        // get the game's length
+        String sql = "SELECT game_length_days " +
+                "FROM games " +
+                "WHERE game_id = ?;";
 
-        // set number of days equal to the lesser of gameLengthDays or number of days
-        // that have elapsed since game started
+        Integer gameLengthDays = jdbcTemplate.queryForObject(sql, Integer.class, gameId);
 
-        // for days 1-7, set portfolio holdings (as of end of day)
-        for (int i = 1; i <= 7; i++) {
+        // get the days that have passed since the game started
+        sql = "SELECT DATE_PART('day', CURRENT_TIMESTAMP - (SELECT start_date FROM GAMES WHERE game_id = ?));";
+
+        Integer daysSinceGameStart = jdbcTemplate.queryForObject(sql, Integer.class, gameId);
+
+        // set # days to get portfolio history
+        // if the game has ended, set = game's length
+        // if it hasn't ended, set = days since game started
+        int days = isGameEnded ? gameLengthDays : daysSinceGameStart;
+
+        // for # days, set portfolio holdings (as of end of 24-hour period)
+        for (int i = 1; i <= days; i++) {
             Portfolio portfolio = getPortfolioByDay(i, userId, gameId);
 
             portfolioHistory.add(portfolio);

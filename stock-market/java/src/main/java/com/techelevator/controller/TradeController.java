@@ -75,8 +75,7 @@ public class TradeController {
 
     // Should the path actually be /{gameId}/history ?
     @GetMapping(value = "/{gameId}/history/all")
-    public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(@PathVariable int gameId, Principal principal) {
-        // int userId = userDao.findIdByUsername(principal.getName());
+    public List<PortfolioHistoryDTO> getPortfolioHistoryAllPlayers(@PathVariable int gameId) {
 
         return tradeDao.getPortfolioHistoryAllPlayers(gameId);
     }
