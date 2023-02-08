@@ -57,12 +57,19 @@ export default {
     },
     send() {
       console.log("Send message:" + this.sendMessage);
-      if (this.stompClient && this.stompClient.connected) {
+      if (
+        this.stompClient &&
+        this.stompClient.connected &&
+        this.sendMessage.trim().length != 0
+      ) {
         const msg = {
           fromUser: this.$store.state.user.username,
           content: this.sendMessage,
         };
         this.stompClient.send("/app/game", JSON.stringify(msg), {});
+      } else {
+        const msg = "Error: Message cannot be empty"
+		this.receivedMessages.push(msg)
       }
       this.sendMessage = "";
     },
