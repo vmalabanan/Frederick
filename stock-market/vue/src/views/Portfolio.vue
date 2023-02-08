@@ -43,6 +43,7 @@ import GameOverScreen from "../components/GameOverScreen.vue";
 import MarketDataService from "../services/MarketDataService";
 import tradeService from "../services/TradeService";
 import gameService from "../services/GamesService";
+import SocketService from '../services/SocketService';
 
 export default {
 	name: "portfolio",
@@ -60,6 +61,8 @@ export default {
 			gameOver: false,
 			gameId: this.$route.params.id,
 			onPortfolio: true,
+			stompClient: SocketService.startConnection(),
+			connection: false,
 
 			search: {
 				input: "",
@@ -203,6 +206,23 @@ export default {
 	},
 	created() {
 		this.isGameOver();
+
+		this.stompClient.connect({},
+			() => {
+				console.log("Connecting")
+				this.stompClient.subscribe(`/topic/update`, resp => console.log(resp.body))
+				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, resp => console.log(resp.body))
+				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)
+				this.connection = true
+			},
+			() => {
+				this.connection = false
+				console.log("error")
+			}
+		)
+
+
+
 		tradeService.getPortfolio(this.gameId).then(resp => {
 			const symbols = resp.data.stocks.map(stock => stock.tickerSymbol);
 			this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols);

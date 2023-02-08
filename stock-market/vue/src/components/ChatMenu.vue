@@ -34,19 +34,21 @@ export default {
 		};
 	},
 	created() {
-		this.socket = new SockJS("http://localhost:8080/");
-		this.stompClient = Stomp.over(this.socket);
-		this.stompClient.connect({},
-			() => {
-				// console.log(frame)
-				this.connected = true
-				this.stompClient.subscribe('/topic/chat', resp => this.handleMessage(resp))
-			},
-			() => {
-				// console.log(error);
-				this.connected = false
-			}
-		)
+		if (!this.$state.store.socket.connection) {
+			this.socket = new SockJS("http://localhost:8080/");
+			this.stompClient = Stomp.over(this.socket);
+			this.stompClient.connect({},
+				() => {
+					// console.log(frame)
+					this.connected = true
+					this.stompClient.subscribe('/topic/chat', resp => this.handleMessage(resp))
+				},
+				() => {
+					// console.log(error);
+					this.connected = false
+				}
+			)
+		}
 	},
 	beforeUnMount() {
 		this.disconnect()
