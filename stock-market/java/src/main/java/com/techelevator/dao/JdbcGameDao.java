@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class JdbcGameDao implements GameDao
@@ -170,6 +171,15 @@ public class JdbcGameDao implements GameDao
         String sql = "DELETE FROM games WHERE game_id = ?";
         int deleted = jdbcTemplate.update(sql, gameId);
         return deleted > 0;
+    }
+
+    @Override
+    public boolean isGameEnded(int gameId) {
+        String sql = "SELECT CURRENT_TIMESTAMP > end_date FROM GAMES WHERE game_id = ?;";
+
+        Boolean isGameEnded = jdbcTemplate.queryForObject(sql, Boolean.class, gameId);
+
+        return isGameEnded;
     }
 
     private Game mapRowToGame(SqlRowSet rs)

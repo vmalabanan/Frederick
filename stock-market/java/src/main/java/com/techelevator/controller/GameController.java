@@ -93,6 +93,17 @@ public class GameController {
 
     /**
      *
+     * @return list of user's games with invitation status = "Accepted"
+     */
+    @GetMapping(value = "/{gameId}/ended")
+    public Boolean isGameEnded(@PathVariable int gameId) {
+
+        return gameDao.isGameEnded(gameId);
+    }
+
+
+    /**
+     *
      * @param invitation Invitation object (only gameId is required)
      * @param principal  logged in user
      */

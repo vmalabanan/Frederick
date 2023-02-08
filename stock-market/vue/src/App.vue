@@ -70,7 +70,7 @@ export default {
 header {
   background-color: #023047;
   color: #fb8500;
-  font-size: 60px;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 

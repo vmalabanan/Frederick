@@ -25,4 +25,6 @@ public interface GameDao {
 
     boolean delete(int gameId);
 
+    boolean isGameEnded(int gameId);
+
 }
