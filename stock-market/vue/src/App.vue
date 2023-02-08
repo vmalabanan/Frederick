@@ -2,17 +2,19 @@
   <div id="app">
     <header class="navbar navbar-expand-ig bd-navbar sticky-top" v-if="this.$route.name !== 'gameOver'">
       <img src="./img/frederick_logo.svg" alt="Frederick the goldfish!" />
-      <active-games v-if="this.$route.name == 'portfolio'"></active-games>
-      <span>{{ this.header[this.$route.name] }}</span>
+      <drop-down v-if="this.$route.name == 'portfolio'" :gameName="header.portfolio" class="dropdown"></drop-down>
+      <!-- <active-games v-if="this.$route.name == 'portfolio'"></active-games> -->
+      <span v-if="this.$route.name !== 'portfolio'">{{ this.header[this.$route.name] }}</span>
        <div id="nav" v-if="$store.state.token != ''">
-        <router-link tag="span" v-bind:to="{ name: 'menu' }" v-if="this.$route.name == 'portfolio'">Game Menu</router-link>
-        <router-link tag="span" v-bind:to="{ name: 'home' }">Logout</router-link>
+        <!-- <router-link tag="span" v-bind:to="{ name: 'menu' }" v-if="this.$route.name == 'portfolio'">Game Menu</router-link>
+        <router-link tag="span" v-bind:to="{ name: 'home' }">Logout</router-link> -->
+     <hamburger class="hamburger"></hamburger>
       </div>
-      <img
+      <!-- <img
         style="transform: scaleX(-1)"
         src="./img/frederick_logo.svg"
         alt="Frederick the goldfish!"
-      />
+      /> -->
     </header>
 
     <!-- <div id="nav">
@@ -24,11 +26,12 @@
   </div>
 </template>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 <script>
 import gamesService from "./services/GamesService"
 import ActiveGames from "./components/ActiveGames.vue"
+import DropDown from './components/DropDown.vue'
+import Hamburger from './components/Hamburger.vue'
 
 export default {
   name: 'App',
@@ -62,11 +65,12 @@ export default {
       }
     }
   },
-  components: {ActiveGames}
+  components: {ActiveGames, DropDown, Hamburger}
 }
 </script>
 
-<style >
+
+<style scoped>
 header {
   background-color: #023047;
   color: #fb8500;
@@ -76,5 +80,16 @@ header {
 
 #nav > span {
   cursor: pointer;
+}
+
+img {
+  margin: 0 1rem;
+}
+.dropdown {
+  margin-top: 4rem;
+}
+
+.hamburger {
+  margin-right: 3rem;
 }
 </style>
