@@ -4,23 +4,23 @@
 		<div class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 				<game-account />
-				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="graphData.dataPoints"
-					:labels="graphData.time" :graphLabel="this.graphLabel" />
+				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
+					:labels="getGraphXAxis" :graphLabel="this.graphLabel" />
 				<leaderboard :gameId="gameId" />
 			</div>
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" />
+					placeholder="GOOG" :value="search.input"/>
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
-					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" />
+					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" :graphLabel="graphLabel"/>
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard"
 					:stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio"
-					:onPortfolio="true" />
+					:onPortfolio="true" :graphLabel="graphLabel"/>
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
@@ -63,18 +63,24 @@ export default {
 			onPortfolio: true,
 			stompClient: SocketService.startConnection(),
 			connection: false,
-
 			search: {
 				input: "",
 				symbols: [],
 				cards: []
 			},
 
-			graphData: {
-				dataPoints: [],
-				time: [],
-				labels: []
-			},
+			graphData: [
+				{
+					dataPoints: [],
+					time: [],
+					labels: [],
+				},
+				{
+					portfolioDataPoints: [],
+					portfolioTime: [],
+					portfolioLabels: [],
+				}
+			],
 
 			buySellCard: {
 				show: false,
@@ -107,25 +113,25 @@ export default {
 			// })
 			// return data;
 			this.graphLabel = "My Portfolio"
-			this.graphData.dataPoints = []
-			this.graphData.time = []
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.dataPoints.push(100000)
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
-			this.graphData.time.push(new Date())
+			this.graphData[1].dataPoints = []
+			this.graphData[1].portfolioTime = []
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioDataPoints.push(100000)
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
+			this.graphData[1].portfolioTime.push(new Date())
 		},
 		updateGraphWith(symbol) {
-			const graphData = this.graphData;
+			const graphData = this.graphData[0];
 			this.graphLabel = symbol;
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = [];
@@ -153,17 +159,18 @@ export default {
 			if (text == "Buy Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.getPortfolioGraph();
-					this.search.symbols = [];
+					this.getPortfolioGraph()
+					this.search.symbols = []
+					this.search.input = ""
 				}
 			}
 		},
 		updateSearch(event) {
-			const symbol = event.target.value;
-			if (symbol == "") {
+			this.search.input = event.target.value;
+			if (this.search.input == "") {
 				return;
 			}
-			MarketDataService.searchTicker(symbol).then(resp => {
+			MarketDataService.searchTicker(this.search.input).then(resp => {
 				const data = resp.data;
 				this.search.symbols = data.map(stock => stock.symbol);
 				MarketDataService.getRealTimeStockPrice(this.search.symbols).then(
@@ -271,8 +278,8 @@ export default {
 		if (this.graphLabel != "My Portfolio") {
 			MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
 			const data = resp.data[0];
-			this.graphData.dataPoints.push(data.price);
-			this.graphData.time.push(new Date());
+			this.graphData[0].dataPoints.push(data.price);
+			this.graphData[0].time.push(new Date());
 			});
 		}
 
@@ -285,6 +292,22 @@ export default {
 				backgroundColor: "#8ECAE6",
 				borderRadius: "20px"
 			};
+		},
+		getGraphDataPoints() {
+			if (this.graphLabel == "My Portfolio") {
+				return this.graphData[1].portfolioDataPoints
+			}
+			else {
+				return this.graphData[0].dataPoints
+			}
+		},
+		getGraphXAxis() {
+			if (this.graphLabel == "My Portfolio") {
+				return this.graphData[1].portfolioTime
+			}
+			else {
+				return this.graphData[0].time
+			}
 		}
 	}
 };
