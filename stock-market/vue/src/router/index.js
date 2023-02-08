@@ -101,7 +101,7 @@ const router = new Router({
       name: "portfolio",
       component: Portfolio,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {
@@ -117,7 +117,7 @@ const router = new Router({
       name: "lobby ",
       component: Lobby,
       meta: {
-        requiresAuth: false
+        requiresAuth: true
       }
     },
     {

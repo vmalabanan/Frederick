@@ -1,54 +1,35 @@
 <template>
 	<div id="main-content" class="container">
-		<table>
-			<tbody>
-				<tr v-for="item in receivedMessages" :key="item">
-					<td>{{ item }}</td>
-				</tr>
-			</tbody>
-		</table>
-		<input type="text" v-model="sendMessage" />
-		<button @click="send">Send Message</button>
+		<div v-for="(content, index) in contents" v-text="content" :key="index" />
 	</div>
 </template>
 
 <script>
-import SockJS from "sockjs-client";
-import Stomp, { Client } from "webstomp-client";
-
+import SocketService from '../services/SocketService';
 export default {
 	name: "test",
 	data() {
 		return {
-			socket: SockJS,
-			stompClient: Client,
-			receivedMessages: [],
-			sendMessage: "",
-			connected: false
-		};
+			connection: false,
+			stompClient: SocketService.startConnection(),
+			contents: [],
+		}
 	},
 	created() {
-		this.socket = new SockJS("http://localhost:8080/");
-		this.stompClient = Stomp.over(this.socket);
 		this.stompClient.connect({},
 			() => {
-				// console.log(frame)
-				this.connected = true
-				this.stompClient.subscribe('/topic/chat', resp => this.handleMessage(resp))
+				console.log("Connecting")
+				this.stompClient.subscribe('/topic/test', resp => this.handleMessage(resp))
+				this.connection = true
 			},
 			() => {
-				// console.log(error);
-				this.connected = false
+				this.connection = false
 			}
 		)
 	},
-	beforeUnMount() {
-		this.disconnect()
-	},
 	methods: {
 		handleMessage(resp) {
-			const body = JSON.parse(resp.body)
-			this.receivedMessages.push(`${body.fromUser}: ${body.content}`);
+			this.contents.push(resp.body)
 		},
 		send() {
 			console.log("Send message:" + this.sendMessage);
@@ -56,13 +37,7 @@ export default {
 				const msg = { fromUser: this.$store.state.user.username, content: this.sendMessage };
 				this.stompClient.send("/app/game", JSON.stringify(msg), {});
 			}
-		},
-		disconnect() {
-			if (this.stompClient) {
-				this.stompClient.disconnect();
-			}
-			this.connected = false;
-		},
+		}
 	}
 };
 </script>
