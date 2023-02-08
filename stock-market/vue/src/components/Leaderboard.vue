@@ -38,7 +38,7 @@ export default {
     return {
       portfolioValues: {},
       rankedPortfolios: {},
-      polling: null
+      polling: null,
     };
   },
   created() {
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     buildLeaderboard() {
-      tradeService.getPortfolioAllPlayers(this.gameId).then(resp => {
+      tradeService.getPortfolioAllPlayers(this.gameId).then((resp) => {
         const playerPortfoliosArr = resp.data;
 
         // set to store the holdings of all players
@@ -65,7 +65,7 @@ export default {
         const stockHoldings = {};
 
         // iterate through playerPortfoliosArr
-        playerPortfoliosArr.forEach(playerPortfolio => {
+        playerPortfoliosArr.forEach((playerPortfolio) => {
           // store each player's cash in portfolioValues
           this.portfolioValues[playerPortfolio.username] =
             playerPortfolio.portfolio.cash;
@@ -73,7 +73,7 @@ export default {
           stockHoldings[playerPortfolio.username] = {};
 
           // iterate through player's stocks
-          playerPortfolio.portfolio.stocks.forEach(stock => {
+          playerPortfolio.portfolio.stocks.forEach((stock) => {
             // add each unique tickerSymbol to stocks
             stocks.add(stock.tickerSymbol);
             // add tickerSymbol and numberOfShares to stockHoldings
@@ -83,10 +83,10 @@ export default {
         });
 
         // make a call to the API to get current price for each stock
-        marketDataService.getRealTimeStockPrice(...stocks).then(resp => {
+        marketDataService.getRealTimeStockPrice(...stocks).then((resp) => {
           const realTimeStockPriceArr = resp.data;
 
-          realTimeStockPriceArr.forEach(realTimeStockPrice => {
+          realTimeStockPriceArr.forEach((realTimeStockPrice) => {
             stocksCurrentPrice[realTimeStockPrice.symbol] =
               realTimeStockPrice.price;
           });
@@ -94,11 +94,11 @@ export default {
           // calculate portfolio value for each player
           // iterate through all players
           const players = Object.keys(stockHoldings);
-          players.forEach(player => {
+          players.forEach((player) => {
             // iterate through player's stocks
             const stocks = Object.keys(stockHoldings[player]);
 
-            stocks.forEach(stock => {
+            stocks.forEach((stock) => {
               // calculate stock values
               const currentPrice = stocksCurrentPrice[stock];
               const numberOfShares = stockHoldings[player][stock];
@@ -119,8 +119,8 @@ export default {
       this.polling = setInterval(() => {
         this.buildLeaderboard();
       }, 6000);
-    }
-  }
+    },
+  },
 };
 </script>
 
