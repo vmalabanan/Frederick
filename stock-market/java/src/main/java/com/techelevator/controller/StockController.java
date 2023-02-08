@@ -1,6 +1,8 @@
 package com.techelevator.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,13 +41,13 @@ public class StockController {
 	}
 
 	@GetMapping("/quote/{symbol}")
-	public Stock[] getQuote(@PathVariable String symbol) {
+	public List<Stock> getQuote(@PathVariable String symbol) {
 		return stockDao.getQuote(symbol);
 	}
 
 	@GetMapping("/quote/")
-	public Stock[] getQuote() {
-		return stockDao.getQuote("");
+	public List<Stock> getQuote() {
+		return new ArrayList<Stock>();
 	}
 
 	@GetMapping("/search")
