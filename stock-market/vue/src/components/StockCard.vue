@@ -1,5 +1,5 @@
 <template>
-	<div id="stock" class="card" :class="{active : isActive}" @click="setActive()">
+	<div id="stock" class="card" :class="{active : isActive}">
 		<div class="card-body">
 			<h4 class="card-title">
 				<div class="header-container">
@@ -52,9 +52,9 @@ export default {
 			}
 
 		},
-		setActive() {
-			this.$emit('onToggle')
-		},
+		// setActive() {
+		// 	this.$emit('onToggle')
+		// },
 		getQuantityOwned() {
 			if (!this.$store.state.portfolio.symbols.includes(this.symbol)) {
 				return 0

@@ -3,7 +3,7 @@
 		<h2 v-show="onPortfolio">My Portfolio</h2>
 		<div id="stocks">
 			<stock-card v-for="(stock, index) in stocks" :key="index" v-bind="stock"
-				@click.native="handleClick(stock.symbol)" v-model="buySellCard" :isActive="activeIndex === index" @onToggle="onToggle(index)"/>
+				@click.native="handleClick(stock.symbol)" v-model="buySellCard" :isActive="graphLabel === stock.symbol" />
 		</div>
 	</div>
 
@@ -14,7 +14,7 @@ import StockCard from './StockCard.vue'
 export default {
 	name: 'StockContainer',
 	components: { StockCard },
-	props: ['stocks', 'value', 'onPortfolio'],
+	props: ['stocks', 'value', 'onPortfolio', 'graphLabel'],
 	emits: ['cardClick'],
 	data() {
 		return {
@@ -25,14 +25,14 @@ export default {
 		handleClick(symbol) {
 			this.$emit('cardClick', symbol)
 		},
-		onToggle(index) {
-			if (this.activeIndex === index) {
-				this.activeIndex = null;
-			}
-			else {
-				this.activeIndex = index;
-			}
-		}
+		// onToggle(index) {
+		// 	if (this.activeIndex === index) {
+		// 		this.activeIndex = null;
+		// 	}
+		// 	else {
+		// 		this.activeIndex = index;
+		// 	}
+		// }
 	},
 	computed: {
 		buySellCard: {
