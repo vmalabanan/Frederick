@@ -27,6 +27,10 @@ export default {
 
     getGameById(gameId) {
         return axios.get("/games/" + gameId)
+    },
+
+    isGameOver(gameId) {
+        return axios.get("/games/" + gameId + "/ended")
     }
 
 

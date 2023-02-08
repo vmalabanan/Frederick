@@ -44,7 +44,7 @@ export default {
   created() {
     // build leaderboard immediately on creation
     this.buildLeaderboard();
-    // also start leaderboard polling
+    // also start polling for leaderboard data
     this.buildLeaderboardWithPolling();
   },
   beforeDestroy() {
@@ -118,7 +118,7 @@ export default {
     buildLeaderboardWithPolling() {
       this.polling = setInterval(() => {
         this.buildLeaderboard();
-      }, 3000);
+      }, 6000);
     }
   }
 };

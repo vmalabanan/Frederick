@@ -20,6 +20,7 @@ import Portfolio from '../views/Portfolio.vue'
 
 // Testing
 import Test from '../test-views/Test.vue'
+import GameOverScreen from '../components/GameOverScreen.vue'
 
 Vue.use(Router)
 
@@ -117,6 +118,14 @@ const router = new Router({
       component: Lobby,
       meta: {
         requiresAuth: false
+      }
+    },
+    {
+      path: "/gameOver",
+      name: "gameOver",
+      component: GameOverScreen,
+      meta: {
+        requiresAuth: true
       }
     }
   ]
