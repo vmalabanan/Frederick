@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <header
-      class="navbar navbar-expand-ig bd-navbar sticky-top"
+      class="navbar navbar-expand-ig bd-navbar"
+      id="navbar"
       v-if="this.$route.name !== 'gameOver'"
     >
       <!-- <img src="./img/frederick_logo.svg" alt="Frederick the goldfish!" /> -->
@@ -84,20 +85,25 @@ export default {
         });
       }
     },
+    
   },
   components: { ActiveGames, DropDown, Hamburger },
 };
 </script>
 
 <style scoped>
-header {
+#navbar {
   background-color: #023047;
   color: #fb8500;
   font-size: 2.5rem;
   font-weight: bold;
   height: 4.3rem;
   box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.3);
-  transition: top 0.3s;
+  transition: top 0.6s;
+  position: fixed; /* Make it stick/fixed */
+  top: 0; /* Stay on top */
+  width: 100%; /* Full width */
+  z-index: 10;
 }
 
 #nav > span {
