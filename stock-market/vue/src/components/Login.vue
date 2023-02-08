@@ -11,13 +11,13 @@
 		<div class="form-floating">
 			<input type="text" id="username" class="form-control" placeholder="Username" v-model="user.username"
 				required autofocus />
-			<label for="username" class="sr-only">Username</label>
+			<label for="username">Username</label>
 		</div>
 
 		<div class="form-floating">
 			<input type="password" id="password" class="form-control" placeholder="Password" v-model="user.password"
 				required />
-			<label for="password" class="sr-only">Password</label>
+			<label for="password">Password</label>
 		</div>
 
 		<button class="btn-lg" type="submit">Sign in</button>
