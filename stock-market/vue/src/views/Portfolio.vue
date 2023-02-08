@@ -185,23 +185,38 @@ export default {
 			);
 
 		},
-		getPortfolioCards() {
-			console.log("Updating portfolio cards")
-			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
-				const data = resp.data;
-				const filteredData = data.filter(stock => {
-					if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
-						const index = this.$store.state.portfolio.symbols.indexOf(
-							stock.symbol
-						);
-						const sharesOwned = this.$store.state.portfolio.trades[index]
-							.numberOfShares;
-						return sharesOwned > 0;
-					}
-					return false;
-				});
-				this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
+		// getPortfolioCards() {
+		// 	console.log("Updating portfolio cards")
+		// 	MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
+		// 		const data = resp.data;
+		// 		const filteredData = data.filter(stock => {
+		// 			if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+		// 				const index = this.$store.state.portfolio.symbols.indexOf(
+		// 					stock.symbol
+		// 				);
+		// 				const sharesOwned = this.$store.state.portfolio.trades[index]
+		// 					.numberOfShares;
+		// 				return sharesOwned > 0;
+		// 			}
+		// 			return false;
+		// 		});
+		// 		this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
+		// 	});
+		// },
+		getPortfolioCards(resp) {
+			const data = JSON.parse(resp.body)
+			const filteredData = data.filter(stock => {
+				if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
+					const index = this.$store.state.portfolio.symbols.indexOf(
+						stock.symbol
+					);
+					const sharesOwned = this.$store.state.portfolio.trades[index]
+						.numberOfShares;
+					return sharesOwned > 0;
+				}
+				return false;
 			});
+			this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
 		}
 	},
 	created() {
@@ -210,7 +225,7 @@ export default {
 		this.stompClient.connect({},
 			() => {
 				console.log("Connecting")
-				this.stompClient.subscribe(`/topic/update`, resp => console.log(resp.body))
+				this.stompClient.subscribe(`/topic/update`, resp => this.getPortfolioCards(resp))
 				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, resp => console.log(resp.body))
 				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)
 				this.connection = true
@@ -244,12 +259,12 @@ export default {
 
 		setInterval(() => {
 			// const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
-			if (this.search.symbols) {
+			if (this.search.symbols.length > 0) {
 				this.getSearchCards();
 			}
-			if (this.$store.state.portfolio.symbols) {
-				this.getPortfolioCards();
-			}
+			// if (this.$store.state.portfolio.symbols) {
+			// 	this.getPortfolioCards();
+			// }
 
 
 
@@ -257,7 +272,7 @@ export default {
 			MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
 			const data = resp.data[0];
 			this.graphData.dataPoints.push(data.price);
-			this.graphData.time.push(data.date);
+			this.graphData.time.push(new Date());
 			});
 		}
 

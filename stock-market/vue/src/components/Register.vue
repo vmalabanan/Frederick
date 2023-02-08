@@ -7,31 +7,31 @@
 		<div class="form-floating">
 			<input type="text" id="sign-in-username" class="form-control" placeholder="Username" v-model="user.username"
 				required autofocus />
-			<label for="username" class="sr-only">Username</label>
+			<label for="username">Username</label>
 		</div>
 
 		<div class="form-floating">
 			<input type="text" id="firstName" class="form-control" placeholder="First Name" v-model="user.firstName"
 				required autofocus />
-			<label for="firstName" class="sr-only">First Name</label>
+			<label for="firstName">First Name</label>
 		</div>
 
 		<div class="form-floating">
 			<input type="text" id="lastName" class="form-control" placeholder="Last Name" v-model="user.lastName"
 				required autofocus />
-			<label for="lastName" class="sr-only">Last Name</label>
+			<label for="lastName">Last Name</label>
 		</div>
 
 		<div class="form-floating">
 			<input type="password" id="sign-in-password" class="form-control" placeholder="Password"
 				v-model="user.password" required />
-			<label for="password" class="sr-only">Password</label>
+			<label for="password">Password</label>
 		</div>
 
 		<div class="form-floating">
 			<input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"
 				v-model="user.confirmPassword" required />
-			<label for="confirmPassword" class="sr-only">Confirm Password</label>
+			<label for="confirmPassword">Confirm Password</label>
 		</div>
 
 		<button class="btn-lg create-account" type="submit">

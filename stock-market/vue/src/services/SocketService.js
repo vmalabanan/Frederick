@@ -9,6 +9,7 @@ export default {
     startConnection() {
         const sockJs = new SockJS(BASE_SOCKET);
         const stompClient = Stomp.over(sockJs);
+        stompClient.debug = () => {return;}
         return stompClient;
     },
 }

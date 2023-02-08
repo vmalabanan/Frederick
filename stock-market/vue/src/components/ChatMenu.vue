@@ -1,115 +1,122 @@
 <template>
-	<div id="main-content">
-		<div id="chat-log">
-			<table>
-				<tbody>
-					<tr v-for="item in receivedMessages" :key="item">
-						<td>{{ item }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="button-container">
-			<input type="text" v-model="sendMessage" />
-			<button @click="clearChat()" class="btn btn-light">Clear Chat</button>
-			<button @click="send" class="btn btn-primary">Send Message</button>
-		</div>
-	</div>
+  <div id="main-content">
+    <div id="chat-log">
+      <table>
+        <tbody>
+          <tr v-for="item in receivedMessages" :key="item">
+            <td>{{ item }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="button-container">
+      <input type="text" v-model="sendMessage" />
+      <button @click="clearChat()" class="btn btn-light">Clear Chat</button>
+      <button @click="send" class="btn btn-primary">Send Message</button>
+    </div>
+  </div>
 </template>
 
 <script>
-import SockJS from "sockjs-client";
-import Stomp, { Client } from "webstomp-client";
+import socketService from "../services/SocketService";
 
 export default {
-	name: "test",
-	data() {
-		return {
-			socket: SockJS,
-			stompClient: Client,
-			receivedMessages: [],
-			sendMessage: "",
-			connected: false,
-			showChat: false
-		};
-	},
-	created() {
-		if (!this.$state.store.socket.connection) {
-			this.socket = new SockJS("http://localhost:8080/");
-			this.stompClient = Stomp.over(this.socket);
-			this.stompClient.connect({},
-				() => {
-					// console.log(frame)
-					this.connected = true
-					this.stompClient.subscribe('/topic/chat', resp => this.handleMessage(resp))
-				},
-				() => {
-					// console.log(error);
-					this.connected = false
-				}
-			)
-		}
-	},
-	beforeUnMount() {
-		this.disconnect()
-	},
-	methods: {
-		handleMessage(resp) {
-			const body = JSON.parse(resp.body)
-			this.receivedMessages.push(`${body.fromUser}: ${body.content}`);
-		},
-		send() {
-			console.log("Send message:" + this.sendMessage);
-			if (this.stompClient && this.stompClient.connected) {
-				const msg = { fromUser: this.$store.state.user.username, content: this.sendMessage };
-				this.stompClient.send("/app/game", JSON.stringify(msg), {});
-			}
-			this.sendMessage = ""
-		},
-		disconnect() {
-			if (this.stompClient) {
-				this.stompClient.disconnect();
-			}
-			this.connected = false;
-		},
-		toggleChatLog() {
-			this.showChat = !this.showChat
-		},
-		clearChat() {
-			this.receivedMessages = []
-		}
-	}
+  name: "test",
+  data() {
+    return {
+      receivedMessages: [],
+      sendMessage: "",
+      stompClient: socketService.startConnection(),
+      connection: false,
+      showChat: false,
+    };
+  },
+  created() {
+    this.stompClient.connect(
+      {},
+      () => {
+        // console.log(frame)
+        this.connected = true;
+        this.stompClient.subscribe("/topic/chat", (resp) =>
+          this.handleMessage(resp)
+        );
+      },
+      () => {
+        // console.log(error);
+        this.connected = false;
+      }
+    );
+  },
+  beforeUnMount() {
+    this.disconnect();
+  },
+  methods: {
+    handleMessage(resp) {
+      const body = JSON.parse(resp.body);
+      this.receivedMessages.push(`${body.fromUser}: ${body.content}`);
+    },
+    send() {
+      console.log("Send message:" + this.sendMessage);
+      if (
+        this.stompClient &&
+        this.stompClient.connected &&
+        this.sendMessage.trim().length != 0
+      ) {
+        const msg = {
+          fromUser: this.$store.state.user.username,
+          content: this.sendMessage,
+        };
+        this.stompClient.send("/app/game", JSON.stringify(msg), {});
+      } else {
+        const msg = "Error: Message cannot be empty"
+		this.receivedMessages.push(msg)
+      }
+      this.sendMessage = "";
+    },
+    disconnect() {
+      if (this.stompClient) {
+        this.stompClient.disconnect();
+      }
+      this.connected = false;
+    },
+    toggleChatLog() {
+      this.showChat = !this.showChat;
+    },
+    clearChat() {
+      this.receivedMessages = [];
+    },
+  },
 };
 </script>
 
 <style scoped>
 #main-content {
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 #chat-log {
-	overflow-y: auto;
-	background-color: white;
-	border-radius: 20px;
-	height: 350px;
-	display: flex;
-	flex-direction: column-reverse;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 20px;
+  height: 350px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .button-container {
-	display: flex;
-	justify-content: center;
-	gap: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
 }
 
 input {
-	width: 800px;
+  width: 800px;
 }
 
 td {
-	padding-left: 10px;
-	padding-bottom: 10px;
+  padding-left: 10px;
+  padding-bottom: 10px;
 }
 </style>
