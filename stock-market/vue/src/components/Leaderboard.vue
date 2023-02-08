@@ -20,7 +20,9 @@
         {{ key }}
       </li>
 
-      <li class="list-group-item col-3 data">${{ value.toLocaleString("en-US") }}</li>
+      <li class="list-group-item col-3 data">
+        ${{ value.toLocaleString("en-US") }}
+      </li>
     </ul>
   </div>
 </template>
@@ -35,81 +37,97 @@ export default {
   data() {
     return {
       portfolioValues: {},
-      rankedPortfolios: {}
+      rankedPortfolios: {},
+      polling: null
     };
   },
   created() {
-    tradeService.getPortfolioAllPlayers(this.gameId).then(resp => {
-      const playerPortfoliosArr = resp.data;
+    // build leaderboard immediately on creation
+    this.buildLeaderboard();
+    // also start leaderboard polling
+    this.buildLeaderboardWithPolling();
+  },
+  beforeDestroy() {
+    clearInterval(this.polling);
+  },
+  methods: {
+    buildLeaderboard() {
+      tradeService.getPortfolioAllPlayers(this.gameId).then(resp => {
+        const playerPortfoliosArr = resp.data;
 
-      // set to store the holdings of all players
-      const stocks = new Set();
+        // set to store the holdings of all players
+        const stocks = new Set();
 
-      // object to store stock symbols (key) and the current price (value)
-      const stocksCurrentPrice = {};
+        // object to store stock symbols (key) and the current price (value)
+        const stocksCurrentPrice = {};
 
-      // object to store each player's stock holdings
-      const stockHoldings = {};
+        // object to store each player's stock holdings
+        const stockHoldings = {};
 
-      // iterate through playerPortfoliosArr
-      playerPortfoliosArr.forEach(playerPortfolio => {
-        // store each player's cash in portfolioValues
-        this.portfolioValues[playerPortfolio.username] =
-          playerPortfolio.portfolio.cash;
+        // iterate through playerPortfoliosArr
+        playerPortfoliosArr.forEach(playerPortfolio => {
+          // store each player's cash in portfolioValues
+          this.portfolioValues[playerPortfolio.username] =
+            playerPortfolio.portfolio.cash;
 
-        stockHoldings[playerPortfolio.username] = {};
+          stockHoldings[playerPortfolio.username] = {};
 
-        // iterate through player's stocks
-        playerPortfolio.portfolio.stocks.forEach(stock => {
-          // add each unique tickerSymbol to stocks
-          stocks.add(stock.tickerSymbol);
-          // add tickerSymbol and numberOfShares to stockHoldings
-          stockHoldings[playerPortfolio.username][stock.tickerSymbol] =
-            stock.numberOfShares;
-        });
-      });
-
-      // make a call to the API to get current price for each stock
-      marketDataService.getRealTimeStockPrice(...stocks).then(resp => {
-        const realTimeStockPriceArr = resp.data;
-
-        realTimeStockPriceArr.forEach(realTimeStockPrice => {
-          stocksCurrentPrice[realTimeStockPrice.symbol] =
-            realTimeStockPrice.price;
-        });
-
-        // calculate portfolio value for each player
-        // iterate through all players
-        const players = Object.keys(stockHoldings);
-        players.forEach(player => {
           // iterate through player's stocks
-          const stocks = Object.keys(stockHoldings[player]);
-
-          stocks.forEach(stock => {
-            // calculate stock values
-            const currentPrice = stocksCurrentPrice[stock];
-            const numberOfShares = stockHoldings[player][stock];
-
-            // add result to portfolio value
-            this.portfolioValues[player] += currentPrice * numberOfShares;
+          playerPortfolio.portfolio.stocks.forEach(stock => {
+            // add each unique tickerSymbol to stocks
+            stocks.add(stock.tickerSymbol);
+            // add tickerSymbol and numberOfShares to stockHoldings
+            stockHoldings[playerPortfolio.username][stock.tickerSymbol] =
+              stock.numberOfShares;
           });
         });
 
-        // sort portfolios in descending order
-        this.rankedPortfolios = Object.fromEntries(
-          Object.entries(this.portfolioValues).sort(([, a], [, b]) => b - a)
-        );
+        // make a call to the API to get current price for each stock
+        marketDataService.getRealTimeStockPrice(...stocks).then(resp => {
+          const realTimeStockPriceArr = resp.data;
+
+          realTimeStockPriceArr.forEach(realTimeStockPrice => {
+            stocksCurrentPrice[realTimeStockPrice.symbol] =
+              realTimeStockPrice.price;
+          });
+
+          // calculate portfolio value for each player
+          // iterate through all players
+          const players = Object.keys(stockHoldings);
+          players.forEach(player => {
+            // iterate through player's stocks
+            const stocks = Object.keys(stockHoldings[player]);
+
+            stocks.forEach(stock => {
+              // calculate stock values
+              const currentPrice = stocksCurrentPrice[stock];
+              const numberOfShares = stockHoldings[player][stock];
+
+              // add result to portfolio value
+              this.portfolioValues[player] += currentPrice * numberOfShares;
+            });
+          });
+
+          // sort portfolios in descending order
+          this.rankedPortfolios = Object.fromEntries(
+            Object.entries(this.portfolioValues).sort(([, a], [, b]) => b - a)
+          );
+        });
       });
-    });
-  },
-  methods: {}
+    },
+    buildLeaderboardWithPolling() {
+      this.polling = setInterval(() => {
+        this.buildLeaderboard();
+      }, 3000);
+    }
+  }
 };
 </script>
 
 <style scoped>
 #leaderboard {
   flex-basis: 20%;
-  background-color: #FFB703;
+  background-color: #ffb703;
   border-radius: 20px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
@@ -119,7 +137,7 @@ li {
 }
 
 ul:nth-child(even) {
-  background:#FB8500;
+  background: #fb8500;
 }
 
 .list-group-item {
@@ -129,7 +147,7 @@ ul:nth-child(even) {
 .leaderboard-title {
   text-align: center;
   font-size: 2rem;
-  background-color: #FB8500;
+  background-color: #fb8500;
 }
 
 .col-1 {
