@@ -46,6 +46,14 @@ public class JdbcCashDao implements CashDao {
                 "ORDER BY effective_date DESC " +
                 "LIMIT 1;";
 
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId);
+        BigDecimal cash;
+        
+        try{
+            cash = jdbcTemplate.queryForObject(sql, BigDecimal.class, gameId, userId, gameId);
+        } catch (Exception e) {
+            return null;
+        }
+
+        return cash;
     }
 }
