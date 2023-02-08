@@ -1,37 +1,37 @@
 import axios from 'axios';
 
 export default {
-    add(game) {
-        return axios.post('/games', game)
-    },
+	add(game) {
+		return axios.post('/games', game)
+	},
 
-    getAllGames() {
-        return axios.get('/games')
-    },
+	getAllGames() {
+		return axios.get('/games')
+	},
 
-    getInvitedGames() {
-        return axios.get('/games/invited')
-    },
+	getInvitedGames() {
+		return axios.get('/games/invited')
+	},
 
-    getAcceptedGames() {
-        return axios.get('/games/accepted')
-    },
+	getAcceptedGames() {
+		return axios.get('/games/accepted')
+	},
 
-    getRejectedGames() {
-        return axios.get('/games/rejected')
-    },
+	getRejectedGames() {
+		return axios.get('/games/rejected')
+	},
 
-    updateInvitationStatus(invitation) {
-        return axios.put('/games', invitation);
-    },
+	updateInvitationStatus(invitation) {
+		return axios.put('/games', invitation);
+	},
 
-    getGameById(gameId) {
-        return axios.get("/games/" + gameId)
-    },
+	getGameById(gameId) {
+		return axios.get("/games/" + gameId)
+	},
 
-    isGameOver(gameId) {
-        return axios.get("/games/" + gameId + "/ended")
-    }
+	isGameOver(gameId) {
+		return axios.get("/games/" + gameId + "/ended")
+	}
 
 
 }
