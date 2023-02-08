@@ -56,7 +56,9 @@ export default {
 
 <style scoped>
 button {
-  background: #fb8500;
+  /* background: #fb8500; */
+  background: #023047;
+  color: #fb8500;
   width: 20rem;
   display: flex;
   align-items: center;
