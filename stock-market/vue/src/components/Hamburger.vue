@@ -4,7 +4,7 @@
       <a @click="toggleShowMenu()"><i class="fa-solid fa-bars"></i></a>
       <ul class="list-group" v-show="showMenu">
         <li @click="menu()" class="list-group-item">Game Menu</li>
-        <li @click="home()" class="list-group-item">Home</li>
+        <li @click="home()" class="list-group-item">Logout</li>
       </ul>
     </div>
   </div>
@@ -50,9 +50,9 @@ a:hover {
 .list-group {
   list-style: none;
   position: absolute;
-  right: 0.2rem;
+  right: 0.05rem;
   font-size: 1rem;
-  width: 20rem;
+  width: 10rem;
 }
 
 .list-group-item {
