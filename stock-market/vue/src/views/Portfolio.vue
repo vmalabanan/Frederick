@@ -9,7 +9,7 @@
       >
         <game-account />
         <line-chart
-          :key="tempKey"
+          :key="graphLabel"
           :styles="chartStyles"
           :dataPoints="graphData.dataPoints"
           :labels="graphData.time"
@@ -90,8 +90,7 @@ export default {
     return {
       gameOver: false,
       gameId: this.$route.params.id,
-      tempKey: "AAPL",
-      onPortfolio: false,
+      onPortfolio: true,
 
       search: {
         input: "",
@@ -112,7 +111,9 @@ export default {
         buySell: false
       },
 
-      graphLabel: {}
+      graphLabel: {},
+	tradeSnapshots: []
+
     };
   },
   methods: {
@@ -123,30 +124,43 @@ export default {
       });
     },
     getPortfolioGraph() {
-      let data = [];
-      let week = new Date();
-      let today = new Date();
-      week.setDate(week.getDate() - 8);
-      MarketDataService.getHistoricalDailyDataBySymbol(
-        week,
-        today,
-        this.$store.state.portfolio.symbols
-      ).then(resp => {
-        data = resp.data;
-        console.log(data);
-      });
-      return data;
+			// let data = [];
+			// let week = new Date();
+			// let today = new Date();
+			// week.setDate(week.getDate() - 8);
+			// MarketDataService.getHistoricalDailyDataBySymbol(week, today, this.$store.state.portfolio.symbols).then(resp => {
+			// 	data = resp.data;
+			// 	console.log(data)
+
+			// })
+			// return data;
+			this.graphLabel = "My Portfolio"
+			this.graphData.dataPoints = []
+			this.graphData.time = []
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.dataPoints.push(100000)
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
+			this.graphData.time.push(new Date())
     },
     updateGraphWith(symbol) {
       const graphData = this.graphData;
       this.graphLabel = symbol;
-      this.tempKey = symbol;
       if (graphData.dataPoints.length > 0) {
         graphData.dataPoints = [];
         graphData.time = [];
         graphData.labels = [];
       }
-      MarketDataService.getHistoricalMinuteDataBySymbol(this.tempKey).then(
+      MarketDataService.getHistoricalMinuteDataBySymbol(symbol).then(
         resp => {
           const data = resp.data;
           data.reverse().forEach(d => {
@@ -164,10 +178,9 @@ export default {
     switchView(event) {
       // Used innerText to be more specific of where the even it coming from
       const text = event.target.innerText;
-      if (text == "View Stocks" || text == "View Portfolio") {
+      if (text == "Buy Stocks" || text == "View Portfolio") {
         this.onPortfolio = !this.onPortfolio;
         if (this.onPortfolio) {
-          this.updateGraphWith("portfolio");
           this.getPortfolioGraph();
           this.search.symbols = [];
         }
@@ -203,7 +216,8 @@ export default {
       this.$store.commit("SET_PORTFOLIO_TRADES", trades);
     });
 
-    this.updateGraphWith(this.tempKey);
+    this.getPortfolioGraph()
+
     MarketDataService.getRealTimeStockPrice(
       this.$store.state.portfolio.symbols
     ).then(resp => {
@@ -244,14 +258,14 @@ export default {
         this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
       });
 
-      MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
-        if (this.tempKey == "portfolio") {
-          return;
-        }
-        const data = resp.data[0];
-        this.graphData.dataPoints.push(data.price);
-        this.graphData.time.push(data.earningsAnnouncement);
-      });
+    //   MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
+    //     if (this.tempKey == "portfolio") {
+    //       return;
+    //     }
+    //     const data = resp.data[0];
+    //     this.graphData.dataPoints.push(data.price);
+    //     this.graphData.time.push(data.earningsAnnouncement);
+    //   });
     }, 6 * 1000);
   },
   computed: {
