@@ -43,6 +43,11 @@ public class StockController {
 		return stockDao.getQuote(symbol);
 	}
 
+	@GetMapping("/quote/")
+	public Stock[] getQuote() {
+		return stockDao.getQuote("");
+	}
+
 	@GetMapping("/search")
 	public Stock[] searchSymbol(@RequestParam String query) {
 		return stockDao.searchSymbol(query);
