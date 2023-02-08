@@ -90,7 +90,7 @@ public class RoomController {
         return allSymbols;
     }
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedRate = 1000)
     public void stockUpdatePerSec() {
         List<String> allSymbols = new ArrayList<>();
         for (String gameId : rooms.keySet()) {
