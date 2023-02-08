@@ -29,9 +29,10 @@ public class JdbcCashDao implements CashDao {
 
     @Override
     public void setStartingCash(int gameId, int userId) {
-        String sql = "INSERT INTO cash (game_id, user_id, amount, effective_date) VALUES (?, ?, 100000, CURRENT_TIMESTAMP);";
+        // set starting cash's effective date to the game's start date
+        String sql = "INSERT INTO cash (game_id, user_id, amount, effective_date) VALUES (?, ?, 100000, (SELECT start_date FROM GAMES WHERE game_id = ?));";
 
-        jdbcTemplate.update(sql, gameId, userId);
+        jdbcTemplate.update(sql, gameId, userId, gameId);
 
     }
 
