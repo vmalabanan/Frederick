@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import SockJS from 'sockjs-client'
-import { Client } from 'webstomp-client'
 Vue.use(Vuex)
 
 /*
@@ -30,11 +28,6 @@ export default new Vuex.Store({
 			cards: [],
 			trades: []
 		},
-		socket: {
-			sock: SockJS,
-			stompClient: Client,
-			connection: false,
-		}
 	},
 	mutations: {
 		//#region Auth
@@ -77,9 +70,6 @@ export default new Vuex.Store({
 		SET_CASH(state, cash) {
 			state.accountCash = cash
 		},
-		//#endregion
-		//#region Sockets
-
 		//#endregion
 	}
 })
