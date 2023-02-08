@@ -44,7 +44,7 @@ export default {
   created() {
     // build leaderboard immediately on creation
     this.buildLeaderboard();
-    // also start leaderboard polling
+    // also start polling for leaderboard data
     this.buildLeaderboardWithPolling();
   },
   beforeDestroy() {

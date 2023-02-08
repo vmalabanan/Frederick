@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <header class="navbar navbar-expand-ig bd-navbar sticky-top">
+    <header class="navbar navbar-expand-ig bd-navbar sticky-top" v-if="this.$route.name !== 'gameOver'">
       <img src="./img/frederick_logo.svg" alt="Frederick the goldfish!" />
       <active-games v-if="this.$route.name == 'portfolio'"></active-games>
       <span>{{ this.header[this.$route.name] }}</span>
        <div id="nav" v-if="$store.state.token != ''">
-        <router-link tag="span" v-bind:to="{ name: 'menu' }" v-if="this.$route.name == 'portfolio'">Game Menu</router-link>&nbsp;
+        <router-link tag="span" v-bind:to="{ name: 'menu' }" v-if="this.$route.name == 'portfolio'">Game Menu</router-link>
         <router-link tag="span" v-bind:to="{ name: 'home' }">Logout</router-link>
       </div>
       <img
@@ -20,7 +20,7 @@
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
     </div> -->
     <router-view />
-    <footer class="fixed-bottom px-4 py-4" style="background-color: #ffb703" />
+    <footer class="fixed-bottom px-4 py-4" style="background-color: #ffb703" v-if="this.$route.name !== 'gameOver'"/>
   </div>
 </template>
 
