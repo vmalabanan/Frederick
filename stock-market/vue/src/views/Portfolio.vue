@@ -253,15 +253,14 @@ export default {
 
 
 
+		if (this.graphLabel != "My Portfolio") {
+			MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
+			const data = resp.data[0];
+			this.graphData.dataPoints.push(data.price);
+			this.graphData.time.push(data.date);
+			});
+		}
 
-			//   MarketDataService.getRealTimeStockPrice(this.tempKey).then(resp => {
-			//     if (this.tempKey == "portfolio") {
-			//       return;
-			//     }
-			//     const data = resp.data[0];
-			//     this.graphData.dataPoints.push(data.price);
-			//     this.graphData.time.push(data.earningsAnnouncement);
-			//   });
 		}, 6 * 1000);
 	},
 	computed: {
