@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GameOverScreen :gameId="gameId" class="game-over"></GameOverScreen>
+    <GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
     <div class="portfolio-container">
       <div
         class="portfolio"
@@ -88,6 +88,7 @@ export default {
   },
   data() {
     return {
+      gameOver: false,
       gameId: this.$route.params.id,
       tempKey: "AAPL",
       onPortfolio: false,
@@ -115,6 +116,12 @@ export default {
     };
   },
   methods: {
+    isGameOver() {
+      gameService.isGameOver(this.gameId).then(resp => {
+        this.gameOver = resp.data;
+		// this.gameOver = true; // for testing
+      });
+    },
     getPortfolioGraph() {
       let data = [];
       let week = new Date();
@@ -188,6 +195,7 @@ export default {
     }
   },
   created() {
+    this.isGameOver();
     tradeService.getPortfolio(this.gameId).then(resp => {
       const symbols = resp.data.stocks.map(stock => stock.tickerSymbol);
       this.$store.commit("SET_PORTFOLIO_SYMBOLS", symbols);
@@ -285,9 +293,9 @@ div#search {
 }
 
 .game-over {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
 }
 </style>
