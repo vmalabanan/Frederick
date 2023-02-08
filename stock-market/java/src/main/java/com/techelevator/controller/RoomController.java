@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import com.techelevator.model.InviteSIMP;
@@ -59,17 +61,21 @@ public class RoomController {
         return new LobbySIMP(gameId, players);
     }
 
-    @MessageMapping("room-{gameId}/leaderboard")
+    @Scheduled(fixedRate = 5000)
+    public void updateGame() {
+    }
+
+    @SendTo("room-{gameId}/leaderboard")
     public void leaderboardUpdate() {
 
     }
 
-    @MessageMapping("room-{gameId}/stocks")
+    @SendTo("room-{gameId}/stocks")
     public void stockUpdate() {
 
     }
 
-    @MessageMapping("room-{gameId}/chat")
+    @SendTo("room-{gameId}/chat")
     public void chatUpdate() {
 
     }

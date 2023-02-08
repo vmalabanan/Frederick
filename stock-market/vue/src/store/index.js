@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import SockJS from 'sockjs-client'
+import { Client } from 'webstomp-client'
 Vue.use(Vuex)
 
 /*
@@ -27,9 +29,15 @@ export default new Vuex.Store({
       symbols: [],
       cards: [],
       trades: []
+    },
+    socket: {
+      sock: SockJS,
+      stompClient: Client,
+      connection: false,
     }
   },
   mutations: {
+    //#region Auth
     SET_AUTH_TOKEN(state, token) {
       state.token = token;
       localStorage.setItem('token', token);
@@ -46,6 +54,8 @@ export default new Vuex.Store({
       state.user = {};
       axios.defaults.headers.common = {};
     },
+    //#endregion
+    //#region Portfolio
     SET_PORTFOLIO_SYMBOLS(state, symbols) {
       state.portfolio.symbols = symbols
     },
@@ -67,5 +77,9 @@ export default new Vuex.Store({
     SET_CASH(state, cash) {
       state.accountCash = cash
     },
+    //#endregion
+    //#region Sockets
+
+    //#endregion
   }
 })
