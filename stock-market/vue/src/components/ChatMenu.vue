@@ -1,21 +1,19 @@
 <template>
 	<div id="main-content">
-
-        <div id="chat-log">
-            <table>
-                <tbody>
-                    <tr v-for="item in receivedMessages" :key="item">
-                        <td>{{ item }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="button-container">
-            <input type="text" v-model="sendMessage" />
-            <button @click="clearChat()" class="btn btn-light">Clear Chat</button>
-            <button @click="send" class="btn btn-primary">Send Message</button>
-        </div>
+		<div id="chat-log">
+			<table>
+				<tbody>
+					<tr v-for="item in receivedMessages" :key="item">
+						<td>{{ item }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="button-container">
+			<input type="text" v-model="sendMessage" />
+			<button @click="clearChat()" class="btn btn-light">Clear Chat</button>
+			<button @click="send" class="btn btn-primary">Send Message</button>
+		</div>
 	</div>
 </template>
 
@@ -32,7 +30,7 @@ export default {
 			receivedMessages: [],
 			sendMessage: "",
 			connected: false,
-            showChat: false
+			showChat: false
 		};
 	},
 	created() {
@@ -64,7 +62,7 @@ export default {
 				const msg = { fromUser: this.$store.state.user.username, content: this.sendMessage };
 				this.stompClient.send("/app/game", JSON.stringify(msg), {});
 			}
-            this.sendMessage = ""
+			this.sendMessage = ""
 		},
 		disconnect() {
 			if (this.stompClient) {
@@ -72,44 +70,44 @@ export default {
 			}
 			this.connected = false;
 		},
-        toggleChatLog() {
-            this.showChat = !this.showChat
-        },
-        clearChat() {
-            this.receivedMessages = []
-        }
+		toggleChatLog() {
+			this.showChat = !this.showChat
+		},
+		clearChat() {
+			this.receivedMessages = []
+		}
 	}
 };
 </script>
 
 <style scoped>
 #main-content {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
 }
 
 #chat-log {
-    overflow-y: auto;
-    background-color: white;
-    border-radius: 20px;
-    height: 350px;
-    display: flex;
-    flex-direction: column-reverse;
+	overflow-y: auto;
+	background-color: white;
+	border-radius: 20px;
+	height: 350px;
+	display: flex;
+	flex-direction: column-reverse;
 }
 
 .button-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+	display: flex;
+	justify-content: center;
+	gap: 15px;
 }
 
 input {
-    width: 800px;
+	width: 800px;
 }
 
 td {
-    padding-left: 10px;
-    padding-bottom: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
 }
 </style>
