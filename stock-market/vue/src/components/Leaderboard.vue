@@ -118,7 +118,7 @@ export default {
     buildLeaderboardWithPolling() {
       this.polling = setInterval(() => {
         this.buildLeaderboard();
-      }, 3000);
+      }, 6000);
     }
   }
 };
