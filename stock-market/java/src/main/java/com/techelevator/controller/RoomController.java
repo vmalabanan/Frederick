@@ -87,7 +87,12 @@ public class RoomController {
 		Integer id = Integer.parseInt(gameId);
 		List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
 		for (PortfolioDTO portfolio : portfolios) {
-			portfolio.getPortfolio().getStocks().stream().forEach(s -> allSymbols.add(s.getTickerSymbol()));
+			portfolio.getPortfolio().getStocks().stream().forEach(s -> {
+				String symbol = s.getTickerSymbol();
+				if (!allSymbols.contains(symbol)) {
+					allSymbols.add(symbol);
+				}
+			});
 		}
 		return allSymbols;
 	}
