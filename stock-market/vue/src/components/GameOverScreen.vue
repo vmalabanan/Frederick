@@ -12,8 +12,11 @@
         alt="two goldfish swimming in a bowl"
       />
     </div>
-    <div class="leaderboard-container">
-      <leaderboard :gameId="gameId" class="leaderboard" />
+    <div class="leaderboard-button-container">
+      <div class="leaderboard-container">
+        <leaderboard :gameId="gameId" class="leaderboard" />
+      </div>
+      <button class="btn btn-primary" @click="handleClick">Menu</button>
     </div>
   </div>
 </template>
@@ -25,6 +28,11 @@ export default {
   name: "GameOverScreen",
   props: ["gameId"],
   components: { Leaderboard },
+  methods: {
+    handleClick() {
+      this.$router.push({ name: "menu" });
+    },
+  },
 };
 </script>
 
@@ -65,12 +73,26 @@ export default {
 }
 
 .leaderboard-container {
-  margin-top: 5rem;
-  margin-left: -15rem;
+  margin-top: 7rem;
 }
 
 .leaderboard {
-  width: 175%;
+  width: 150%;
+}
+
+.leaderboard-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-left: -20rem;
+  /* align-items: center; */
+}
+
+.btn {
+  /* margin-top: -12rem; */
+  width: 15rem;
+  font-size: 1.25rem;
+  width: 150%;
 }
 
 @keyframes float {
