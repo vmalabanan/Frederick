@@ -326,16 +326,6 @@ export default {
       if (this.search.symbols.length > 0) {
         this.getSearchCards();
       }
-
-      // if (this.graphLabel != "My Portfolio") {
-      //   MarketDataService.getRealTimeStockPrice(this.graphLabel).then(
-      //     (resp) => {
-      //       const data = resp.data[0];
-      //       this.graphData[0].dataPoints.push(data.price);
-      //       this.graphData[0].time.push(new Date());
-      //     }
-      //   );
-      // }
     }, 6 * 1000);
   },
   computed: {
