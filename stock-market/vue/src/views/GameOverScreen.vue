@@ -79,7 +79,7 @@ export default {
 
 .two-goldfish {
   width: 65%;
-  margin-top: -5rem;
+  margin-top: -6rem;
 }
 
 .leaderboard-container {
