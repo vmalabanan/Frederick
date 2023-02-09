@@ -24,15 +24,7 @@ export default {
 	methods: {
 		handleClick(symbol) {
 			this.$emit('cardClick', symbol)
-		},
-		// onToggle(index) {
-		// 	if (this.activeIndex === index) {
-		// 		this.activeIndex = null;
-		// 	}
-		// 	else {
-		// 		this.activeIndex = index;
-		// 	}
-		// }
+		}
 	},
 	computed: {
 		buySellCard: {
