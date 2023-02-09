@@ -139,12 +139,17 @@ export default {
 
 .form-and-buttons-container {
   margin-left: -3rem;
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form-create-game {
   display: flex;
   flex-direction: column;
   width: 200%;
+
 }
 
 input,
@@ -163,11 +168,15 @@ select:focus {
 
 button {
   border: none;
+  box-shadow: 0.5rem 0.5rem #ffb703;
+  color: #fff;
 }
 
 .create-game {
-  margin: 1rem 0;
+  margin: 2rem 0;
   background-color: #e66d25;
+  width: 40%;
+  align-self: center;
 }
 
 .create-game:hover {
@@ -175,7 +184,7 @@ button {
 }
 
 .back {
-  width: 200%;
+  width: 80%;
   background-color: #052c72;
   color: #fff;
 }
