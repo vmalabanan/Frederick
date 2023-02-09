@@ -1,6 +1,6 @@
 <template>
-	<div class="options-container">
-		<div class="options-holder">
+	<div class="menu">
+    <hamburger class="hamburger"></hamburger>
 			<div class="options d-grid col-4 mx-auto">
 				<button class="btn btn-lg btn-primary" @click="createPage">
 					Host Game
@@ -13,16 +13,19 @@
 					My Games
 				</button>
 			</div>
-		</div>
 	</div>
 
 </template>
 
 <script>
 import gamesService from "../services/GamesService.js";
+import hamburger from "../components/Hamburger.vue"
 
 export default {
 	name: "menu",
+  components: {
+    hamburger
+  },
 	methods: {
 		createPage() {
 			this.$router.push({ name: "createGame" });
@@ -49,33 +52,13 @@ export default {
 </script>
 
 <style scoped>
-.options-container {
-	margin-top: 9rem;
-	display: flex;
-	justify-content: center;
-  align-items: center;
-}
-
-.options-holder {
-	width: 50rem;
-	/* background-color: #8ECAE6; */
-  border: 1rem solid #8ECAE6;
-	border-radius: 2rem;
-	height: 30rem;
-	display: flex;
-}
-
 .options {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	height: 15rem;
-	width: 25rem;
-	align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* width: 20%; */
 }
 
-button {
-	font-size: 2rem;
-	border-radius: 20px;
-}
+
+
 </style>
