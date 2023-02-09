@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
+		<GameOverScreen v-if="gameOver" :gameId="gameId" :leaderboardData="this.leaderboardData" class="game-over" />
 		<div v-else class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 				<game-account :accountValue="accountValue" />
@@ -11,7 +11,7 @@
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" :value="search.input" autocomplete="off"/>
+					placeholder="GOOG" :value="search.input" autocomplete="off" />
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
@@ -216,7 +216,6 @@ export default {
 			let items = Object.keys(playersValues).map((key) => { return [key, playersValues[key]] });
 			items.sort((first, second) => { return first[1] - second[1] });
 			this.leaderboardData = items.reverse();
-
 		}
 	},
 	created() {

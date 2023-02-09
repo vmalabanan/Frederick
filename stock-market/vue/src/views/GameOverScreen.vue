@@ -3,30 +3,22 @@
     <hamburger class="hamburger"></hamburger>
     <div class="game-over-content">
       <div class="fishbowl-game-over-container">
-        <img
-          class="game-over-bubble"
-          src="../img/gameover-no-bg.png"
-          alt="game over graphic"
-        />
-        <img
-          class="two-goldfish"
-          src="../img/two-goldfish.gif"
-          alt="two goldfish swimming in a bowl"
-        />
+        <img class="game-over-bubble" src="../img/gameover-no-bg.png" alt="game over graphic" />
+        <img class="two-goldfish" src="../img/two-goldfish.gif" alt="two goldfish swimming in a bowl" />
       </div>
       <div class="leaderboard-container">
-        <leaderboard :gameId="gameId" class="leaderboard" />
+        <leaderboard :gameId="gameId" :leaderboardData="this.leaderboardData" class="leaderboard" />
       </div>
     </div>
   </div>
 </template>
-
 <script>
 import Leaderboard from "../components/Leaderboard.vue";
 import Hamburger from "../components/Hamburger.vue";
 
 export default {
   name: "GameOverScreen",
+  props: ["leaderboardData"],
   components: { Leaderboard, Hamburger },
   data() {
     return {
@@ -96,15 +88,19 @@ export default {
   0% {
     top: 0px;
   }
+
   25% {
     top: 10px;
   }
+
   50% {
     top: 20px;
   }
+
   75% {
     top: 10px;
   }
+
   100% {
     top: 0px;
   }
