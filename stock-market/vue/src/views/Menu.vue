@@ -89,7 +89,7 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 5rem;
-  margin-left: -20rem;
+  margin-left: -24rem;
 }
 
 .fishbowl-and-dollar-container {
