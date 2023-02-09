@@ -11,16 +11,16 @@
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" :value="search.input"/>
+					placeholder="GOOG" :value="search.input" />
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
-					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" :graphLabel="graphLabel"/>
+					class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" :graphLabel="graphLabel" />
 				<stock-container @cardClick="updateGraphWith" v-model="buySellCard"
 					:stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio"
-					:onPortfolio="true" :graphLabel="graphLabel"/>
+					:onPortfolio="true" :graphLabel="graphLabel" />
 			</div>
 
 			<div :class="{ blurred: buySellCard.show }">
@@ -232,9 +232,11 @@ export default {
 		this.stompClient.connect({},
 			() => {
 				console.log("Connecting")
+				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, () => { return; })
+
 				this.stompClient.subscribe(`/topic/update`, resp => this.getPortfolioCards(resp))
-				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, resp => console.log(resp.body))
-				this.stompClient.subscribe(`/topic/leaderboard/`, resp => (console.log(resp)))
+				this.stompClient.subscribe(`/topic/leaderboard`, resp => console.log(resp))
+
 				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)
 				this.connection = true
 			},
@@ -276,13 +278,13 @@ export default {
 
 
 
-		if (this.graphLabel != "My Portfolio") {
-			MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
-			const data = resp.data[0];
-			this.graphData[0].dataPoints.push(data.price);
-			this.graphData[0].time.push(new Date());
-			});
-		}
+			if (this.graphLabel != "My Portfolio") {
+				MarketDataService.getRealTimeStockPrice(this.graphLabel).then(resp => {
+					const data = resp.data[0];
+					this.graphData[0].dataPoints.push(data.price);
+					this.graphData[0].time.push(new Date());
+				});
+			}
 
 		}, 6 * 1000);
 	},
