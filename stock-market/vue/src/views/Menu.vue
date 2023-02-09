@@ -74,13 +74,12 @@ export default {
 <style scoped>
 .menu {
   height: 100vh;
-  font-size: 2rem;
+  font-size: 2.5rem;
   background-color: #f2dff3;
 }
 
 .image-and-button-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -89,6 +88,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 5rem;
+  margin-left: -20rem;
 }
 
 .fishbowl-and-dollar-container {
@@ -131,29 +132,46 @@ export default {
 }
 
 .button-container {
-  width: 20%;
+  width: 15%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
   z-index: 10;
+  margin-top: 14rem;
+  margin-left: -23rem;
   /* margin-top: 2rem; */
   /* margin-left: -16rem; */
 }
 
 button {
   border: none;
+  box-shadow: 0.5rem 0.5rem #ffb703;
+  color: #fff;
 }
 
 .btn-primary {
   background-color: #477fc9;
 }
 
+.btn-primary:hover {
+  background-color: #1566d1;
+  color: #000;
+}
+
 .btn-info {
-  background-color: #ba4ec2;
+  background-color: #8ecae6;
+}
+
+.btn-info:hover {
+  background-color: #65bce4;
 }
 
 .btn-warning {
   background-color: #fc7c31;
+}
+
+.btn-warning:hover {
+  background-color: #fc650e;
 }
 
 @keyframes float {
