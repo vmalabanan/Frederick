@@ -3,7 +3,7 @@
 		<GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
 		<div class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
-				<game-account :accountValues="accountValues" />
+				<game-account :accountValue="accountValue" />
 				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
 					:labels="getGraphXAxis" :graphLabel="this.graphLabel" />
 				<leaderboard :gameId="gameId" :leaderboardData="leaderboardData" />
@@ -92,7 +92,7 @@ export default {
 			graphLabel: {},
 			tradeSnapshots: [],
 			leaderboardData: [],
-			accountValues: 0,
+			accountValue: 0,
 
 		};
 	},
@@ -231,11 +231,11 @@ export default {
 			const data = JSON.parse(resp.body);
 			const playersValues = data.filter(d => d.gameId == this.gameId)[0].players;
 
-			this.accountValues = playersValues[this.$store.state.user.username]
+			this.accountValue = playersValues[this.$store.state.user.username]
 
 			let items = Object.keys(playersValues).map((key) => { return [key, playersValues[key]] });
 			items.sort((first, second) => { return first[1] - second[1] });
-			this.leaderboardData = items;
+			this.leaderboardData = items.reverse();
 
 		}
 	},
