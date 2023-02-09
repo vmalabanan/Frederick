@@ -47,29 +47,31 @@
           <label for="floatingInput">Search Stocks</label>
         </div>
 
-        <div :class="{ blurred: buySellCard.show }">
-          <stock-container
-            @cardClick="updateGraphWith"
-            v-model="buySellCard"
-            :stocks="search.cards"
-            class="stocks-search"
-            v-show="!onPortfolio"
-            :onPortfolio="false"
-            :graphLabel="graphLabel"
-          />
-          <stock-container
-            @cardClick="updateGraphWith"
-            v-model="buySellCard"
-            :stocks="this.$store.state.portfolio.cards"
-            class="stocks-owned"
-            v-show="onPortfolio"
-            :onPortfolio="true"
-            :graphLabel="graphLabel"
-          />
-        </div>
+        <div class="stock-container-and-chat">
+          <div :class="{ blurred: buySellCard.show }">
+            <stock-container
+              @cardClick="updateGraphWith"
+              v-model="buySellCard"
+              :stocks="search.cards"
+              class="stocks-search"
+              v-show="!onPortfolio"
+              :onPortfolio="false"
+              :graphLabel="graphLabel"
+            />
+            <stock-container
+              @cardClick="updateGraphWith"
+              v-model="buySellCard"
+              :stocks="this.$store.state.portfolio.cards"
+              class="stocks-owned"
+              v-show="onPortfolio"
+              :onPortfolio="true"
+              :graphLabel="graphLabel"
+            />
+          </div>
 
-        <div :class="{ blurred: buySellCard.show }">
-          <chat-container></chat-container>
+          <div :class="{ blurred: buySellCard.show }">
+            <chat-container></chat-container>
+          </div>
         </div>
 
         <buy-stock v-show="buySellCard.show" v-model="buySellCard"></buy-stock>
@@ -400,6 +402,11 @@ div#search {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
+.stock-container-and-chat {
+  display: flex;
+  gap: 3rem;
+
+}
 .game-over {
   position: fixed;
   width: 100%;
