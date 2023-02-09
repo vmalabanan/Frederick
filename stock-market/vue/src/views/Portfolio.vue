@@ -43,7 +43,7 @@ import GameOverScreen from "./GameOverScreen.vue";
 import MarketDataService from "../services/MarketDataService";
 import tradeService from "../services/TradeService";
 import gameService from "../services/GamesService";
-import SocketService from '../services/SocketService';
+import SocketService from "../services/SocketService";
 
 export default {
 	name: "portfolio",
@@ -311,34 +311,35 @@ export default {
 
 <style scoped>
 .portfolio-container {
-	padding: 20px 20px 0px 20px;
-	margin-bottom: 10px;
+  margin-top: 2rem;
+  padding: 20px 20px 0px 20px;
+  margin-bottom: 10px;
 }
 
 .portfolio {
-	display: flex;
-	gap: 20px;
-	margin-bottom: 20px;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .blurred {
-	background-color: #ccc;
-	filter: blur(20px);
-	opacity: 60%;
+  background-color: #ccc;
+  filter: blur(20px);
+  opacity: 60%;
 }
 
 div#search {
-	border: 5px solid #023047;
-	border-radius: 10px;
-	width: 90%;
-	margin-left: auto;
-	margin-right: auto;
+  border: 5px solid #023047;
+  border-radius: 10px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .game-over {
-	position: fixed;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
 }
 </style>
