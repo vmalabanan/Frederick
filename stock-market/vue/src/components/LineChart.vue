@@ -128,9 +128,9 @@ export default {
 
 <style scoped>
 .test {
-	background-color: #8ECAE6;
+	background-color: #fff;
 	flex-grow: 2;
-	border-radius: 20px;
+	/* border-radius: 20px; */
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
 		0 10px 10px rgba(0, 0, 0, 0.22);
 }

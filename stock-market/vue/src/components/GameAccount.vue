@@ -79,48 +79,52 @@ export default {
 #account {
 	flex-basis: 20%;
 	height: auto;
-	background-color: #246e93;
+	background-color: #fff;
 	display: flex;
 	flex-direction: column;
 	padding: 10px 20px;
-	border-radius: 20px;
+	/* border-radius: 20px; */
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
+h4 {
+	font-size: 1.25rem;
+}
+
 .labels {
-	color: #ffb703;
+	color: #000;
 }
 
 .values {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: whitesmoke;
-	background-color: #023047;
+	color: #fff;
+	background-color: #f95a1b;
 	height: 40px;
-	border-radius: 20px;
+	border-radius: 0.25rem;
 }
 
 button {
 	margin-top: 40px;
 	background-color: #fb8500;
 	color: white;
-	border-radius: 20px;
+	border-radius: 0.25rem;;
 }
 
 button:hover {
 	background-color: #fb8500;
 	color: white;
-	border: 2px solid rgb(68, 68, 68);
+	/* border: 2px solid rgb(68, 68, 68); */
 }
 
 .positive {
-	color: #1FCC92;
+	/* color: #1FCC92; */
 	font-size: 20px;
 }
 
 .negative {
-	color: #E54322;
+	/* color: #E54322; */
 	font-size: 20px;
 }
 </style>
