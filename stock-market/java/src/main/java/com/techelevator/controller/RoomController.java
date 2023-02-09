@@ -134,7 +134,8 @@ public class RoomController {
 							.filter(s -> s.getSymbol().equals(currentStock.getTickerSymbol())).findFirst();
 					BigDecimal accountBalance = stockData.get().getPrice()
 							.multiply(new BigDecimal(currentStock.getNumberOfShares())).add(currentCash);
-					leaderboard.getPlayers().put(portfolio.getUsername(), accountBalance);
+					leaderboard.getPlayers().add(new Player(portfolio.getUsername(), accountBalance));
+
 				}
 			}
 			leaderboards.add(leaderboard);
@@ -145,9 +146,37 @@ public class RoomController {
 		simpMessagingTemplate.convertAndSend("/topic/update", data);
 	}
 
+	public static class Player {
+		private String name;
+		private BigDecimal accountValue;
+
+		public Player(String name, BigDecimal accountValue) {
+			this.name = name;
+			this.accountValue = accountValue;
+
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public BigDecimal getAccountValue() {
+			return this.accountValue;
+		}
+
+		public void setAccountValue(BigDecimal accountValue) {
+			this.accountValue = accountValue;
+		}
+
+	}
+
 	public static class Leaderboard {
 		private int gameId;
-		private Map<String, BigDecimal> players = new HashMap<>();
+		private List<Player> players = new ArrayList<Player>();;
 
 		public int getGameId() {
 			return this.gameId;
@@ -157,11 +186,11 @@ public class RoomController {
 			this.gameId = gameId;
 		}
 
-		public Map<String, BigDecimal> getPlayers() {
+		public List<Player> getPlayers() {
 			return this.players;
 		}
 
-		public void setPlayers(Map<String, BigDecimal> players) {
+		public void setPlayers(List<Player> players) {
 			this.players = players;
 		}
 
