@@ -3,7 +3,7 @@
 		<GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
 		<div v-else class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
-				<game-account :accountValues="accountValues" />
+				<game-account :accountValue="accountValue" />
 				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
 					:labels="getGraphXAxis" :graphLabel="this.graphLabel" />
 				<leaderboard :gameId="gameId" :leaderboardData="leaderboardData" />
@@ -11,7 +11,7 @@
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" :value="search.input" />
+					placeholder="GOOG" :value="search.input" autocomplete="off"/>
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
@@ -73,7 +73,6 @@ export default {
 				{
 					dataPoints: [],
 					time: [],
-					labels: [],
 				},
 				{
 					portfolioDataPoints: [],
@@ -92,7 +91,7 @@ export default {
 			graphLabel: {},
 			tradeSnapshots: [],
 			leaderboardData: [],
-			accountValues: 0,
+			accountValue: 0,
 
 		};
 	},
@@ -103,33 +102,15 @@ export default {
 				// this.gameOver = true; // for testing
 			});
 		},
-		getPortfolioGraph() {
-			// let data = [];
-			// let week = new Date();
-			// let today = new Date();
-			// week.setDate(week.getDate() - 8);
-			// MarketDataService.getHistoricalDailyDataBySymbol(week, today, this.$store.state.portfolio.symbols).then(resp => {
-			// 	data = resp.data;
-			// 	console.log(data)
-
-			// })
-			// return data;
+		createPortfolioGraph() {
 			this.graphLabel = "My Portfolio"
-			this.graphData[1].dataPoints = []
-			this.graphData[1].portfolioTime = []
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioDataPoints.push(100000)
-			this.graphData[1].portfolioTime.push(new Date())
-			this.graphData[1].portfolioTime.push(new Date())
-			this.graphData[1].portfolioTime.push(new Date())
-			this.graphData[1].portfolioTime.push(new Date())
-			this.graphData[1].portfolioTime.push(new Date())
-			this.graphData[1].portfolioTime.push(new Date())
+			for (let i = 0; i < 100; i++) {
+				this.graphData[1].portfolioDataPoints.push(100000)
+				this.graphData[1].portfolioTime.push(new Date())
+			}
+		},
+		updatePortfolioGraph(value) {
+			this.graphData[1].portfolioDataPoints.push(value)
 			this.graphData[1].portfolioTime.push(new Date())
 		},
 		updateGraphWith(symbol) {
@@ -138,7 +119,6 @@ export default {
 			if (graphData.dataPoints.length > 0) {
 				graphData.dataPoints = [];
 				graphData.time = [];
-				graphData.labels = [];
 			}
 			MarketDataService.getHistoricalMinuteDataBySymbol(symbol).then(
 				resp => {
@@ -146,7 +126,6 @@ export default {
 					data.reverse().forEach(d => {
 						graphData.dataPoints.push(d.low);
 						graphData.time.push(d.date);
-						graphData.labels.push(d.low);
 					});
 				}
 			);
@@ -161,7 +140,7 @@ export default {
 			if (text == "Buy Stocks" || text == "View Portfolio") {
 				this.onPortfolio = !this.onPortfolio;
 				if (this.onPortfolio) {
-					this.getPortfolioGraph()
+					this.graphLabel = "My Portfolio"
 					this.search.symbols = []
 					this.search.input = ""
 				}
@@ -231,16 +210,18 @@ export default {
 			const data = JSON.parse(resp.body);
 			const playersValues = data.filter(d => d.gameId == this.gameId)[0].players;
 
-			this.accountValues = playersValues[this.$store.state.user.username]
+			this.accountValue = playersValues[this.$store.state.user.username]
+			this.updatePortfolioGraph(this.accountValue)
 
 			let items = Object.keys(playersValues).map((key) => { return [key, playersValues[key]] });
 			items.sort((first, second) => { return first[1] - second[1] });
-			this.leaderboardData = items;
+			this.leaderboardData = items.reverse();
 
 		}
 	},
 	created() {
 		this.isGameOver();
+		this.createPortfolioGraph()
 
 		this.stompClient.connect({},
 			() => {
@@ -269,7 +250,6 @@ export default {
 			this.$store.commit("SET_PORTFOLIO_TRADES", trades);
 		});
 
-		this.getPortfolioGraph()
 
 		if (this.$store.state.portfolio.symbols.length > 0) {
 			MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {

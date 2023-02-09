@@ -1,8 +1,8 @@
 <template>
 	<div id="account">
 		<h4 class="labels">Account Value</h4>
-		<p class="values">{{ getCashString(this.accountValues) }}</p>
-		<h4 class="labels">ROI</h4>
+		<p class="values">{{ getCashString(this.accountValue) }}</p>
+		<h4 class="labels">Return on Investment</h4>
 		<p class="values" :class="this.getChangePercentage < 0 ? 'negative' : 'positive'">{{ getChange() }}</p>
 		<h4 class="labels">Cash</h4>
 		<p class="values">{{ getCash }}</p>
@@ -17,11 +17,10 @@ import cashService from "../services/CashService";
 
 export default {
 	name: "GameAccount",
-	props: ["accountValues"],
+	props: ["accountValue"],
 	data() {
 		return {
-			buttonText: "Buy Stocks",
-			accountValue: this.accountValues,
+			buttonText: "Buy Stocks"
 		};
 	},
 	methods: {
@@ -59,27 +58,12 @@ export default {
 
 	},
 	computed: {
-		getAccountValue() {
-			let sum = 0
-			const trades = this.$store.state.portfolio.trades
-			const cards = this.$store.state.portfolio.cards
-
-			cards.forEach(card => {
-				const trade = trades.find(trade => trade.tickerSymbol == card.symbol)
-				const qty = trade.numberOfShares
-				if (qty > 0) {
-					sum += (qty * card.price)
-				}
-			})
-			const totalValue = sum + this.$store.state.accountCash
-			return totalValue
-		},
 		getCash() {
 			return this.getCashString(this.$store.state.accountCash)
 		},
 		getChangePercentage() {
 			const STARTING_CASH = 100000.00
-			const net = this.getAccountValue - STARTING_CASH
+			const net = this.accountValue - STARTING_CASH
 			const percentage = (net / STARTING_CASH * 100).toFixed(2)
 			return percentage
 
