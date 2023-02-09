@@ -38,7 +38,7 @@
             </select>
             <label for="floatingSelectLength">Game Length</label>
           </div>
-
+          <p class="players-text">Players to invite:</p>
           <Users />
           <button
             class="btn btn-lg btn-primary btn-block create-game"
@@ -119,18 +119,26 @@ export default {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: #3483ee;
+  /* color: #fff; */
+}
+
+.hamburger {
+  /* margin-top: -13rem; */
 }
 
 .create-game-content {
   display: flex;
   align-items: center;
+  color: #fff;
+  margin-left: -25rem;
+  margin-top: 7rem;
 }
 
 .form-and-buttons-container {
-  /* width: 200%; */
+  margin-left: -3rem;
 }
 
 .form-create-game {
@@ -139,15 +147,44 @@ export default {
   width: 200%;
 }
 
+input,
+select {
+  background-color: #3483ee;
+}
+
+input:focus,
+select:focus {
+  background-color: #4890f5;
+}
+
 .form-floating {
   margin-bottom: 1rem;
 }
 
+button {
+  border: none;
+}
+
 .create-game {
   margin: 1rem 0;
+  background-color: #e66d25;
+}
+
+.create-game:hover {
+  background-color: #ec5700;
 }
 
 .back {
-  width: 30%;
+  width: 200%;
+  background-color: #052c72;
+  color: #fff;
+}
+
+.back:hover {
+  background-color: #062153;
+}
+
+.players-text {
+  margin-bottom: 0.25rem;
 }
 </style>
