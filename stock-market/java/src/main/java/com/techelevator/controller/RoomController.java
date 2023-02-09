@@ -101,16 +101,12 @@ public class RoomController {
 	@Scheduled(fixedRate = 1000)
 	public void stockUpdatePerSec() {
 		List<String> allSymbols = new ArrayList<>();
-
 		for (String gameId : rooms.keySet()) {
 			if (rooms.get(gameId).size() == 0) {
 				continue;
 			}
 			allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
 					.collect(Collectors.toList());
-		}
-		if (allSymbols.size() == 0) {
-			return;
 		}
 		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
 		log.debug("Sending Data");
@@ -124,20 +120,21 @@ public class RoomController {
 			Leaderboard leaderboard = new Leaderboard();
 			Integer id = Integer.parseInt(gameId);
 			List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
+			leaderboard.setGameId(id);
+
 			for (PortfolioDTO portfolio : portfolios) {
 				BigDecimal currentCash = portfolio.getPortfolio().getCash();
-
+				BigDecimal sumOfStocks = BigDecimal.ZERO;
 				for (Stock currentStock : portfolio.getPortfolio().getStocks()) {
 					Optional<com.techelevator.dao.ApiStockDao.Stock> stockData = data.stream()
 							.filter(s -> s.getSymbol().equals(currentStock.getTickerSymbol())).findFirst();
-					BigDecimal accountBalance = stockData.get().getPrice()
-							.multiply(new BigDecimal(currentStock.getNumberOfShares())).add(currentCash);
-
-					leaderboard.addPlayers(portfolio.getUsername(), accountBalance);
-					leaderboard.setGameId(id);
+					BigDecimal totalPricePerStockOwned = stockData.get().getPrice()
+							.multiply(new BigDecimal(currentStock.getNumberOfShares()));
+					sumOfStocks = sumOfStocks.add(totalPricePerStockOwned);
 				}
-				leaderboards.add(leaderboard);
+				leaderboard.addPlayers(portfolio.getUsername(), sumOfStocks.add(currentCash));
 			}
+			leaderboards.add(leaderboard);
 		}
 		log.debug("Sending leaderboards", leaderboards);
 		simpMessagingTemplate.convertAndSend("/topic/leaderboard", leaderboards);
