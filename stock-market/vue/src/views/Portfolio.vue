@@ -11,7 +11,7 @@
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
 				<input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
-					placeholder="GOOG" :value="search.input" />
+					placeholder="GOOG" :value="search.input" autocomplete="off"/>
 				<label for="floatingInput">Search Stocks</label>
 			</div>
 
