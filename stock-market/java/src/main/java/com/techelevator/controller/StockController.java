@@ -28,6 +28,11 @@ public class StockController {
 		this.stockDao = stockDao;
 	}
 
+	@GetMapping("/")
+	public String HelloWorld() {
+		return "Welcome To the stock market api";
+	}
+
 	@GetMapping("/historical-price-full/{symbol}")
 	public FullStockHistoryWrap getHistoricalDailyBySymbol(@PathVariable String symbol, @RequestParam String from,
 			@RequestParam String to) {
