@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <hamburger class="hamburger"></hamburger>
+    <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
     <div class="image-and-button-container">
       <div class="images-container">
         <img class="dollar dollar-1" src="../img/dollar.png" alt="dollar" />
@@ -45,6 +45,11 @@ export default {
   name: "menu",
   components: {
     hamburger,
+  },
+  data() {
+    return {
+      hamburgerLinks: ["home"]
+    }
   },
   methods: {
     createPage() {
@@ -132,7 +137,7 @@ export default {
 }
 
 .button-container {
-  width: 15%;
+  width: 10%;
   display: flex;
   flex-direction: column;
   gap: 2rem;

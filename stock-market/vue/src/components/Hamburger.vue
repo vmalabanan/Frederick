@@ -3,8 +3,7 @@
     <div class="dropdown">
       <a @click="toggleShowMenu()"><i class="fa-solid fa-bars"></i></a>
       <ul class="list-group" v-show="showMenu">
-        <li @click="menu()" class="list-group-item">Menu</li>
-        <li @click="home()" class="list-group-item">Logout</li>
+        <li v-for="(route, index) in routeNames" :key="index" @click="handleClick(route)" class="list-group-item">{{ route === "home" ? "Logout" : route }}</li>
       </ul>
     </div>
   </div>
@@ -13,19 +12,17 @@
 <script>
 export default {
   name: "hamburger",
-  props: ["gameName"],
+  props: ["routeNames"],
   data() {
     return {
       showMenu: false,
     };
   },
   methods: {
-    menu() {
-      this.$router.push({ name: "menu" });
+    handleClick(routeName) {
+      this.$router.push({ name: routeName });
     },
-    home() {
-      this.$router.push({ name: "home" });
-    },
+   
     toggleShowMenu() {
       this.showMenu = !this.showMenu;
     },
