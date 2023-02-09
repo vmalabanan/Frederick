@@ -60,6 +60,7 @@ li {
 
 ul:nth-child(even) {
   background: #f95a1b;
+  color: #fff;
 }
 
 .list-group {
