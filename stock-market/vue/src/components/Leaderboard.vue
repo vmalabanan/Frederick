@@ -10,11 +10,19 @@
         Portfolio Value
       </li>
     </ul>
-    <ul class="list-group list-group-horizontal" v-for="(data, index) in this.leaderboardData" :key="index">
+    <ul
+      class="list-group list-group-horizontal"
+      v-for="(data, index) in this.leaderboardData"
+      :key="index"
+    >
       <li class="list-group-item col-1 data">
         {{ index + 1 }}
       </li>
-      <li class="list-group-item col-2 data" v-if="data[0] == $store.state.user.username" style="font-weight: bold">
+      <li
+        class="list-group-item col-2 data"
+        v-if="data[0] == $store.state.user.username"
+        style="font-weight: bold"
+      >
         {{ data[0] + " (you)" }}
       </li>
       <li class="list-group-item col-2 data" v-else>
@@ -32,18 +40,18 @@ export default {
   name: "Leaderboard",
   props: ["gameId", "leaderboardData"],
   methods: {
-		getCashString(cash) {
-			let formatting_options = {
-				style: "currency",
-				currency: "USD",
-				minimumFractionDigits: 2,
-			};
-      console.log(this.$store.state.user.username)
-			let dollarString = new Intl.NumberFormat("en-US", formatting_options);
-			let cashString = dollarString.format(cash);
-			return cashString
-		}
-  }
+    getCashString(cash) {
+      let formatting_options = {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+      };
+      console.log(this.$store.state.user.username);
+      let dollarString = new Intl.NumberFormat("en-US", formatting_options);
+      let cashString = dollarString.format(cash);
+      return cashString;
+    },
+  },
 };
 </script>
 
@@ -57,12 +65,14 @@ export default {
 
 li {
   background: none;
-  
 }
 
 ul:nth-child(even) {
   background: #f95a1b;
-  color: #fff;
+}
+
+ul:nth-child(even) li {
+  color: #fff;;
 }
 
 .list-group {
@@ -71,14 +81,13 @@ ul:nth-child(even) {
 
 .list-group-item {
   font-size: 1.15rem;
-    border: none;
-    border-radius: 0;
-
+  border: none;
+  border-radius: 0;
 }
 
 .leaderboard-title {
   text-align: center;
-	font-size: 1.25rem;
+  font-size: 1.25rem;
   background-color: #fff;
   font-weight: 600;
 }

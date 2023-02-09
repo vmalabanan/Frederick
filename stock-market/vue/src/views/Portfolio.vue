@@ -363,27 +363,28 @@ export default {
 #navbar {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   transition: top 0.7s;
   z-index: 100;
   display: flex;
-  align-items: flex-start;
+  /* align-items: flex-start; */
   justify-content: center;
 }
 
 .dropdown {
   margin-top: 0.5rem;
+  margin-left: -23rem;
 }
 
 .portfolio-items-container {
   padding: 5rem 20px 0px 20px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .portfolio {
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .blurred {
@@ -404,6 +405,8 @@ div#search {
 .stock-container-and-chat {
   display: flex;
   gap: 3rem;
+  align-items: center;
+  justify-content: center;
 
 }
 .game-over {

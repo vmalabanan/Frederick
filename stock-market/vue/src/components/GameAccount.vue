@@ -78,7 +78,7 @@ export default {
 <style scoped>
 #account {
 	flex-basis: 20%;
-	height: auto;
+	/* height: 100%; */
 	background-color: #fff;
 	display: flex;
 	flex-direction: column;
@@ -113,7 +113,7 @@ button {
 }
 
 button:hover {
-	background-color: #fb8500;
+	background-color: #e67d05;
 	color: white;
 	/* border: 2px solid rgb(68, 68, 68); */
 }

@@ -58,16 +58,17 @@ export default {
 button {
   background: #fff;
   color: #fb8500;
-  width: 20rem;
+  width: 25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 2px solid;
+  border: none;
   position: fixed;
+  border-radius: 0.25rem;
 }
 
 button:hover {
-  background: #ffb703;
+  background: #f95a1b;
 }
 
 .list-group {
@@ -79,12 +80,12 @@ button:hover {
 }
 
 .list-group-item {
-  background: #ffb703;
+  background: #fff;
   border: none;
 }
 
 .list-group-item:hover {
-  background: #fb8500;
+  background: #f95a1b;
   cursor: pointer;
 }
 </style>

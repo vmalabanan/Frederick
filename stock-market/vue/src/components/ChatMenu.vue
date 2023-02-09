@@ -11,8 +11,8 @@
     </div>
     <div class="button-container">
       <input type="text" v-model="sendMessage" />
-      <button @click="clearChat()" class="btn btn-light">Clear Chat</button>
       <button @click="send" class="btn btn-primary">Send Message</button>
+      <button @click="clearChat()" class="btn btn-light">Clear Chat</button>
     </div>
   </div>
 </template>
@@ -68,8 +68,8 @@ export default {
         };
         this.stompClient.send("/app/game", JSON.stringify(msg), {});
       } else {
-        const msg = "Error: Message cannot be empty"
-		this.receivedMessages.push(msg)
+        const msg = "Error: Message cannot be empty";
+        this.receivedMessages.push(msg);
       }
       this.sendMessage = "";
     },
@@ -100,7 +100,7 @@ export default {
   overflow-y: auto;
   background-color: white;
   border-radius: 20px;
-  height: 350px;
+  height: 450px;
   display: flex;
   flex-direction: column-reverse;
 }
@@ -111,8 +111,31 @@ export default {
   gap: 15px;
 }
 
+.btn-primary {
+  background-color: #f95a1b;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.btn-primary:hover {
+  background-color: #f34804;
+  color: white;
+}
+
+.btn-light {
+  color: white;
+  background-color: #fb8500;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.btn-light:hover {
+  background-color: #e67d05;
+  color: white;
+}
+
 input {
-  width: 800px;
+  width: 500px;
 }
 
 td {
