@@ -39,6 +39,7 @@
           Back
         </button>
       </div>
+      <img src="../img/stars.gif" alt="stars gif" class="stars" />
     </div>
   </div>
 </template>
@@ -76,19 +77,18 @@ export default {
   text-align: center;
 }
 .gamelist-content {
+  height: 100%;
   display: flex;
   /* flex-direction: column; */
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  margin-left: -10rem;
+  gap: 3rem;
 }
 .fish-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 2rem;
-  margin-top: 4rem;
+  /* margin-top: 4rem; */
 }
 
 .fish {
@@ -105,7 +105,6 @@ export default {
   width: 30%;
   transform: rotate(5deg);
   margin-top: 3rem;
-  margin-right: 5rem;
 }
 .gamelist-container {
   /* background-color: #ffb703; */
@@ -121,7 +120,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 5rem;
+  /* margin-top: 8rem; */
 }
 
 button {
@@ -145,6 +144,10 @@ button {
 
 .btn-info:hover {
   background-color: #65bce4;
+}
+
+.stars {
+  /* margin-top: 5rem; */
 }
 
 @keyframes float {
