@@ -14,10 +14,12 @@
       <li class="list-group-item col-1 data">
         {{ index + 1 }}
       </li>
-      <li class="list-group-item col-2 data">
+      <li class="list-group-item col-2 data" v-if="data[0] == $store.state.user.username" style="font-weight: bold">
+        {{ data[0] + " (you)" }}
+      </li>
+      <li class="list-group-item col-2 data" v-else>
         {{ data[0] }}
       </li>
-
       <li class="list-group-item col-3 data">
         {{ getCashString(data[1]) }}
       </li>
@@ -36,7 +38,7 @@ export default {
 				currency: "USD",
 				minimumFractionDigits: 2,
 			};
-
+      console.log(this.$store.state.user.username)
 			let dollarString = new Intl.NumberFormat("en-US", formatting_options);
 			let cashString = dollarString.format(cash);
 			return cashString
@@ -60,6 +62,7 @@ li {
 
 ul:nth-child(even) {
   background: #f95a1b;
+  color: #fff;
 }
 
 .list-group {

@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<h2>Chat with Friends</h2>
+		<!-- <h2>Chat with Friends</h2> -->
 		<chat-menu></chat-menu>
 	</div>
 </template>
@@ -22,20 +22,22 @@ export default {
 .container {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	background-color: #8ECAE6;
+	background-color: #fff;
 	height: 500px;
-	min-width: 100%;
-	border-radius: 20px;
+	/* width: 50%; */
+	/* border-radius: 20px; */
 	display: flex;
 	flex-direction: column;
+		box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+		0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 h2 {
-	color: #023047;
+	color: #000;
 	display: flex;
 	justify-content: center;
-	text-decoration: underline;
-	padding-top: 10px;
-	font-weight: bold;
+	/* text-decoration: underline; */
+	/* padding-top: 10px; */
+	/* font-weight: bold; */
 }
 </style>
