@@ -4,7 +4,7 @@
 			<h4 class="card-title">
 				<div class="header-container">
 					<span id="stock-code">{{ symbol }}</span>
-					<span id="qty-owned" v-show="getQuantityOwned() > 0"> Owned: {{ getQuantityOwned() }}</span>
+					<span id="qty-owned" v-show="getQuantityOwned() > 0"> {{ getQuantityOwned() }}</span>
 				</div>
 				<p class="stock-name">{{ name }}</p>
 			</h4>
@@ -87,6 +87,7 @@ export default {
 		0 10px 10px rgba(0, 0, 0, 0.22);
 	border-radius: 25px;
 	cursor: pointer;
+	border: none;
 }
 
 .card-title {
@@ -136,7 +137,7 @@ export default {
 
 #buy,
 #sell {
-	border-radius: 10px;
+	border-radius: 0.25rem;
 }
 
 #buy {
@@ -165,12 +166,14 @@ buy-stock {
 
 #qty-owned {
 	font-size: 15px;
-	border-radius: 12px;
+	border-radius: 5rem;
+	width: 3rem;
+	font-weight: 400;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: #023047;
-	background-color: #FB8500;
+	color: #fff;
+	background-color: #f95a1b;
 	padding: 5px;
 }
 </style>

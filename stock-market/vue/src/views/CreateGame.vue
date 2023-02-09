@@ -125,9 +125,6 @@ export default {
   /* color: #fff; */
 }
 
-.hamburger {
-  /* margin-top: -13rem; */
-}
 
 .create-game-content {
   display: flex;
