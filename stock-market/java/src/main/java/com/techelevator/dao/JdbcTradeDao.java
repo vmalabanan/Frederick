@@ -87,7 +87,6 @@ public class JdbcTradeDao implements TradeDao {
         Portfolio portfolio = new Portfolio();
 
         // set current cash
-        log.debug("Setting Cash for UserId:{} in Game: {}", gameId, userId);
         portfolio.setCash(cashDao.getCash(gameId, userId));
 
         // sql query to get current stock holdings
