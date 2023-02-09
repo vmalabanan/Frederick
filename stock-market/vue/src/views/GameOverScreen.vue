@@ -1,6 +1,6 @@
 <template>
   <div class="game-over">
-    <hamburger class="hamburger"></hamburger>
+    <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
     <div class="game-over-content">
       <div class="fishbowl-game-over-container">
         <img
@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       gameId: this.$route.params.id,
+      hamburgerLinks: ["menu", "home"],
     };
   },
   methods: {
