@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 
 import com.techelevator.dao.StockDao;
 import com.techelevator.dao.TradeDao;
+import com.techelevator.dao.UserDao;
 import com.techelevator.model.InviteSIMP;
 import com.techelevator.model.LobbySIMP;
 import com.techelevator.model.PortfolioDTO;
@@ -40,11 +42,13 @@ public class RoomController {
 	private final SimpMessagingTemplate simpMessagingTemplate;
 
 	private static Map<String, List<String>> rooms = new HashMap<>();
+
 	private TradeDao tradeDao;
 	private StockDao stockDao;
 
 	@Autowired
-	public RoomController(StockDao stockDao, TradeDao tradeDao, SimpMessagingTemplate simpMessagingTemplate) {
+	public RoomController(StockDao stockDao, TradeDao tradeDao, UserDao userDao,
+			SimpMessagingTemplate simpMessagingTemplate) {
 		this.simpMessagingTemplate = simpMessagingTemplate;
 		this.tradeDao = tradeDao;
 		this.stockDao = stockDao;
@@ -100,11 +104,9 @@ public class RoomController {
 	@Scheduled(fixedRate = 1000)
 	public void stockUpdatePerSec() {
 		List<String> allSymbols = new ArrayList<>();
-		List<Leaderboard> leaderboards = new ArrayList<>();
 
 		for (String gameId : rooms.keySet()) {
-			List<String> members = rooms.get(gameId);
-			if (members.size() == 0) {
+			if (rooms.get(gameId).size() == 0) {
 				continue;
 			}
 			allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
@@ -115,17 +117,31 @@ public class RoomController {
 		}
 		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
 
+		List<Leaderboard> leaderboards = new ArrayList<>();
 		for (String gameId : rooms.keySet()) {
-			List<String> members = rooms.get(gameId);
-			if (members.size() == 0) {
+			if (rooms.get(gameId).size() == 0) {
 				continue;
 			}
-			// Calculate each active game leaderboard
+			Integer id = Integer.parseInt(gameId);
+			Leaderboard leaderboard = new Leaderboard();
+			leaderboard.setGameId(id);
+			List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
+			for (PortfolioDTO portfolio : portfolios) {
+				BigDecimal currentCash = portfolio.getPortfolio().getCash();
 
+				for (Stock currentStock : portfolio.getPortfolio().getStocks()) {
+					Optional<com.techelevator.dao.ApiStockDao.Stock> stockData = data.stream()
+							.filter(s -> s.getSymbol().equals(currentStock.getTickerSymbol())).findFirst();
+					BigDecimal accountBalance = stockData.get().getPrice()
+							.multiply(new BigDecimal(currentStock.getNumberOfShares())).add(currentCash);
+					leaderboard.getPlayers().put(portfolio.getUsername(), accountBalance);
+				}
+			}
+			leaderboards.add(leaderboard);
 		}
 
-		log.debug("[PORTFOLIO UPDATE]: {}", allSymbols);
-
+		log.debug("[ACCOUNT VALUES] {}", leaderboards);
+		simpMessagingTemplate.convertAndSend("/topic/leaderboard", leaderboards);
 		simpMessagingTemplate.convertAndSend("/topic/update", data);
 	}
 
