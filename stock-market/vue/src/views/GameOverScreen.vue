@@ -62,17 +62,7 @@ export default {
 </script>
 
 <style scoped>
-.game-over {
-  /* height: 100vh;
-  width: 100vw;
-  position: fixed;
-  top: 0; */
-}
 
-/* .dropdown {
-	margin-top: 0.5rem;
-  background: chocolate;
-} */
 
 .nav {
   position: fixed;

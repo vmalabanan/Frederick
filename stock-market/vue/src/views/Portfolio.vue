@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="portfolio-screen-container">
     <GameOverScreen
       v-if="gameOver"
       :gameId="gameId"
@@ -340,8 +340,8 @@ export default {
     chartStyles() {
       return {
         //change chart css here
-        backgroundColor: "#8ECAE6",
-        borderRadius: "20px",
+        backgroundColor: "#fff",
+        // borderRadius: "20px",
       };
     },
     getGraphDataPoints() {
@@ -363,6 +363,15 @@ export default {
 </script>
 
 <style scoped>
+.portfolio-screen-container {
+	height: 100%;
+/* margin-top: -3rem; */
+  background: linear-gradient(
+    to right,
+    #ff4e50,
+    #f9d423
+  ); 
+}
 #navbar {
   position: fixed;
   top: 0;
@@ -379,8 +388,7 @@ export default {
 }
 
 .portfolio-items-container {
-  margin-top: 3rem;
-  padding: 20px 20px 0px 20px;
+  padding: 4rem 20px 0px 20px;
   margin-bottom: 10px;
 }
 
