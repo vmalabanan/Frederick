@@ -19,7 +19,7 @@
       </li>
 
       <li class="list-group-item col-3 data">
-        ${{ data[1] }}
+        {{ getCashString(data[1]) }}
       </li>
     </ul>
   </div>
@@ -29,6 +29,19 @@
 export default {
   name: "Leaderboard",
   props: ["gameId", "leaderboardData"],
+  methods: {
+		getCashString(cash) {
+			let formatting_options = {
+				style: "currency",
+				currency: "USD",
+				minimumFractionDigits: 2,
+			};
+
+			let dollarString = new Intl.NumberFormat("en-US", formatting_options);
+			let cashString = dollarString.format(cash);
+			return cashString
+		}
+  }
 };
 </script>
 
