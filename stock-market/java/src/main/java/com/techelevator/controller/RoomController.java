@@ -133,7 +133,7 @@ public class RoomController {
 					BigDecimal accountBalance = stockData.get().getPrice()
 							.multiply(new BigDecimal(currentStock.getNumberOfShares())).add(currentCash);
 
-					leaderboard.addPlayers(gameId, accountBalance);
+					leaderboard.addPlayers(portfolio.getUsername(), accountBalance);
 					leaderboard.setGameId(id);
 				}
 				leaderboards.add(leaderboard);
