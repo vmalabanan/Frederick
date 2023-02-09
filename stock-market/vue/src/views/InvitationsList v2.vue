@@ -28,8 +28,9 @@
         <div class="gamelist-container">
           <button
             class="btn btn-lg btn-primary"
-            v-for="(game, index) in $store.state.acceptedGames"
+            v-for="(game, index) in $store.state.invitedGames"
             :key="index"
+            :game="game"
             @click="viewGame(game.gameId)"
           >
             {{ game.gameName }}
@@ -46,7 +47,7 @@
 import Hamburger from "../components/Hamburger.vue";
 
 export default {
-  name: "GamesList",
+  name: "InvitationsList",
   components: {
     Hamburger,
   },
