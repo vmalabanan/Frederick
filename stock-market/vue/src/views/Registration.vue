@@ -39,7 +39,6 @@ export default {
 	},
 	methods: {
 		handleScreenChange() {
-
 			this.registration.isRPanelActive = !this.registration.isRPanelActive
 		}
 
