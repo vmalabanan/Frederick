@@ -52,9 +52,6 @@ export default {
 			}
 
 		},
-		// setActive() {
-		// 	this.$emit('onToggle')
-		// },
 		getQuantityOwned() {
 			if (!this.$store.state.portfolio.symbols.includes(this.symbol)) {
 				return 0

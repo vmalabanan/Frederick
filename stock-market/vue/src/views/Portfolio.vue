@@ -120,7 +120,6 @@ export default {
         symbols: [],
         cards: [],
       },
-
       graphData: [
         {
           dataPoints: [],
@@ -132,7 +131,6 @@ export default {
           portfolioLabels: [],
         },
       ],
-
       buySellCard: {
         show: false,
         price: 0.0,
@@ -228,24 +226,6 @@ export default {
         }
       );
     },
-    // getPortfolioCards() {
-    // 	console.log("Updating portfolio cards")
-    // 	MarketDataService.getRealTimeStockPrice(this.$store.state.portfolio.symbols).then(resp => {
-    // 		const data = resp.data;
-    // 		const filteredData = data.filter(stock => {
-    // 			if (this.$store.state.portfolio.symbols.includes(stock.symbol)) {
-    // 				const index = this.$store.state.portfolio.symbols.indexOf(
-    // 					stock.symbol
-    // 				);
-    // 				const sharesOwned = this.$store.state.portfolio.trades[index]
-    // 					.numberOfShares;
-    // 				return sharesOwned > 0;
-    // 			}
-    // 			return false;
-    // 		});
-    // 		this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
-    // 	});
-    // },
     getPortfolioCards(resp) {
       const data = JSON.parse(resp.body);
       const filteredData = data.filter((stock) => {
@@ -281,7 +261,7 @@ export default {
   created() {
     this.isGameOver();
     this.createPortfolioGraph();
-	this.getGameName();
+    this.getGameName();
 
     this.stompClient.connect(
       {},
@@ -332,13 +312,9 @@ export default {
     }
 
     setInterval(() => {
-      // const allSymbols = this.$store.state.portfolio.symbols.concat(this.search.symbols)
       if (this.search.symbols.length > 0) {
         this.getSearchCards();
       }
-      // if (this.$store.state.portfolio.symbols) {
-      // 	this.getPortfolioCards();
-      // }
 
       if (this.graphLabel != "My Portfolio") {
         MarketDataService.getRealTimeStockPrice(this.graphLabel).then(
@@ -390,7 +366,7 @@ export default {
 }
 
 .dropdown {
-	margin-top: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .portfolio-items-container {
