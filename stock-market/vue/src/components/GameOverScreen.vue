@@ -1,33 +1,34 @@
 <template>
   <div class="game-over">
-    <div class="fishbowl-game-over-container">
-      <img
-        class="game-over-bubble"
-        src="../img/gameover-no-bg.png"
-        alt="game over graphic"
-      />
-      <img
-        class="two-goldfish"
-        src="../img/two-goldfish.gif"
-        alt="two goldfish swimming in a bowl"
-      />
-    </div>
-    <div class="leaderboard-button-container">
+    <hamburger class="hamburger"></hamburger>
+    <div class="game-over-content">
+      <div class="fishbowl-game-over-container">
+        <img
+          class="game-over-bubble"
+          src="../img/gameover-no-bg.png"
+          alt="game over graphic"
+        />
+        <img
+          class="two-goldfish"
+          src="../img/two-goldfish.gif"
+          alt="two goldfish swimming in a bowl"
+        />
+      </div>
       <div class="leaderboard-container">
         <leaderboard :gameId="gameId" class="leaderboard" />
       </div>
-      <button class="btn btn-primary" @click="handleClick">Menu</button>
     </div>
   </div>
 </template>
 
 <script>
 import Leaderboard from "../components/Leaderboard.vue";
+import Hamburger from "./Hamburger.vue";
 
 export default {
   name: "GameOverScreen",
   props: ["gameId"],
-  components: { Leaderboard },
+  components: { Leaderboard, Hamburger },
   methods: {
     handleClick() {
       this.$router.push({ name: "menu" });
@@ -39,12 +40,25 @@ export default {
 <style scoped>
 .game-over {
   height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  font-size: 2.5rem;
+}
+
+.hamburger {
+  position: fixed;
+  right: 2rem;
+  margin-top: 0.75rem;
+
+}
+
+.game-over-content {
+  height: 100%;
   background-color: #ffe9e1;
   display: flex;
   align-items: center;
   gap: 3rem;
-  position: fixed;
-  top: 0;
 }
 
 .fishbowl-game-over-container {
@@ -74,25 +88,12 @@ export default {
 
 .leaderboard-container {
   margin-top: 7rem;
+  margin-left: -20rem;
 }
 
 .leaderboard {
   width: 150%;
-}
-
-.leaderboard-button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  margin-left: -20rem;
-  /* align-items: center; */
-}
-
-.btn {
-  /* margin-top: -12rem; */
-  width: 15rem;
-  font-size: 1.25rem;
-  width: 150%;
+  box-shadow: 1rem 1rem #69bdee;
 }
 
 @keyframes float {

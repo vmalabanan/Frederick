@@ -3,7 +3,7 @@
     <div class="dropdown">
       <a @click="toggleShowMenu()"><i class="fa-solid fa-bars"></i></a>
       <ul class="list-group" v-show="showMenu">
-        <li @click="menu()" class="list-group-item">Game Menu</li>
+        <li @click="menu()" class="list-group-item">Menu</li>
         <li @click="home()" class="list-group-item">Logout</li>
       </ul>
     </div>
@@ -11,22 +11,14 @@
 </template>
 
 <script>
-import gamesService from "../services/GamesService";
 
 export default {
   name: "hamburger",
   props: ["gameName"],
   data() {
     return {
-      myGames: [],
       showMenu: false,
     };
-  },
-  created() {
-    gamesService.getAcceptedGames().then((response) => {
-      this.myGames = response.data;
-      console.log("this.myGames length: " + this.myGames.length);
-    });
   },
   methods: {
     menu() {
