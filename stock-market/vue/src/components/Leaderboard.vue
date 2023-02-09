@@ -4,9 +4,11 @@
       <li class="list-group-item flex-fill leaderboard-title">Leaderboard</li>
     </ul>
     <ul class="list-group list-group-horizontal">
-      <li class="list-group-item col-1">#</li>
-      <li class="list-group-item col-2">Player</li>
-      <li class="list-group-item col-3">Portfolio Value</li>
+      <li class="list-group-item col-1 leaderboard-subtitle">#</li>
+      <li class="list-group-item col-2 leaderboard-subtitle">Player</li>
+      <li class="list-group-item col-3 leaderboard-subtitle">
+        Portfolio Value
+      </li>
     </ul>
     <ul class="list-group list-group-horizontal" v-for="(data, index) in this.leaderboardData" :key="index">
       <li class="list-group-item col-1 data">
@@ -34,8 +36,8 @@ export default {
 #leaderboard {
   flex-basis: 20%;
   background-color: #ffb703;
-  border-radius: 20px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  /* border-radius: 20px; */
+  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
 }
 
 li {
@@ -54,6 +56,11 @@ ul:nth-child(even) {
   text-align: center;
   font-size: 2rem;
   background-color: #fb8500;
+  font-weight: 600;
+}
+
+.leaderboard-subtitle {
+  font-weight: 600;
 }
 
 .col-1 {
@@ -61,10 +68,10 @@ ul:nth-child(even) {
 }
 
 .col-2 {
-  width: 46%;
+  width: 44%;
 }
 
 .col-3 {
-  width: 44%;
+  width: 46%;
 }
 </style>
