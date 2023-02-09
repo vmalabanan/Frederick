@@ -75,11 +75,12 @@ button:hover {
   position: absolute;
   font-size: 1rem;
   width: 20rem;
-  margin-top:3rem;
+  margin-top: 3rem;
 }
 
 .list-group-item {
   background: #ffb703;
+  border: none;
 }
 
 .list-group-item:hover {

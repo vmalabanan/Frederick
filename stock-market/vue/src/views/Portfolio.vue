@@ -111,7 +111,7 @@ export default {
       gameOver: false,
       gameId: this.$route.params.id,
       gameName: "",
-      hamburgerLinks: ["Menu", "Home"],
+      hamburgerLinks: ["menu", "home"],
       onPortfolio: true,
       stompClient: SocketService.startConnection(),
       connection: false,

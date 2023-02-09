@@ -1,50 +1,57 @@
 <template>
   <div id="create">
     <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
-
     <div class="alert alert-danger" role="alert" v-if="createGameErrors">
       {{ createGameErrorMsg }}
     </div>
-    <form class="form-create-game" @submit.prevent="createGame">
-      <div class="form-floating">
-        <input
-          type="text"
-          id="gameName"
-          class="form-control"
-          placeholder="Game Name"
-          v-model="game.gameName"
-          required
-          autofocus
-        />
-        <label for="gameName" class="sr-only">Game Name</label>
-      </div>
+    <div class="create-game-content">
+      <img
+        class="fish"
+        src="../img/fish-moving-eyes.gif"
+        alt="floating fish with bubbles"
+      />
+      <div class="form-and-buttons-container">
+        <form class="form-create-game" @submit.prevent="createGame">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInputGameName"
+              placeholder="Game Name"
+              v-model="game.gameName"
+              required
+            />
+            <label for="floatingInputGameName">Game Name</label>
+          </div>
 
-      <div class="form-floating">
-        <select
-          name="length"
-          id="length"
-          class="form-control"
-          v-model.number="game.gameLengthDays"
-          required
-        >
-          <!-- We only have one game length option for now -->
-          <option disabled value="">Please select an option</option>
-          <option value="7">7 days</option>
-        </select>
-        <label for="length" class="sr-only">Game Length</label>
-      </div>
+          <div class="form-floating">
+            <select
+              class="form-select"
+              name="length"
+              id="floatingSelectLength"
+              aria-label="Floating label select example"
+              v-model.number="game.gameLengthDays"
+              required
+            >
+              <option selected>Select an option</option>
+              <option value="7">7 days</option>
+            </select>
+            <label for="floatingSelectLength">Game Length</label>
+          </div>
 
-      <Users />
-      <button
-        class="btn btn-lg btn-primary btn-block create-game"
-        type="submit"
-      >
-        Create Game
-      </button>
-    </form>
-    <button class="btn btn-lg btn-warning back" @click="$router.go(-1)">
-      Back
-    </button>
+          <Users />
+          <button
+            class="btn btn-lg btn-primary btn-block create-game"
+            type="submit"
+          >
+            Create Game
+          </button>
+        </form>
+        <button class="btn btn-lg btn-warning back" @click="$router.go(-1)">
+          Back
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,7 +64,7 @@ export default {
   name: "create",
   components: {
     Users,
-	Hamburger
+    Hamburger,
   },
   data() {
     return {
@@ -109,16 +116,27 @@ export default {
 <style scoped>
 #create {
   /* margin-top: 2rem; */
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #3483ee;
+}
+
+.create-game-content {
+  display: flex;
+  align-items: center;
+}
+
+.form-and-buttons-container {
+  /* width: 200%; */
 }
 
 .form-create-game {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 200%;
 }
 
 .form-floating {

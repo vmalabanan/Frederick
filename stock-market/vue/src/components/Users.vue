@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<label for="userList" class="sr-only">Players</label>
+		<label for="userList" class="sr-only">Invite</label>
 
 		<select name="userList" id="userList" class="form-control" v-model="selectedUsers"
 			v-on:change="addSelectedUsersToStore" multiple>
