@@ -3,10 +3,10 @@
 		<GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
 		<div class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
-				<game-account />
+				<game-account :accountValues="accountValues" />
 				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
 					:labels="getGraphXAxis" :graphLabel="this.graphLabel" />
-				<leaderboard :gameId="gameId" />
+				<leaderboard :gameId="gameId" :leaderboardData="leaderboardData" />
 			</div>
 
 			<div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
@@ -90,7 +90,9 @@ export default {
 			},
 
 			graphLabel: {},
-			tradeSnapshots: []
+			tradeSnapshots: [],
+			leaderboardData: [],
+			accountValues: 0,
 
 		};
 	},
@@ -224,6 +226,17 @@ export default {
 				return false;
 			});
 			this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
+		},
+		getPlayersAccountWorth(resp) {
+			const data = JSON.parse(resp.body);
+			const playersValues = data.filter(d => d.gameId == this.gameId)[0].players;
+
+			this.accountValues = playersValues[this.$store.state.user.username]
+
+			let items = Object.keys(playersValues).map((key) => { return [key, playersValues[key]] });
+			items.sort((first, second) => { return first[1] - second[1] });
+			this.leaderboardData = items;
+
 		}
 	},
 	created() {
@@ -235,7 +248,7 @@ export default {
 				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, () => { return; })
 
 				this.stompClient.subscribe(`/topic/update`, resp => this.getPortfolioCards(resp))
-				this.stompClient.subscribe(`/topic/leaderboard`, resp => console.log(resp))
+				this.stompClient.subscribe(`/topic/leaderboard`, resp => this.getPlayersAccountWorth(resp))
 
 				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)
 				this.connection = true

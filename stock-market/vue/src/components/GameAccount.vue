@@ -1,7 +1,7 @@
 <template>
 	<div id="account">
 		<h4 class="labels">Account Value</h4>
-		<p class="values">{{ getCashString(getAccountValue) }}</p>
+		<p class="values">{{ getCashString(this.accountValues) }}</p>
 		<h4 class="labels">ROI</h4>
 		<p class="values" :class="this.getChangePercentage < 0 ? 'negative' : 'positive'">{{ getChange() }}</p>
 		<h4 class="labels">Cash</h4>
@@ -17,10 +17,11 @@ import cashService from "../services/CashService";
 
 export default {
 	name: "GameAccount",
+	props: ["accountValues"],
 	data() {
 		return {
 			buttonText: "Buy Stocks",
-			accountValue: 0
+			accountValue: this.accountValues,
 		};
 	},
 	methods: {
