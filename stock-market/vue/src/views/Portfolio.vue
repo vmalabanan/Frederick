@@ -234,6 +234,7 @@ export default {
 				console.log("Connecting")
 				this.stompClient.subscribe(`/topic/update`, resp => this.getPortfolioCards(resp))
 				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, resp => console.log(resp.body))
+				this.stompClient.subscribe(`/topic/leaderboard/`, resp => (console.log(resp)))
 				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)
 				this.connection = true
 			},
