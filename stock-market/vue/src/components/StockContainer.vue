@@ -46,24 +46,24 @@ export default {
 	align-content: flex-start;
 
 
-	border-radius: 20px;
+	/* border-radius: 20px; */
 	margin-bottom: 20%;
 }
 
 #stock-container {
-	background-color: #023047;
+	background-color: #fff;
 	min-height: 500px;
-	width: 100%;
+	width: 70%;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
 		0 10px 10px rgba(0, 0, 0, 0.22);
-	border-radius: 20px;
+	/* border-radius: 20px; */
 }
 h2 {
 	display: flex;
 	justify-content: center;
-	color: #fb8500;
+	color: #000;
 	padding-top: 10px;
-	text-decoration: underline;
+	/* text-decoration: underline; */
 	font-weight: bold;
 }
 </style>
