@@ -56,13 +56,14 @@ export default {
 
 <style scoped>
 button {
-  /* background: #fb8500; */
-  background: #023047;
+  background: #fff;
   color: #fb8500;
   width: 20rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 2px solid;
+  position: fixed;
 }
 
 button:hover {
@@ -74,6 +75,7 @@ button:hover {
   position: absolute;
   font-size: 1rem;
   width: 20rem;
+  margin-top:3rem;
 }
 
 .list-group-item {

@@ -35,6 +35,7 @@ export default {
   position: fixed;
   right: 2rem;
   margin-top: 0.75rem;
+  font-size: 2.5rem;
 }
 
 a:hover {
