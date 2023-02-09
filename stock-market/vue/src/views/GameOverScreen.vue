@@ -74,7 +74,6 @@ export default {
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   transform: rotate(8deg);
-
   margin-left: 20rem;
 }
 
