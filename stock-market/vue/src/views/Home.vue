@@ -56,5 +56,6 @@ export default {
   margin-top: -12rem;
   width: 15rem;
   font-size: 1.25rem;
+  box-shadow: 0.5rem 0.5rem #fc7c31;
 }
 </style>

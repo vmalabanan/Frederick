@@ -3,7 +3,14 @@
     <div class="dropdown">
       <a @click="toggleShowMenu()"><i class="fa-solid fa-bars"></i></a>
       <ul class="list-group" v-show="showMenu">
-        <li v-for="(route, index) in routeNames" :key="index" @click="handleClick(route)" class="list-group-item">{{ route === "home" ? "Logout" : route }}</li>
+        <li
+          v-for="(route, index) in routeNames"
+          :key="index"
+          @click="handleClick(route)"
+          class="list-group-item"
+        >
+          {{ route === "home" ? "logout" : route }}
+        </li>
       </ul>
     </div>
   </div>
@@ -22,7 +29,7 @@ export default {
     handleClick(routeName) {
       this.$router.push({ name: routeName });
     },
-   
+
     toggleShowMenu() {
       this.showMenu = !this.showMenu;
     },
@@ -35,6 +42,7 @@ export default {
   position: fixed;
   right: 2rem;
   margin-top: 0.75rem;
+  font-size: 2.5rem;
 }
 
 a:hover {
@@ -51,6 +59,7 @@ a:hover {
 
 .list-group-item {
   background: #ffb703;
+  border: none;
 }
 
 .list-group-item:hover {

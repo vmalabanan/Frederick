@@ -1,13 +1,28 @@
 <template>
   <div class="game-over">
-    <hamburger class="hamburger"></hamburger>
+    <div class="nav">
+      <!-- <drop-down :gameName="gameName" class="dropdown"></drop-down> -->
+      <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
+    </div>
     <div class="game-over-content">
       <div class="fishbowl-game-over-container">
-        <img class="game-over-bubble" src="../img/gameover-no-bg.png" alt="game over graphic" />
-        <img class="two-goldfish" src="../img/two-goldfish.gif" alt="two goldfish swimming in a bowl" />
+        <img
+          class="game-over-bubble"
+          src="../img/gameover-no-bg.png"
+          alt="game over graphic"
+        />
+        <img
+          class="two-goldfish"
+          src="../img/two-goldfish.gif"
+          alt="two goldfish swimming in a bowl"
+        />
       </div>
       <div class="leaderboard-container">
-        <leaderboard :gameId="gameId" :leaderboardData="this.leaderboardData" class="leaderboard" />
+        <leaderboard
+          :gameId="gameId"
+          :leaderboardData="this.leaderboardData"
+          class="leaderboard"
+        />
       </div>
     </div>
   </div>
@@ -15,6 +30,8 @@
 <script>
 import Leaderboard from "../components/Leaderboard.vue";
 import Hamburger from "../components/Hamburger.vue";
+// import DropDown from "../components/DropDown.vue";
+import gameService from "../services/GamesService";
 
 export default {
   name: "GameOverScreen",
@@ -23,11 +40,22 @@ export default {
   data() {
     return {
       gameId: this.$route.params.id,
+      hamburgerLinks: ["menu", "home"],
+      gameName: "",
     };
+  },
+  created() {
+    this.getGameName();
   },
   methods: {
     handleClick() {
       this.$router.push({ name: "menu" });
+    },
+    getGameName() {
+      const gameId = this.$route.params.id;
+      gameService.getGameById(gameId).then((resp) => {
+        this.gameName = resp.data.gameName;
+      });
     },
   },
 };
@@ -35,11 +63,26 @@ export default {
 
 <style scoped>
 .game-over {
-  height: 100vh;
+  /* height: 100vh;
   width: 100vw;
   position: fixed;
+  top: 0; */
+}
+
+/* .dropdown {
+	margin-top: 0.5rem;
+  background: chocolate;
+} */
+
+.nav {
+  position: fixed;
   top: 0;
-  font-size: 2.5rem;
+  width: 100%;
+  transition: top 0.7s;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .game-over-content {
