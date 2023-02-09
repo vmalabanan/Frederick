@@ -48,27 +48,35 @@ export default {
 <style scoped>
 #leaderboard {
   flex-basis: 20%;
-  background-color: #ffb703;
+  background-color: #fff;
   /* border-radius: 20px; */
-  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 li {
   background: none;
+  
 }
 
 ul:nth-child(even) {
-  background: #fb8500;
+  background: #f95a1b;
+}
+
+.list-group {
+  border-radius: 0;
 }
 
 .list-group-item {
   font-size: 1.15rem;
+    border: none;
+    border-radius: 0;
+
 }
 
 .leaderboard-title {
   text-align: center;
-  font-size: 2rem;
-  background-color: #fb8500;
+	font-size: 1.25rem;
+  background-color: #fff;
   font-weight: 600;
 }
 

@@ -364,13 +364,9 @@ export default {
 
 <style scoped>
 .portfolio-screen-container {
-	height: 100%;
-/* margin-top: -3rem; */
-  background: linear-gradient(
-    to right,
-    #ff4e50,
-    #f9d423
-  ); 
+  height: 100%;
+  /* margin-top: -3rem; */
+  background: linear-gradient(to right, #ff4e50, #f9d423);
 }
 #navbar {
   position: fixed;
@@ -388,7 +384,7 @@ export default {
 }
 
 .portfolio-items-container {
-  padding: 4rem 20px 0px 20px;
+  padding: 5rem 20px 0px 20px;
   margin-bottom: 10px;
 }
 
@@ -405,11 +401,12 @@ export default {
 }
 
 div#search {
-  border: 5px solid #023047;
-  border-radius: 10px;
+  /* border: 5px solid #023047; */
+  /* border-radius: 10px; */
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .game-over {
