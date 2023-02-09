@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -116,15 +113,16 @@ public class RoomController {
 			return;
 		}
 		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
+		log.debug("Sending Data");
+		simpMessagingTemplate.convertAndSend("/topic/update", data);
 
 		List<Leaderboard> leaderboards = new ArrayList<>();
 		for (String gameId : rooms.keySet()) {
 			if (rooms.get(gameId).size() == 0) {
 				continue;
 			}
-			Integer id = Integer.parseInt(gameId);
 			Leaderboard leaderboard = new Leaderboard();
-			leaderboard.setGameId(id);
+			Integer id = Integer.parseInt(gameId);
 			List<PortfolioDTO> portfolios = tradeDao.getCurrentPortfolioAllPlayers(id);
 			for (PortfolioDTO portfolio : portfolios) {
 				BigDecimal currentCash = portfolio.getPortfolio().getCash();
@@ -134,49 +132,20 @@ public class RoomController {
 							.filter(s -> s.getSymbol().equals(currentStock.getTickerSymbol())).findFirst();
 					BigDecimal accountBalance = stockData.get().getPrice()
 							.multiply(new BigDecimal(currentStock.getNumberOfShares())).add(currentCash);
-					leaderboard.getPlayers().add(new Player(portfolio.getUsername(), accountBalance));
 
+					leaderboard.addPlayers(portfolio.getUsername(), accountBalance);
+					leaderboard.setGameId(id);
 				}
+				leaderboards.add(leaderboard);
 			}
-			leaderboards.add(leaderboard);
 		}
-
-		log.debug("[ACCOUNT VALUES] {}", leaderboards);
+		log.debug("Sending leaderboards", leaderboards);
 		simpMessagingTemplate.convertAndSend("/topic/leaderboard", leaderboards);
-		simpMessagingTemplate.convertAndSend("/topic/update", data);
-	}
-
-	public static class Player {
-		private String name;
-		private BigDecimal accountValue;
-
-		public Player(String name, BigDecimal accountValue) {
-			this.name = name;
-			this.accountValue = accountValue;
-
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public BigDecimal getAccountValue() {
-			return this.accountValue;
-		}
-
-		public void setAccountValue(BigDecimal accountValue) {
-			this.accountValue = accountValue;
-		}
-
 	}
 
 	public static class Leaderboard {
 		private int gameId;
-		private List<Player> players = new ArrayList<Player>();;
+		private Map<String, BigDecimal> players = new HashMap<>();
 
 		public int getGameId() {
 			return this.gameId;
@@ -186,12 +155,16 @@ public class RoomController {
 			this.gameId = gameId;
 		}
 
-		public List<Player> getPlayers() {
+		public Map<String, BigDecimal> getPlayers() {
 			return this.players;
 		}
 
-		public void setPlayers(List<Player> players) {
+		public void setPlayers(Map<String, BigDecimal> players) {
 			this.players = players;
+		}
+
+		public void addPlayers(String username, BigDecimal accountValue) {
+			players.put(username, accountValue);
 		}
 
 	}
