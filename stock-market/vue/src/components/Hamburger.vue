@@ -11,7 +11,6 @@
 </template>
 
 <script>
-
 export default {
   name: "hamburger",
   props: ["gameName"],
@@ -35,6 +34,12 @@ export default {
 </script>
 
 <style scoped>
+.dropdown {
+  position: fixed;
+  right: 2rem;
+  margin-top: 0.75rem;
+}
+
 a:hover {
   cursor: pointer;
 }

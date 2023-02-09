@@ -1,81 +1,176 @@
 <template>
-	<div class="options-container">
-		<div class="options-holder">
-			<div class="options d-grid col-4 mx-auto">
-				<button class="btn btn-lg btn-primary" @click="createPage">
-					Host Game
-				</button>
-				<button class="btn btn-lg btn-warning" v-if="$store.state.invitedGames.length > 0"
-					@click="invitationsList">
-					Game Invites
-				</button>
-				<button class="btn btn-lg btn-info" v-if="$store.state.acceptedGames.length > 0" @click="gamesList">
-					My Games
-				</button>
-			</div>
-		</div>
-	</div>
-
+  <div class="menu">
+    <hamburger class="hamburger"></hamburger>
+    <div class="image-and-button-container">
+      <div class="images-container">
+        <img class="dollar dollar-1" src="../img/dollar.png" alt="dollar" />
+        <div class="fishbowl-and-dollar-container">
+          <img class="dollar dollar-2" src="../img/dollar.png" alt="dollar" />
+          <img
+            class="fishbowl"
+            src="../img/goldfish.gif"
+            alt="goldfish in bowl gif"
+          />
+        </div>
+        <img class="dollar dollar-3" src="../img/dollar.png" alt="dollar" />
+      </div>
+      <div class="button-container">
+        <button class="btn btn-lg btn-primary" @click="createPage">
+          Host Game
+        </button>
+        <button
+          class="btn btn-lg btn-warning"
+          v-if="$store.state.invitedGames.length > 0"
+          @click="invitationsList"
+        >
+          Game Invites
+        </button>
+        <button
+          class="btn btn-lg btn-info"
+          v-if="$store.state.acceptedGames.length > 0"
+          @click="gamesList"
+        >
+          My Games
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import gamesService from "../services/GamesService.js";
+import hamburger from "../components/Hamburger.vue";
 
 export default {
-	name: "menu",
-	methods: {
-		createPage() {
-			this.$router.push({ name: "createGame" });
-		},
-		invitationsList() {
-			this.$router.push({ name: "invitationsList" });
-		},
-		gamesList() {
-			this.$router.push({ name: "gamesList" });
-		}
-	},
-	created() {
-		// get list of game invitations and add to store
-		gamesService.getInvitedGames().then(resp => {
-			this.$store.commit("SET_INVITED_GAMES", resp.data);
-		});
+  name: "menu",
+  components: {
+    hamburger,
+  },
+  methods: {
+    createPage() {
+      this.$router.push({ name: "createGame" });
+    },
+    invitationsList() {
+      this.$router.push({ name: "invitationsList" });
+    },
+    gamesList() {
+      this.$router.push({ name: "gamesList" });
+    },
+  },
+  created() {
+    // get list of game invitations and add to store
+    gamesService.getInvitedGames().then((resp) => {
+      this.$store.commit("SET_INVITED_GAMES", resp.data);
+    });
 
-		// get list of all accepted games and add to store
-		gamesService.getAcceptedGames().then(resp => {
-			this.$store.commit("SET_ACCEPTED_GAMES", resp.data);
-		});
-	}
+    // get list of all accepted games and add to store
+    gamesService.getAcceptedGames().then((resp) => {
+      this.$store.commit("SET_ACCEPTED_GAMES", resp.data);
+    });
+  },
 };
 </script>
 
 <style scoped>
-.options-container {
-	margin-top: 9rem;
-	display: flex;
-	justify-content: center;
+.menu {
+  height: 100vh;
+  font-size: 2rem;
+  background-color: #f2dff3;
+}
+
+.image-and-button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.images-container {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
-.options-holder {
-	width: 50rem;
-	/* background-color: #8ECAE6; */
-  border: 1rem solid #8ECAE6;
-	border-radius: 2rem;
-	height: 30rem;
-	display: flex;
+.fishbowl-and-dollar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.options {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	height: 15rem;
-	width: 25rem;
-	align-self: center;
+.fishbowl {
+  transform: rotate(-2deg);
+  opacity: 0.8;
+  height: 55vh;
+}
+
+.dollar {
+  transform: rotate(8deg);
+  width: 11%;
+  z-index: 10;
+  position: relative;
+  animation-name: float;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.dollar-1 {
+  margin-right: -10rem;
+  margin-bottom: 7rem;
+}
+
+.dollar-2 {
+  transform: rotate(16deg);
+  width: 20%;
+  margin-top: 2rem;
+}
+
+.dollar-3 {
+  margin-left: -11rem;
+  margin-bottom: 12rem;
+}
+
+.button-container {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
+  /* margin-top: 2rem; */
+  /* margin-left: -16rem; */
 }
 
 button {
-	font-size: 2rem;
-	border-radius: 20px;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #477fc9;
+}
+
+.btn-info {
+  background-color: #ba4ec2;
+}
+
+.btn-warning {
+  background-color: #fc7c31;
+}
+
+@keyframes float {
+  0% {
+    top: 0px;
+  }
+  25% {
+    top: 10px;
+  }
+  50% {
+    top: 20px;
+  }
+  75% {
+    top: 10px;
+  }
+  100% {
+    top: 0px;
+  }
 }
 </style>

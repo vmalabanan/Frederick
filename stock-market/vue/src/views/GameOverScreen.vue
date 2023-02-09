@@ -23,12 +23,16 @@
 
 <script>
 import Leaderboard from "../components/Leaderboard.vue";
-import Hamburger from "./Hamburger.vue";
+import Hamburger from "../components/Hamburger.vue";
 
 export default {
   name: "GameOverScreen",
-  props: ["gameId"],
   components: { Leaderboard, Hamburger },
+  data() {
+    return {
+      gameId: this.$route.params.id,
+    };
+  },
   methods: {
     handleClick() {
       this.$router.push({ name: "menu" });
@@ -44,13 +48,6 @@ export default {
   position: fixed;
   top: 0;
   font-size: 2.5rem;
-}
-
-.hamburger {
-  position: fixed;
-  right: 2rem;
-  margin-top: 0.75rem;
-
 }
 
 .game-over-content {
@@ -77,7 +74,6 @@ export default {
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
   transform: rotate(8deg);
-
   margin-left: 20rem;
 }
 

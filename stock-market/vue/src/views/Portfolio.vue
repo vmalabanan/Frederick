@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<GameOverScreen v-if="gameOver" :gameId="gameId" class="game-over"></GameOverScreen>
-		<div class="portfolio-container">
+		<div v-else class="portfolio-container">
 			<div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
 				<game-account :accountValue="accountValue" />
 				<line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints"
@@ -39,7 +39,7 @@ import Leaderboard from "../components/Leaderboard.vue";
 import StockContainer from "../components/StockContainer.vue";
 import GameAccount from "../components/GameAccount.vue";
 import LineChart from "../components/LineChart.vue";
-import GameOverScreen from "../components/GameOverScreen.vue";
+import GameOverScreen from "./GameOverScreen.vue";
 import MarketDataService from "../services/MarketDataService";
 import tradeService from "../services/TradeService";
 import gameService from "../services/GamesService";
@@ -248,6 +248,7 @@ export default {
 				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, () => { return; })
 
 				this.stompClient.subscribe(`/topic/update`, resp => this.getPortfolioCards(resp))
+				this.stompClient.subscribe(`/topic/room-${this.gameId}/join`, resp => console.log(resp.body))
 				this.stompClient.subscribe(`/topic/leaderboard`, resp => this.getPlayersAccountWorth(resp))
 
 				this.stompClient.send(`/app/room-${this.gameId}/join`, this.$store.state.user.username)

@@ -23,7 +23,7 @@ export default {
 				name: "portfolio", params: { id: this.game.gameId }
 			});
 		}
-	}
+	},
 };
 </script>
 
