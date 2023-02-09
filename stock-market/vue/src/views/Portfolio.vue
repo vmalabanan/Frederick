@@ -226,6 +226,10 @@ export default {
         }
       );
     },
+    addRealTimeDataToGraph(graphData) {
+      this.graphData[0].dataPoints.push(graphData.price);
+      this.graphData[0].time.push(new Date());
+    },
     getPortfolioCards(resp) {
       const data = JSON.parse(resp.body);
       const filteredData = data.filter((stock) => {
@@ -240,6 +244,11 @@ export default {
         return false;
       });
       this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
+
+      if (this.graphLabel != "My Portfolio") {
+        const graphData = data.find(stock => stock.symbol == this.graphLabel)
+        this.addRealTimeDataToGraph(graphData)
+      }
     },
     getPlayersAccountWorth(resp) {
       const data = JSON.parse(resp.body);
@@ -316,15 +325,15 @@ export default {
         this.getSearchCards();
       }
 
-      if (this.graphLabel != "My Portfolio") {
-        MarketDataService.getRealTimeStockPrice(this.graphLabel).then(
-          (resp) => {
-            const data = resp.data[0];
-            this.graphData[0].dataPoints.push(data.price);
-            this.graphData[0].time.push(new Date());
-          }
-        );
-      }
+      // if (this.graphLabel != "My Portfolio") {
+      //   MarketDataService.getRealTimeStockPrice(this.graphLabel).then(
+      //     (resp) => {
+      //       const data = resp.data[0];
+      //       this.graphData[0].dataPoints.push(data.price);
+      //       this.graphData[0].time.push(new Date());
+      //     }
+      //   );
+      // }
     }, 6 * 1000);
   },
   computed: {
