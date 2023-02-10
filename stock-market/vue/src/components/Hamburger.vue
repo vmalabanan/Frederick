@@ -43,6 +43,7 @@ export default {
   right: 2rem;
   margin-top: 0.75rem;
   font-size: 2.5rem;
+  color: #fff;
 }
 
 a:hover {
@@ -58,7 +59,7 @@ a:hover {
 }
 
 .list-group-item {
-  background: #ffb703;
+  background: #fff;
   border: none;
 }
 

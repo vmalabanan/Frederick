@@ -111,26 +111,27 @@ export default {
   gap: 15px;
 }
 
+.btn-light {
+  background-color: #8892ab;
+  border: none;
+  border-radius: 0.25rem;
+  color: white;
+}
+
+.btn-light:hover {
+  background-color: #656e8e;
+  color: white;
+}
+
 .btn-primary {
-  background-color: #f95a1b;
+  color: white;
+  background-color: #3c4d74;
   border: none;
   border-radius: 0.25rem;
 }
 
 .btn-primary:hover {
-  background-color: #f34804;
-  color: white;
-}
-
-.btn-light {
-  color: white;
-  background-color: #fb8500;
-  border: none;
-  border-radius: 0.25rem;
-}
-
-.btn-light:hover {
-  background-color: #e67d05;
+  background-color: #223e7e;
   color: white;
 }
 

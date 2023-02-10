@@ -107,13 +107,13 @@ h4 {
 
 button {
 	margin-top: 40px;
-	background-color: #fb8500;
+	background-color: #8892ab;
 	color: white;
 	border-radius: 0.25rem;;
 }
 
 button:hover {
-	background-color: #e67d05;
+	background-color: #656e8e;
 	color: white;
 	/* border: 2px solid rgb(68, 68, 68); */
 }
