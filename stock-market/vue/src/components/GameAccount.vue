@@ -100,7 +100,7 @@ h4 {
 	justify-content: center;
 	align-items: center;
 	color: #fff;
-	background-color: #f95a1b;
+	background-color: #3c4d74;
 	height: 40px;
 	border-radius: 0.25rem;
 }

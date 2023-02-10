@@ -68,7 +68,7 @@ li {
 }
 
 ul:nth-child(even) {
-  background: #f95a1b;
+  background: #3c4d74;
 }
 
 ul:nth-child(even) li {

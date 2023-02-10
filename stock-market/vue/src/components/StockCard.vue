@@ -173,7 +173,7 @@ buy-stock {
 	align-items: center;
 	justify-content: center;
 	color: #fff;
-	background-color: #f95a1b;
+	background-color: #3c4d74;
 	padding: 5px;
 }
 </style>
