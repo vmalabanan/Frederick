@@ -1,10 +1,10 @@
 <template>
   <div id="gamelist">
     <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
-    <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">
+    <!-- <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">
       No games to display
-    </p>
-    <div v-else class="gamelist-content">
+    </p> -->
+    <div class="gamelist-content">
       <div class="airplane-container">
         <img src="../img/airplane.gif" alt="paper airplane gif " />
       </div>
