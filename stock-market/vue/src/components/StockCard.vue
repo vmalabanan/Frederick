@@ -8,7 +8,8 @@
             {{ getQuantityOwned() }}</span
           >
         </div>
-        <p class="stock-name">{{ name }}</p>
+        <p class="stock-name" v-if="name.length > 20">{{ name.substring(0,20) }}</p>
+        <p class="stock-name" v-else>{{ name }}</p>
       </h4>
       <p class="stock-price">${{ price.toFixed(2) }}</p>
       <p
