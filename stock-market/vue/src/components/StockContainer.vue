@@ -54,14 +54,14 @@ export default {
   height: 40vh;
   overflow-y: auto;
   align-items: center;
-  padding-left: 3.5rem;
+  padding-left: 1.9rem;
 }
 
 #stock-container {
   background-color: #fff;
 
   min-height: 46vh;
-  width: 65.5vw;
+  width: 62.5vw;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   border-radius: 0.5rem;
 }

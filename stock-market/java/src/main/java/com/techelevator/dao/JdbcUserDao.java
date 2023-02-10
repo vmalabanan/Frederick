@@ -83,7 +83,7 @@ public class JdbcUserDao implements UserDao {
             ps.setString(5, lastName);
             return ps;
         }, keyHolder) == 1;
-        // int newUserId = (int) keyHolder.getKeys().get(id_column);
+//         int newUserId = (int) keyHolder.getKeys().get(id_column);
 
         return userCreated;
     }
