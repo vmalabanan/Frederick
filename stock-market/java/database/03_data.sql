@@ -1,6 +1,6 @@
 
 -- insert users table data
-INSERT INTO users (user_id, username, password_hash, role, first_name, last_name) VALUES (1, 'user', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_USER', 'first', 'user');
+INSERT INTO users (user_id, username, password_hash, role, first_name, last_name) VALUES (1, 'bigjoe', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_USER', 'Joe', 'Fajardo');
 INSERT INTO users (user_id, username, password_hash, role, first_name, last_name) VALUES (2, 'admin', '$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC','ROLE_ADMIN', 'first', 'admin');
 INSERT INTO users (user_id, username, password_hash, role, first_name, last_name) VALUES (3, 'frederick', '$2a$10$bxJa9IWdnlllDQE3QMkt5.lD2z8ug3u1OhxZivZ4ifCPuVyFzlpO.','ROLE_USER', 'Ninja', 'Aung');
 INSERT INTO users (user_id, username, password_hash, role, first_name, last_name) VALUES (4, 'vanessa', '$2a$10$GxLi4D/adyKmeqsXfu6L3usB4DEPtPEVJzlQYU1uwjoEfC1M7quae','ROLE_USER', 'Vanessa', 'Malabanan');
@@ -35,7 +35,7 @@ INSERT INTO trade_type (trade_type_id, trade_type_desc) VALUES (2, 'Sell');
 
 -- create an ended game without trades (#777)
 INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days)
-VALUES (777, 'Vanessa Game Ended', 4, CURRENT_TIMESTAMP - INTERVAL '8 day', CURRENT_TIMESTAMP - INTERVAL '1 day', 7);
+VALUES (777, 'Vanessa Game 777', 4, CURRENT_TIMESTAMP - INTERVAL '8 day', CURRENT_TIMESTAMP - INTERVAL '1 day', 7);
 
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (777, 4, 2);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (777, 5, 2);
@@ -50,7 +50,7 @@ INSERT INTO cash (game_id, user_id, amount, effective_date) VALUES (777, 1, 6793
 
 -- create a current game with trades (#555)
 INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days)
-VALUES (555, 'Vanessa Test', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '7 day', 7);
+VALUES (555, 'Vanessa Game 555', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '7 day', 7);
 
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (555, 4, 2);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (555, 5, 2);

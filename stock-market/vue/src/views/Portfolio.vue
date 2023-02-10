@@ -360,6 +360,7 @@ export default {
 
 .portfolio-screen-container {
   min-height: 100vh;
+  /* width: 100.1vw; */
   /* background: linear-gradient(to right, #ff4e50, #f9d423); */
   /* background: linear-gradient(
     to right,
@@ -377,7 +378,7 @@ export default {
 
 #navbar {
   position: fixed;
-  top: 0;
+  top: 0.001rem;
   width: 100vw;
   transition: top 0.7s;
   z-index: 100;
@@ -426,7 +427,6 @@ input {
   display: flex;
   gap: 1.75rem;
   /* align-items: flex-start; */
-  /* justify-content: center; */
 }
 
 .game-over {
