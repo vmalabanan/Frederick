@@ -355,8 +355,9 @@ export default {
 </script>
 
 <style scoped>
+
 .portfolio-screen-container {
-  height: 100%;
+  min-height: 100vh;
   /* margin-top: -3rem; */
   background: linear-gradient(to right, #ff4e50, #f9d423);
 }
@@ -369,6 +370,8 @@ export default {
   display: flex;
   /* align-items: flex-start; */
   justify-content: center;
+  background-size: cover;
+
 }
 
 .dropdown {
