@@ -64,7 +64,8 @@ a:hover {
 }
 
 .list-group-item:hover {
-  background: #fb8500;
+  background: #8892ab;
   cursor: pointer;
+  color: #fff;
 }
 </style>
