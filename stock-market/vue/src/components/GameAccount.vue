@@ -78,7 +78,7 @@ export default {
 <style scoped>
 #account {
 	flex-basis: 20%;
-	/* height: 100%; */
+	height: 100%;
 	background-color: #fff;
 	display: flex;
 	flex-direction: column;
@@ -89,6 +89,7 @@ export default {
 
 h4 {
 	font-size: 1.25rem;
+	margin: 0.1rem;
 }
 
 .labels {
@@ -106,7 +107,7 @@ h4 {
 }
 
 button {
-	margin-top: 40px;
+	margin-top: 1rem;
 	background-color: #8892ab;
 	color: white;
 	border-radius: 0.5rem;;

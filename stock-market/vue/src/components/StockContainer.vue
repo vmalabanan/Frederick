@@ -58,8 +58,10 @@ export default {
 
 #stock-container {
   background-color: #fff;
-  min-height: 500px;
-  min-width: 300px;
+  /* min-height: 500px; */
+  min-height: 450px;
+
+  width: 66.5vw;
   /* width: 70%; */
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   /* border-radius: 20px; */

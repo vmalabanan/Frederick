@@ -335,6 +335,7 @@ export default {
         backgroundColor: "#fff",
         // borderRadius: "20px",
         borderRadius: "0.5rem",
+		height: "90%"
       };
     },
     getGraphDataPoints() {
@@ -358,6 +359,7 @@ export default {
 <style scoped>
 .portfolio-screen-container {
   min-height: 100vh;
+
   /* background: linear-gradient(to right, #ff4e50, #f9d423); */
   /* background: linear-gradient(
     to right,
@@ -385,7 +387,7 @@ export default {
 }
 
 .dropdown {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   margin-left: -23rem;
 }
 
@@ -409,7 +411,7 @@ export default {
 div#search {
   /* border: 5px solid #023047; */
   /* border-radius: 10px; */
-  width: 90%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -417,8 +419,8 @@ div#search {
 
 .stock-container-and-chat {
   display: flex;
-  gap: 3rem;
-  align-items: center;
+  gap: 1.5rem;
+  /* align-items: center; */
   justify-content: center;
 }
 .game-over {

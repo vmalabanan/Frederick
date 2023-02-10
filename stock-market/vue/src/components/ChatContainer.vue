@@ -22,7 +22,10 @@ export default {
   /* margin-top: 20px; */
   /* margin-bottom: 20px; */
   background-color: #fff;
-  height: 530px;
+  /* min-height: 500px; */
+  min-height: 450px;
+
+  width: 30vw;
   /* width: 50%; */
   /* border-radius: 20px; */
   border-radius: 0.5rem;
