@@ -377,7 +377,7 @@ export default {
 
 #navbar {
   position: fixed;
-  top: 0;
+  top: 0rem;
   width: 100vw;
   transition: top 0.7s;
   z-index: 100;
