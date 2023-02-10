@@ -81,10 +81,7 @@ export default {
   height: 100vh;
   display: flex;
   align-items: center;
-  /* justify-content: space-around; */
-
-  /* background-color: #f5e1af; */
-  background-color: #ffe9e1;
+  /* background-color: #ffe9e1; */
 }
 
 .stars-left {
@@ -100,7 +97,6 @@ export default {
 }
 
 .login {
-  /* margin-top: 2rem; */
   display: flex;
   width: 100vw;
   justify-content: center;
@@ -124,16 +120,10 @@ button {
 button.ghost {
   background-color: #fc7c31;
   border-color: white;
-  /* margin-top: .5rem; */
 }
 
-/* Thank you https: florin-pop */
 .container {
-  /* background-color: #8ecae6; */
   background-color: #04c2fc;
-
-  /* border-radius: 25px; */
-  /* box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22); */
   box-shadow: 1.5rem 1.5rem #ffb703;
 
   position: relative;

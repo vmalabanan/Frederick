@@ -107,20 +107,16 @@ export default {
   margin-top: 3rem;
 }
 .gamelist-container {
-  /* background-color: #ffb703; */
-  /* width: 20%; */
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
 .all-button-container {
-  /* margin-top: 5rem; */
   z-index: 10;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  /* margin-top: 8rem; */
 }
 
 button {
@@ -144,10 +140,6 @@ button {
 
 .btn-info:hover {
   background-color: #65bce4;
-}
-
-.stars {
-  /* margin-top: 5rem; */
 }
 
 @keyframes float {
