@@ -6,28 +6,23 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
-public class JdbcGameDao implements GameDao
-{
+public class JdbcGameDao implements GameDao {
     private JdbcTemplate jdbcTemplate;
     private UserDao userDao;
     private CashDao cashDao;
 
-    public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao)
-    {
+    public JdbcGameDao(JdbcTemplate jdbcTemplate, UserDao userDao, CashDao cashDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
         this.cashDao = cashDao;
     }
 
     @Override
-    public List<Game> getAllGames(int userId)
-    {
+    public List<Game> getAllGames(int userId) {
         List<Game> games = new ArrayList<>();
         String sql = "SELECT g.game_id " +
                 ", g.game_name " +
@@ -41,8 +36,7 @@ public class JdbcGameDao implements GameDao
                 "WHERE gu.user_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        while (results.next())
-        {
+        while (results.next()) {
             Game game = mapRowToGame(results);
             games.add(game);
         }
@@ -50,8 +44,7 @@ public class JdbcGameDao implements GameDao
     }
 
     // private helper function
-    private List<Game> getFilteredGames(int userId, int invitationStatusId)
-    {
+    private List<Game> getFilteredGames(int userId, int invitationStatusId) {
         List<Game> games = new ArrayList<>();
         String sql = "SELECT g.game_id " +
                 ", g.game_name " +
@@ -66,8 +59,7 @@ public class JdbcGameDao implements GameDao
                 "AND gu.invitation_status_id = ?;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, invitationStatusId);
-        while (results.next())
-        {
+        while (results.next()) {
             Game game = mapRowToGame(results);
             games.add(game);
         }
@@ -76,7 +68,7 @@ public class JdbcGameDao implements GameDao
 
     @Override
     public List<Game> getInvitedGames(int userId) {
-//        return getFilteredGames(userId, 1);
+        // return getFilteredGames(userId, 1);
 
         // return only games that haven't ended
         List<Game> games = new ArrayList<>();
@@ -94,8 +86,7 @@ public class JdbcGameDao implements GameDao
                 "AND CURRENT_TIMESTAMP < g.end_date;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-        while (results.next())
-        {
+        while (results.next()) {
             Game game = mapRowToGame(results);
             games.add(game);
         }
@@ -129,41 +120,33 @@ public class JdbcGameDao implements GameDao
     }
 
     @Override
-    public Game getGameById(int gameId)
-    {
+    public Game getGameById(int gameId) {
         String sql = "SELECT * FROM games WHERE game_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameId);
-        if(results.next())
-        {
+        if (results.next()) {
             return mapRowToGame(results);
-        }
-        else
-        {
+        } else {
             throw new RuntimeException("gameId " + gameId + " was not found.");
         }
     }
 
     @Override
-    public Game findByGameName(String gameName)
-    {
+    public Game findByGameName(String gameName) {
         String sql = "SELECT * FROM games WHERE game_name = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, gameName);
-        if (results.next())
-        {
+        if (results.next()) {
             return mapRowToGame(results);
-        }
-        else
-        {
+        } else {
             throw new RuntimeException("Game was not found");
         }
     }
 
     @Override
-    public int create(String gameName, int organizerId, int gameLengthDays, String[] players)
-    {
+    public int create(String gameName, int organizerId, int gameLengthDays, String[] players) {
         // sql query to insert data into games table
         String sql = "INSERT INTO games (game_name, organizer_id, start_date, end_date, game_length_days) " +
-                "VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '" + gameLengthDays + " days', ?) RETURNING game_id";
+                "VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '" + gameLengthDays
+                + " days', ?) RETURNING game_id";
 
         // run query and get back gameId
         Integer gameId = jdbcTemplate.queryForObject(sql, Integer.class, gameName, organizerId, gameLengthDays);
@@ -175,7 +158,8 @@ public class JdbcGameDao implements GameDao
         // set organizer's starting cash to 100,000
         cashDao.setStartingCash(gameId, organizerId);
 
-        // for each player in players, add to games_users table and set invitation_status to 1 (Invited)
+        // for each player in players, add to games_users table and set
+        // invitation_status to 1 (Invited)
         for (String player : players) {
             int playerID = userDao.findIdByUsername(player);
             sql = "INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (?, ?, ?);";
@@ -190,8 +174,7 @@ public class JdbcGameDao implements GameDao
     }
 
     @Override
-    public boolean delete(int gameId)
-    {
+    public boolean delete(int gameId) {
         String sql = "DELETE FROM games WHERE game_id = ?";
         int deleted = jdbcTemplate.update(sql, gameId);
         return deleted > 0;
@@ -206,8 +189,7 @@ public class JdbcGameDao implements GameDao
 
     }
 
-    private Game mapRowToGame(SqlRowSet rs)
-    {
+    private Game mapRowToGame(SqlRowSet rs) {
         int gameId = rs.getInt("game_id");
         String gameName = rs.getString("game_name");
         int organizerId = rs.getInt("organizer_id");
