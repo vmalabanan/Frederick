@@ -43,7 +43,7 @@ export default {
   right: 2rem;
   margin-top: 0.75rem;
   font-size: 2.5rem;
-  color: #fff;
+  color: #8892ab;
 }
 
 a:hover {

@@ -1,7 +1,7 @@
 <template>
   <div class="game-over">
     <div class="nav">
-      <!-- <drop-down :gameName="gameName" class="dropdown"></drop-down> -->
+      <drop-down :gameName="gameName" class="dropdown"></drop-down>
       <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
     </div>
     <div class="game-over-content">
@@ -30,13 +30,13 @@
 <script>
 import Leaderboard from "../components/Leaderboard.vue";
 import Hamburger from "../components/Hamburger.vue";
-// import DropDown from "../components/DropDown.vue";
+import DropDown from "../components/DropDown.vue";
 import gameService from "../services/GamesService";
 
 export default {
   name: "GameOverScreen",
   props: ["leaderboardData"],
-  components: { Leaderboard, Hamburger },
+  components: { Leaderboard, Hamburger, DropDown },
   data() {
     return {
       gameId: this.$route.params.id,
@@ -73,6 +73,11 @@ export default {
   display: flex;
   align-items: flex-start;
   justify-content: center;
+}
+
+.dropdown {
+  margin-top: 0.5rem;
+  margin-left: -24.5rem;
 }
 
 .game-over-content {
