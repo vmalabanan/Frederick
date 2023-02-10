@@ -57,7 +57,7 @@ export default {
 <style scoped>
 button {
   background: #fff;
-  color: #fb8500;
+  color: #3c4d74;
   width: 25rem;
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-  background: #f95a1b;
+  background: #6c7c9c;
 }
 
 .list-group {
@@ -85,7 +85,7 @@ button:hover {
 }
 
 .list-group-item:hover {
-  background: #f95a1b;
+  background: #6c7c9c;
   cursor: pointer;
 }
 </style>

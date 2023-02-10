@@ -99,7 +99,9 @@ export default {
 #chat-log {
   overflow-y: auto;
   background-color: white;
-  border-radius: 20px;
+  /* border-radius: 20px; */
+  border-radius: 0.5rem;
+
   height: 450px;
   display: flex;
   flex-direction: column-reverse;
@@ -111,26 +113,27 @@ export default {
   gap: 15px;
 }
 
-.btn-primary {
-  background-color: #f95a1b;
-  border: none;
-  border-radius: 0.25rem;
-}
-
-.btn-primary:hover {
-  background-color: #f34804;
-  color: white;
-}
-
 .btn-light {
-  color: white;
-  background-color: #fb8500;
+  background-color: #8892ab;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  color: white;
 }
 
 .btn-light:hover {
-  background-color: #e67d05;
+  background-color: #656e8e;
+  color: white;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #3c4d74;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #223e7e;
   color: white;
 }
 

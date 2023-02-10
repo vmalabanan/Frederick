@@ -60,6 +60,8 @@ export default {
   flex-basis: 20%;
   background-color: #fff;
   /* border-radius: 20px; */
+  border-radius: 0.5rem;
+
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
@@ -68,11 +70,11 @@ li {
 }
 
 ul:nth-child(even) {
-  background: #f95a1b;
+  background: #3c4d74;
 }
 
 ul:nth-child(even) li {
-  color: #fff;;
+  color: #fff;
 }
 
 .list-group {
@@ -82,7 +84,7 @@ ul:nth-child(even) li {
 .list-group-item {
   font-size: 1.15rem;
   border: none;
-  border-radius: 0;
+  border-radius: 0.5rem;
 }
 
 .leaderboard-title {

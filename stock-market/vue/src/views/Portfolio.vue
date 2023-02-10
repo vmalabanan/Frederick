@@ -248,8 +248,8 @@ export default {
       this.$store.commit("SET_PORTFOLIO_CARDS", filteredData);
 
       if (this.graphLabel != "My Portfolio") {
-        const graphData = data.find(stock => stock.symbol == this.graphLabel)
-        this.addRealTimeDataToGraph(graphData)
+        const graphData = data.find((stock) => stock.symbol == this.graphLabel);
+        this.addRealTimeDataToGraph(graphData);
       }
     },
     getPlayersAccountWorth(resp) {
@@ -334,6 +334,7 @@ export default {
         //change chart css here
         backgroundColor: "#fff",
         // borderRadius: "20px",
+        borderRadius: "0.5rem",
       };
     },
     getGraphDataPoints() {
@@ -356,9 +357,20 @@ export default {
 
 <style scoped>
 .portfolio-screen-container {
-  height: 100%;
-  /* margin-top: -3rem; */
-  background: linear-gradient(to right, #ff4e50, #f9d423);
+  min-height: 100vh;
+  /* background: linear-gradient(to right, #ff4e50, #f9d423); */
+  /* background: linear-gradient(
+    to right,
+    #7f7fd5,
+    #86a8e7,
+    #91eae4
+  );  */
+
+  background: linear-gradient(
+    to right,
+    #2b5876,
+    #4e4376
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 #navbar {
   position: fixed;
@@ -369,6 +381,7 @@ export default {
   display: flex;
   /* align-items: flex-start; */
   justify-content: center;
+  background-size: cover;
 }
 
 .dropdown {
@@ -407,7 +420,6 @@ div#search {
   gap: 3rem;
   align-items: center;
   justify-content: center;
-
 }
 .game-over {
   position: fixed;

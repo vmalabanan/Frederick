@@ -25,6 +25,8 @@ export default {
   height: 530px;
   /* width: 50%; */
   /* border-radius: 20px; */
+  border-radius: 0.5rem;
+
   display: flex;
   flex-direction: column;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);

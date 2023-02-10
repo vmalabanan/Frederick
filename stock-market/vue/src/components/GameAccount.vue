@@ -83,7 +83,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	padding: 10px 20px;
-	/* border-radius: 20px; */
+	border-radius: 0.5rem;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
@@ -100,20 +100,20 @@ h4 {
 	justify-content: center;
 	align-items: center;
 	color: #fff;
-	background-color: #f95a1b;
+	background-color: #3c4d74;
 	height: 40px;
-	border-radius: 0.25rem;
+	border-radius: 0.5rem;
 }
 
 button {
 	margin-top: 40px;
-	background-color: #fb8500;
+	background-color: #8892ab;
 	color: white;
-	border-radius: 0.25rem;;
+	border-radius: 0.5rem;;
 }
 
 button:hover {
-	background-color: #e67d05;
+	background-color: #656e8e;
 	color: white;
 	/* border: 2px solid rgb(68, 68, 68); */
 }
