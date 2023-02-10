@@ -35,7 +35,7 @@ INSERT INTO trade_type (trade_type_id, trade_type_desc) VALUES (2, 'Sell');
 
 -- create an ended game without trades (#777)
 INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days)
-VALUES (777, 'Vanessa Game 777', 4, CURRENT_TIMESTAMP - INTERVAL '8 day', CURRENT_TIMESTAMP - INTERVAL '1 day', 7);
+VALUES (777, 'Diamond hands!', 4, CURRENT_TIMESTAMP - INTERVAL '8 day', CURRENT_TIMESTAMP - INTERVAL '1 day', 7);
 
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (777, 4, 2);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (777, 5, 2);
@@ -50,7 +50,7 @@ INSERT INTO cash (game_id, user_id, amount, effective_date) VALUES (777, 1, 6793
 
 -- create a current game with trades (#555)
 INSERT INTO games (game_id, game_name, organizer_id, start_date, end_date, game_length_days)
-VALUES (555, 'Vanessa Game 555', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '7 day', 7);
+VALUES (555, 'She-wolves of Wall Street', 4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '7 day', 7);
 
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (555, 4, 2);
 INSERT INTO games_users (game_id, user_id, invitation_status_id) VALUES (555, 5, 2);
