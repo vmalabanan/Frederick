@@ -50,9 +50,7 @@ export default {
 #leaderboard {
   flex-basis: 20%;
   background-color: #fff;
-  /* border-radius: 20px; */
   border-radius: 0.5rem;
-
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 

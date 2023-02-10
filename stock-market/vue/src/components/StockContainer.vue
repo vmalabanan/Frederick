@@ -52,7 +52,9 @@ export default {
   border-radius: 0.5rem;
   margin-bottom: 20%;
   height: 40vh;
-    overflow-y: auto;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
 }
 
 #stock-container {

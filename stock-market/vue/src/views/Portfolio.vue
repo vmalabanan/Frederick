@@ -389,12 +389,12 @@ export default {
 }
 
 .dropdown {
-  margin-top: 1.5rem;
+  margin-top: .5rem;
   margin-left: -23rem;
 }
 
 .portfolio-items-container {
-  /* padding: 0 2rem; */
+  padding: 0 2rem;
   /* margin-bottom: 10px; */
   margin-top: 4.5rem;
 }
@@ -425,8 +425,8 @@ input {
 .stock-container-and-chat {
   display: flex;
   gap: 1.75rem;
-  /* align-items: center; */
-  justify-content: center;
+  /* align-items: flex-start; */
+  /* justify-content: center; */
 }
 
 .game-over {

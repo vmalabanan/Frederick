@@ -81,8 +81,7 @@ export default {
 <style scoped>
 #account {
   flex-basis: 20%;
-  height: 35vh;
-
+  height: 30vh;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -92,7 +91,7 @@ export default {
 }
 
 h4 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin: 0.1rem;
 }
 
@@ -111,7 +110,6 @@ h4 {
 }
 
 button {
-  margin-top: 1rem;
   background-color: #8892ab;
   color: white;
   border-radius: 0.5rem;
@@ -120,16 +118,13 @@ button {
 button:hover {
   background-color: #656e8e;
   color: white;
-  /* border: 2px solid rgb(68, 68, 68); */
 }
 
 .positive {
-  /* color: #1FCC92; */
-  font-size: 20px;
+  font-size: 1rem;
 }
 
 .negative {
-  /* color: #E54322; */
-  font-size: 20px;
+  font-size: 1rem;
 }
 </style>

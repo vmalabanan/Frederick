@@ -8,7 +8,7 @@
             {{ getQuantityOwned() }}</span
           >
         </div>
-        <p class="stock-name" v-if="name.length > 20">{{ name.substring(0,20) }}</p>
+        <p class="stock-name" v-if="name.length > 16">{{ name.substring(0,16) }}</p>
         <p class="stock-name" v-else>{{ name }}</p>
       </h4>
       <p class="stock-price">${{ price.toFixed(2) }}</p>
@@ -89,11 +89,10 @@ export default {
 <style scoped>
 #stock {
   display: flex;
-  /* min-width: 200px; */
-  min-width: 180px;
+  min-width: 9rem;
 
   /* min-height: 160px; */
-  min-height: 144px;
+  min-height: 7rem;
   /* margin: 10px; */
   margin: 9px;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
@@ -115,14 +114,14 @@ export default {
   color: #808080;
   margin-bottom: 0px;
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 .stock-price {
   font-style: normal;
   font-weight: 400;
   /* font-size: 36px; */
-  font-size: 1.85rem;
+  font-size: 1.5rem;
 
   margin-bottom: -0.25rem;
 }
@@ -130,7 +129,7 @@ export default {
 .change {
   color: #808080;
   /* font-size: 25px; */
-  font-size: 22px;
+  font-size: 1rem;
 
   font-weight: 500;
 }
@@ -153,7 +152,7 @@ export default {
 #buy,
 #sell {
   border-radius: 0.25rem;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 #buy {
@@ -181,15 +180,15 @@ buy-stock {
 }
 
 #qty-owned {
-  font-size: 15px;
+  font-size: 0.8rem;
   border-radius: 5rem;
-  width: 3rem;
+  width: 2.5rem;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   background-color: #3c4d74;
-  padding: 5px;
+  padding: 4px;
 }
 </style>
