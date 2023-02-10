@@ -101,7 +101,9 @@ export default {
   background-color: white;
   border-radius: 0.5rem;
 
-  min-height: 36vh;
+  /* height: 400px; */
+  /* min-height: 360px; */
+  height: 36vh;
 
   display: flex;
   flex-direction: column-reverse;
