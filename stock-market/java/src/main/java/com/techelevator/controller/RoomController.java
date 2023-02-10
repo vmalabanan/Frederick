@@ -96,9 +96,9 @@ public class RoomController {
 	}
 
 	@MessageMapping("/invite")
-	public InviteSIMP inviteUser(@Payload InviteSIMP invite) {
-		log.debug("Sent invite");
-		return invite;
+	public String inviteUser(String username) {
+		log.debug("Sent invite to {}", username);
+		return username;
 	}
 
 	@MessageMapping("room-{gameId}/leave")
@@ -128,13 +128,12 @@ public class RoomController {
 
 	// demo function
 	private StockApi applyVariance(StockApi stock) {
-		BigDecimal change = stock.getPrice().multiply(new BigDecimal(0.1));
 		if (Math.random() > 0.5) {
-			stock.setPrice(stock.getPrice().subtract(change));
-			stock.setChangesPercentage(stock.getChangesPercentage().subtract(new BigDecimal(0.1)));
+			stock.setPrice(stock.getPrice().subtract(new BigDecimal(0.1)));
+			stock.setChangesPercentage(stock.getChangesPercentage().subtract(new BigDecimal(Math.random())));
 		} else {
-			stock.setPrice(stock.getPrice().add(change));
-			stock.setChangesPercentage(stock.getChangesPercentage().add(new BigDecimal(0.1)));
+			stock.setPrice(stock.getPrice().add(new BigDecimal(0.1)));
+			stock.setChangesPercentage(stock.getChangesPercentage().add(new BigDecimal(Math.random())));
 		}
 		return stock;
 	}
@@ -157,14 +156,12 @@ public class RoomController {
 		// demo data
 
 		if (grgo) {
-			BigDecimal change = GRGO.getPrice().multiply(new BigDecimal(0.1));
-			GRGO.setPrice(GRGO.getPrice().add(change));
+			GRGO.setPrice(GRGO.getPrice().add(new BigDecimal(Math.random())));
 			GRGO.setChangesPercentage(GRGO.getChangesPercentage().add(new BigDecimal(0.1)));
 
 		}
 		if (nnja) {
-			BigDecimal change = NNJA.getPrice().multiply(new BigDecimal(0.1));
-			NNJA.setPrice(NNJA.getPrice().subtract(change));
+			NNJA.setPrice(NNJA.getPrice().subtract(new BigDecimal(Math.random())));
 			NNJA.setChangesPercentage(NNJA.getChangesPercentage().subtract(new BigDecimal(0.1)));
 		}
 

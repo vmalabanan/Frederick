@@ -11,11 +11,7 @@
 
       <div class="all-button-container">
         <div class="gamelist-container">
-          <game-invite
-            v-for="(game, index) in $store.state.invitedGames"
-            :key="index"
-            :game="game"
-          ></game-invite>
+          <game-invite v-for="(game, index) in $store.state.invitedGames" :key="index" :game="game"></game-invite>
         </div>
         <button class="btn btn-lg btn-info" id="back" @click="$router.go(-1)">
           Back
@@ -27,6 +23,9 @@
 <script>
 import Hamburger from "../components/Hamburger.vue";
 import GameInvite from "../components/GameInvite.vue";
+import SocketService from '../services/SocketService';
+import gamesService from "../services/GamesService.js";
+
 export default {
   name: "InvitationsList",
   components: {
@@ -35,6 +34,8 @@ export default {
   },
   data() {
     return {
+      connection: false,
+      stompClient: SocketService.startConnection(),
       hamburgerLinks: ["home"],
     };
   },
@@ -45,7 +46,27 @@ export default {
         params: { id: gameId },
       });
     },
+    handleInvite(resp) {
+      console.log(resp.body)
+      if (resp.body == this.$store.state.user.username) {
+        gamesService.getInvitedGames().then((resp) => {
+          this.$store.commit("SET_INVITED_GAMES", resp.data);
+        });
+      }
+    },
   },
+  created() {
+    this.stompClient.connect({},
+      () => {
+        console.log("Connecting")
+        this.stompClient.subscribe("/topic/invite", resp => this.handleInvite(resp))
+      },
+      () => {
+        console.log("error")
+      }
+    )
+
+  }
 };
 </script>
 
@@ -54,10 +75,12 @@ export default {
   background-color: #ffcccc;
   height: 100vh;
 }
+
 .no-invites-msg {
   font-size: 2rem;
   text-align: center;
 }
+
 .gamelist-content {
   height: 90vh;
   display: flex;
@@ -83,7 +106,7 @@ export default {
   flex-direction: column;
   gap: 2rem;
   margin-top: 5rem;
-  
+
 }
 
 button {

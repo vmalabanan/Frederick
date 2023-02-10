@@ -5,34 +5,18 @@
       {{ createGameErrorMsg }}
     </div>
     <div class="create-game-content">
-      <img
-        class="fish"
-        src="../img/fish-moving-eyes.gif"
-        alt="floating fish with bubbles"
-      />
+      <img class="fish" src="../img/fish-moving-eyes.gif" alt="floating fish with bubbles" />
       <div class="form-and-buttons-container">
         <form class="form-create-game" @submit.prevent="createGame">
           <div class="form-floating mb-3">
-            <input
-              type="text"
-              class="form-control"
-              id="floatingInputGameName"
-              placeholder="Game Name"
-              v-model="game.gameName"
-              required
-            />
+            <input type="text" class="form-control" id="floatingInputGameName" placeholder="Game Name"
+              v-model="game.gameName" required />
             <label for="floatingInputGameName">Game Name</label>
           </div>
 
           <div class="form-floating">
-            <select
-              class="form-select"
-              name="length"
-              id="floatingSelectLength"
-              aria-label="Floating label select example"
-              v-model.number="game.gameLengthDays"
-              required
-            >
+            <select class="form-select" name="length" id="floatingSelectLength"
+              aria-label="Floating label select example" v-model.number="game.gameLengthDays" required>
               <option selected>Select an option</option>
               <option value="7">7 days</option>
             </select>
@@ -40,10 +24,7 @@
           </div>
           <p class="players-text">Players to invite:</p>
           <Users />
-          <button
-            class="btn btn-lg btn-primary btn-block create-game"
-            type="submit"
-          >
+          <button class="btn btn-lg btn-primary btn-block create-game" type="submit">
             Create Game
           </button>
         </form>
@@ -59,6 +40,7 @@
 import gamesService from "../services/GamesService.js";
 import Users from "../components/Users.vue";
 import Hamburger from "../components/Hamburger.vue";
+import SocketService from '../services/SocketService';
 
 export default {
   name: "create",
@@ -68,6 +50,8 @@ export default {
   },
   data() {
     return {
+      connection: false,
+      stompClient: SocketService.startConnection(),
       game: {
         gameName: "",
         gameLengthDays: 0,
@@ -96,7 +80,10 @@ export default {
           if (response.status === 201) {
             // set game ID with info from backend
             const id = response.data;
-
+            this.game.players.forEach(username => {
+              console.log(username);
+              this.stompClient.send("/app/invite", username)
+            })
             // redirect user to portfolio screen for newly created game
             this.$router.push({ name: "portfolio", params: { id: id } });
           }
@@ -108,6 +95,16 @@ export default {
             this.createGameErrorMsg = "Bad Request: Game Creation Errors";
           }
         });
+    },
+    created() {
+      this.stompClient.connect({},
+        () => {
+          console.log("Connecting")
+        },
+        () => {
+          console.log("error")
+        }
+      )
     },
   },
 };

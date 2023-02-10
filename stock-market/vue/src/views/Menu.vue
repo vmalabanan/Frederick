@@ -6,11 +6,7 @@
         <img class="dollar dollar-1" src="../img/dollar.png" alt="dollar" />
         <div class="fishbowl-and-dollar-container">
           <img class="dollar dollar-2" src="../img/dollar.png" alt="dollar" />
-          <img
-            class="fishbowl"
-            src="../img/goldfish.gif"
-            alt="goldfish in bowl gif"
-          />
+          <img class="fishbowl" src="../img/goldfish.gif" alt="goldfish in bowl gif" />
         </div>
         <img class="dollar dollar-3" src="../img/dollar.png" alt="dollar" />
       </div>
@@ -18,18 +14,10 @@
         <button class="btn btn-lg btn-primary" @click="createPage">
           Host Game
         </button>
-        <button
-          class="btn btn-lg btn-warning"
-          v-if="$store.state.invitedGames.length > 0"
-          @click="invitationsList"
-        >
+        <button class="btn btn-lg btn-warning" v-if="$store.state.invitedGames.length > 0" @click="invitationsList">
           Game Invites
         </button>
-        <button
-          class="btn btn-lg btn-info"
-          v-if="$store.state.acceptedGames.length > 0"
-          @click="gamesList"
-        >
+        <button class="btn btn-lg btn-info" v-if="$store.state.acceptedGames.length > 0" @click="gamesList">
           My Games
         </button>
       </div>
@@ -40,6 +28,7 @@
 <script>
 import gamesService from "../services/GamesService.js";
 import hamburger from "../components/Hamburger.vue";
+import SocketService from '../services/SocketService';
 
 export default {
   name: "menu",
@@ -48,6 +37,8 @@ export default {
   },
   data() {
     return {
+      connection: false,
+      stompClient: SocketService.startConnection(),
       hamburgerLinks: ["home"]
     }
   },
@@ -61,12 +52,31 @@ export default {
     gamesList() {
       this.$router.push({ name: "gamesList" });
     },
+    handleInvite(resp) {
+      if (resp.body == this.$store.state.user.username) {
+        this.getInvitedGames();
+      }
+    },
+    getInvitedGames() {
+      // get list of game invitations and add to store
+      gamesService.getInvitedGames().then((resp) => {
+        this.$store.commit("SET_INVITED_GAMES", resp.data);
+      });
+
+    }
   },
   created() {
-    // get list of game invitations and add to store
-    gamesService.getInvitedGames().then((resp) => {
-      this.$store.commit("SET_INVITED_GAMES", resp.data);
-    });
+    this.stompClient.connect({},
+      () => {
+        console.log("Connecting")
+        this.stompClient.subscribe("/topic/invite", resp => this.handleInvite(resp))
+      },
+      () => {
+        console.log("error")
+      }
+    )
+
+    this.getInvitedGames();
 
     // get list of all accepted games and add to store
     gamesService.getAcceptedGames().then((resp) => {
@@ -183,15 +193,19 @@ button {
   0% {
     top: 0px;
   }
+
   25% {
     top: 10px;
   }
+
   50% {
     top: 20px;
   }
+
   75% {
     top: 10px;
   }
+
   100% {
     top: 0px;
   }

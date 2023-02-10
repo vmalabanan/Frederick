@@ -1,27 +1,37 @@
 <template>
 	<div id="" class="container">
 		<h1 style="text-align: center">Demo Control Panel</h1>
-		<button @click="spikeStock">GRGR TO THE MOOON!!!</button>
-		<button @click="crashStock">Crash Stock NINJA</button>
-		<button @click="applyVariance">Add variance to all stocks</button>
+		<button @click="pumpStock">{{ !this.pump ? "GRGR TO THE MOOON!!!" : "Normalize GRGR" }}</button>
+		<button @click="crashStock">{{!this.crash ? "Crash Stock NINJA" : "Normalize GRGR"}}</button>
+		<button @click="applyVariance">{{ !this.variance ? "Add variance to all stocks" : "Remove Variance" }}</button>
 		<button @click="normalize">Return to normal</button>
+		<stock-card v-bind="this.GRGO" />
+		<stock-card v-bind="this.NNJA" />
 	</div>
 </template>
 
 <script>
+import StockCard from '../components/StockCard.vue';
 import SocketService from '../services/SocketService';
 export default {
+	components: { StockCard },
 	name: "test",
 	data() {
 		return {
 			connection: false,
-			stompClient: SocketService.startConnection()
+			stompClient: SocketService.startConnection(),
+			GRGO: {},
+			NNJA: {},
+			variance: false,
+			crash: false,
+			pump: false,
 		}
 	},
 	created() {
 		this.stompClient.connect({},
 			() => {
 				console.log("Connecting")
+				this.stompClient.subscribe("/topic/update", resp => this.handleCard(resp))
 			},
 			() => {
 				console.log("error")
@@ -29,16 +39,42 @@ export default {
 		)
 	},
 	methods: {
+		handleCard(resp) {
+			const data = JSON.parse(resp.body)
+			data.forEach(s => {
+				if (s.symbol == "GRGO") {
+					this.GRGO = s
+				}
+				if (s.symbol == "NNJA") {
+					this.NNJA = s
+				}
+
+
+			});
+		},
 		crashStock() {
+			this.crash = !this.crash
+			this.stompClient.send("/app/crash", this.crash)
 
 		},
-		spikeStock() {
-
+		pumpStock() {
+			this.pump = !this.pump
+			this.stompClient.send("/app/pump", this.pump)
 		},
 		applyVariance() {
+			this.variance = !this.variance
+			this.stompClient.send("/app/variant", this.variance);
 
 		},
 		normalize() {
+			this.crash = false
+			this.variance = false
+			this.pump = false
+
+			this.stompClient.send("/app/variant", this.variance);
+			this.stompClient.send("/app/crash", this.pump)
+			this.stompClient.send("/app/crash", this.crash)
+
 
 		},
 	}
