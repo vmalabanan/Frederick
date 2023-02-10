@@ -1,6 +1,5 @@
 package com.techelevator.controller;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import com.techelevator.dao.ApiStockDao;
 import com.techelevator.dao.StockDao;
 import com.techelevator.dao.ApiStockDao.FullStockHistoryWrap;
 import com.techelevator.dao.ApiStockDao.Stock;

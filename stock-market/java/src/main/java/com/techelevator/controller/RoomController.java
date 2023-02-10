@@ -29,11 +29,6 @@ import com.techelevator.model.Stock;
 
 @Controller
 public class RoomController {
-	// @MessageMapping("/game")
-	// @SendTo("/topic/chat")
-	// public Message broadcastMessage(Message message) {
-	// return message;
-	// }
 
 	private static final Logger log = LoggerFactory.getLogger(RoomController.class);
 	private final SimpMessagingTemplate simpMessagingTemplate;
@@ -68,9 +63,10 @@ public class RoomController {
 		return new LobbySIMP(gameId, players);
 	}
 
-	@MessageMapping("room-{gameId}/invite")
-	public void inviteUser(@DestinationVariable String gameId, @Payload InviteSIMP invite) {
-
+	@MessageMapping("/invite")
+	public InviteSIMP inviteUser(@Payload InviteSIMP invite) {
+		log.debug("Sent invite");
+		return invite;
 	}
 
 	@MessageMapping("room-{gameId}/leave")
@@ -106,6 +102,7 @@ public class RoomController {
 				continue;
 			}
 			allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
+					.distinct()
 					.collect(Collectors.toList());
 		}
 		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
