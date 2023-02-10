@@ -40,7 +40,7 @@ export default {
     updateInvitationStatus(invitationStatusId) {
       // set invitationStatusId
       this.invitation.invitationStatusId = invitationStatusId;
-
+ 
       // send invitation object to backend
       gamesService
         .updateInvitationStatus(this.invitation)
