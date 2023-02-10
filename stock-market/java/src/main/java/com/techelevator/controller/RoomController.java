@@ -129,10 +129,10 @@ public class RoomController {
 	// demo function
 	private StockApi applyVariance(StockApi stock) {
 		if (Math.random() > 0.5) {
-			stock.setPrice(stock.getPrice().subtract(new BigDecimal(0.1)));
+			stock.setPrice(stock.getPrice().subtract(new BigDecimal(1)));
 			stock.setChangesPercentage(stock.getChangesPercentage().subtract(new BigDecimal(Math.random())));
 		} else {
-			stock.setPrice(stock.getPrice().add(new BigDecimal(0.1)));
+			stock.setPrice(stock.getPrice().add(new BigDecimal(1)));
 			stock.setChangesPercentage(stock.getChangesPercentage().add(new BigDecimal(Math.random())));
 		}
 		return stock;
@@ -160,7 +160,7 @@ public class RoomController {
 			GRGO.setChangesPercentage(GRGO.getChangesPercentage().add(new BigDecimal(0.1)));
 
 		}
-		if (nnja) {
+		if (nnja && NNJA.getPrice().compareTo(BigDecimal.ONE) == 1) {
 			NNJA.setPrice(NNJA.getPrice().subtract(new BigDecimal(Math.random())));
 			NNJA.setChangesPercentage(NNJA.getChangesPercentage().subtract(new BigDecimal(0.1)));
 		}
