@@ -371,12 +371,14 @@ export default {
 }
 
 div#search {
-  /* border: 5px solid #023047; */
-  /* border-radius: 10px; */
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+input {
+  margin-bottom: 1.75rem;
 }
 
 .stock-container-and-chat {
