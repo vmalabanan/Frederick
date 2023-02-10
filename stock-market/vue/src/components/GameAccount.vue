@@ -81,7 +81,7 @@ export default {
 <style scoped>
 #account {
   flex-basis: 20%;
-  height: 30vh;
+  height: 34.3vh;
   background-color: #fff;
   display: flex;
   flex-direction: column;
