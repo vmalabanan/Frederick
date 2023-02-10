@@ -24,7 +24,7 @@ export default {
   background-color: #fff;
   /* min-height: 500px; */
   /* min-height: 450px; */
-  min-height: 50vh;
+  min-height: 46vh;
 
   width: 30vw;
   /* width: 50%; */

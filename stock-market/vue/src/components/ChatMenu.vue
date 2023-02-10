@@ -104,7 +104,7 @@ export default {
 
   /* height: 400px; */
   /* min-height: 360px; */
-  min-height: 40vh;
+  min-height: 36vh;
 
   display: flex;
   flex-direction: column-reverse;
