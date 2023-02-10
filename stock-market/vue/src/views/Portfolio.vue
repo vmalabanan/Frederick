@@ -335,7 +335,7 @@ export default {
         backgroundColor: "#fff",
         // borderRadius: "20px",
         borderRadius: "0.5rem",
-		height: "90%"
+        height: "90%",
       };
     },
     getGraphDataPoints() {
@@ -368,11 +368,11 @@ export default {
     #91eae4
   );  */
 
-  background: linear-gradient(
-    to right,
-    #2b5876,
-    #4e4376
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #2b5876, #4e4376);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #navbar {
   position: fixed;
@@ -387,19 +387,20 @@ export default {
 }
 
 .dropdown {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   margin-left: -23rem;
 }
 
 .portfolio-items-container {
-  padding: 5rem 20px 0px 20px;
+  /* padding: 0 2rem; */
   /* margin-bottom: 10px; */
+  margin-top: 4.5rem;
 }
 
 .portfolio {
   display: flex;
-  gap: 20px;
-  padding-bottom: 20px;
+  gap: 1.75rem;
+  padding-bottom: 1.75rem;
 }
 
 .blurred {
@@ -419,7 +420,7 @@ div#search {
 
 .stock-container-and-chat {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.75rem;
   /* align-items: center; */
   justify-content: center;
 }

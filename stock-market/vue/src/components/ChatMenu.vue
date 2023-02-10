@@ -103,7 +103,9 @@ export default {
   border-radius: 0.5rem;
 
   /* height: 400px; */
-  min-height: 360px;
+  /* min-height: 360px; */
+  min-height: 40vh;
+
   display: flex;
   flex-direction: column-reverse;
 }

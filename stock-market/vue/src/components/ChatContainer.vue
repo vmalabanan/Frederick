@@ -23,7 +23,8 @@ export default {
   /* margin-bottom: 20px; */
   background-color: #fff;
   /* min-height: 500px; */
-  min-height: 450px;
+  /* min-height: 450px; */
+  min-height: 50vh;
 
   width: 30vw;
   /* width: 50%; */
@@ -33,7 +34,7 @@ export default {
   display: flex;
   flex-direction: column;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
 }
 
 h2 {

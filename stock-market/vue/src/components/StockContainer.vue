@@ -49,22 +49,16 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-
-  /* border-radius: 20px; */
   border-radius: 0.5rem;
-
   margin-bottom: 20%;
 }
 
 #stock-container {
   background-color: #fff;
-  /* min-height: 500px; */
-  min-height: 450px;
 
-  width: 66.5vw;
-  /* width: 70%; */
+  min-height: 50vh;
+  width: 65.5vw;
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-  /* border-radius: 20px; */
   border-radius: 0.5rem;
 }
 h2 {
@@ -72,7 +66,6 @@ h2 {
   justify-content: center;
   color: #000;
   padding-top: 10px;
-  /* text-decoration: underline; */
   font-weight: bold;
 }
 </style>
