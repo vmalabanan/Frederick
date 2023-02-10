@@ -54,7 +54,7 @@ export default {
   height: 40vh;
   overflow-y: auto;
   align-items: center;
-  justify-content: center;
+  padding-left: 3.5rem;
 }
 
 #stock-container {
