@@ -10,7 +10,7 @@
       </table>
     </div>
     <div class="button-container">
-      <input type="text" v-model="sendMessage" />
+      <input type="text" v-model="sendMessage" @keyup.enter="send" />
       <button @click="send" class="btn btn-primary">Send Message</button>
       <button @click="clearChat()" class="btn btn-light">Clear Chat</button>
     </div>
