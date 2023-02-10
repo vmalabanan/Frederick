@@ -81,8 +81,7 @@ export default {
 <style scoped>
 #account {
   flex-basis: 20%;
-  /* height: 100%; */
-  min-height: 35vh;
+  height: 35vh;
 
   background-color: #fff;
   display: flex;
@@ -112,7 +111,7 @@ h4 {
 }
 
 button {
-  margin-top: 2.5rem;
+  margin-top: 1rem;
   background-color: #8892ab;
   color: white;
   border-radius: 0.5rem;
