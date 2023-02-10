@@ -51,6 +51,8 @@ export default {
   align-content: flex-start;
   border-radius: 0.5rem;
   margin-bottom: 20%;
+  height: 40vh;
+    overflow-y: auto;
 }
 
 #stock-container {

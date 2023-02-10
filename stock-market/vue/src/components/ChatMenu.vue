@@ -99,11 +99,8 @@ export default {
 #chat-log {
   overflow-y: auto;
   background-color: white;
-  /* border-radius: 20px; */
   border-radius: 0.5rem;
 
-  /* height: 400px; */
-  /* min-height: 360px; */
   min-height: 36vh;
 
   display: flex;
