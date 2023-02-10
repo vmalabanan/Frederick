@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techelevator.dao.StockDao;
 import com.techelevator.dao.ApiStockDao.FullStockHistoryWrap;
-import com.techelevator.dao.ApiStockDao.Stock;
+import com.techelevator.dao.ApiStockDao.StockApi;
 import com.techelevator.dao.ApiStockDao.StockHistory;
 
 @RestController
@@ -38,17 +38,17 @@ public class StockController {
 	}
 
 	@GetMapping("/quote/{symbol}")
-	public List<Stock> getQuote(@PathVariable String symbol) {
+	public List<StockApi> getQuote(@PathVariable String symbol) {
 		return stockDao.getQuote(symbol);
 	}
 
 	@GetMapping("/quote/")
-	public List<Stock> getQuote() {
-		return new ArrayList<Stock>();
+	public List<StockApi> getQuote() {
+		return new ArrayList<StockApi>();
 	}
 
 	@GetMapping("/search")
-	public Stock[] searchSymbol(@RequestParam String query) {
+	public StockApi[] searchSymbol(@RequestParam String query) {
 		return stockDao.searchSymbol(query);
 	}
 

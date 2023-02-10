@@ -29,17 +29,17 @@ public class ApiStockDao implements StockDao {
         return restTemplate.getForObject(uri, StockHistory[].class);
     }
 
-    public List<Stock> getQuote(String symbol) {
+    public List<StockApi> getQuote(String symbol) {
         String uri = String.format("%s/quote/%s?%s", BASE_URL, symbol, API_KEY);
         log.debug("[Get Quote] Making a call to {}", uri);
-        List<Stock> data = Arrays.asList(restTemplate.getForObject(uri, Stock[].class));
+        List<StockApi> data = Arrays.asList(restTemplate.getForObject(uri, StockApi[].class));
         return data;
     }
 
-    public Stock[] searchSymbol(String query) {
+    public StockApi[] searchSymbol(String query) {
         String uri = String.format("%s/search?query=%s&limit=5&exchange=NASDAQ&%s", BASE_URL, query, API_KEY);
         log.debug("[Search Symbol] Making a call to {}", uri);
-        return restTemplate.getForObject(uri, Stock[].class);
+        return restTemplate.getForObject(uri, StockApi[].class);
     }
 
     public static class FullStockHistoryWrap {
@@ -99,11 +99,18 @@ public class ApiStockDao implements StockDao {
 
     }
 
-    public static class Stock {
+    public static class StockApi {
         private String symbol;
         private String name;
         private BigDecimal price;
         private BigDecimal changesPercentage;
+
+        public StockApi(String symbol, String name, BigDecimal price, BigDecimal changesPercentage) {
+            this.symbol = symbol;
+            this.name = name;
+            this.price = price;
+            this.changesPercentage = changesPercentage;
+        }
 
         public BigDecimal getChangesPercentage() {
             return this.changesPercentage;
@@ -113,7 +120,7 @@ public class ApiStockDao implements StockDao {
             this.changesPercentage = changesPercentage;
         }
 
-        public Stock() {
+        public StockApi() {
 
         }
 

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import com.techelevator.dao.StockDao;
 import com.techelevator.dao.TradeDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.dao.ApiStockDao.StockApi;
 import com.techelevator.model.InviteSIMP;
 import com.techelevator.model.LobbySIMP;
 import com.techelevator.model.PortfolioDTO;
@@ -45,6 +46,37 @@ public class RoomController {
 		this.tradeDao = tradeDao;
 		this.stockDao = stockDao;
 	}
+
+	// Demo Section
+
+	public StockApi GRGO = new StockApi("GRGO", "Gregor Coin",
+			BigDecimal.valueOf(2.4), BigDecimal.valueOf(0.2));
+	public StockApi NNJA = new StockApi("NNJA", "Ninja Coin",
+			BigDecimal.valueOf(10.0), BigDecimal.valueOf(0.2));
+	private boolean grgo = false;
+	private boolean nnja = false;
+	private boolean variance = false;
+
+	@MessageMapping("/crash")
+	public String crashStock(boolean state) {
+		nnja = state;
+		return state ? "Crashing Ninja Stock" : "Stopped Crashing Ninja Stock";
+	}
+
+	@MessageMapping("/pump")
+	public String pumpStock(boolean state) {
+		grgo = state;
+		return state ? "Pumping GRGO Stock" : "Stopped Pumping GRGO Stock";
+	}
+
+	@MessageMapping("/variant")
+	public String variantStock(boolean state) {
+		variance = state;
+		return state ? "started variance" : "stopped variance";
+
+	}
+
+	// Demo Section
 
 	@MessageMapping("/room-{gameId}/join")
 	public LobbySIMP joinRoom(@DestinationVariable String gameId, String username) {
@@ -94,6 +126,21 @@ public class RoomController {
 		return allSymbols;
 	}
 
+	// demo function
+	private StockApi applyVariance(StockApi stock) {
+		BigDecimal change = stock.getPrice().multiply(new BigDecimal(0.1));
+		if (Math.random() > 0.5) {
+			stock.setPrice(stock.getPrice().subtract(change));
+			stock.setChangesPercentage(stock.getChangesPercentage().subtract(new BigDecimal(0.1)));
+		} else {
+			stock.setPrice(stock.getPrice().add(change));
+			stock.setChangesPercentage(stock.getChangesPercentage().add(new BigDecimal(0.1)));
+		}
+		return stock;
+	}
+
+	// demo function
+
 	@Scheduled(fixedRate = 1000)
 	public void stockUpdatePerSec() {
 		List<String> allSymbols = new ArrayList<>();
@@ -106,7 +153,29 @@ public class RoomController {
 		}
 
 		allSymbols = allSymbols.stream().distinct().collect(Collectors.toList());
-		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
+		List<StockApi> data = new ArrayList<>(stockDao.getQuote(String.join(",", allSymbols)));
+		// demo data
+
+		if (grgo) {
+			BigDecimal change = GRGO.getPrice().multiply(new BigDecimal(0.1));
+			GRGO.setPrice(GRGO.getPrice().add(change));
+			GRGO.setChangesPercentage(GRGO.getChangesPercentage().add(new BigDecimal(0.1)));
+
+		}
+		if (nnja) {
+			BigDecimal change = NNJA.getPrice().multiply(new BigDecimal(0.1));
+			NNJA.setPrice(NNJA.getPrice().subtract(change));
+			NNJA.setChangesPercentage(NNJA.getChangesPercentage().subtract(new BigDecimal(0.1)));
+		}
+
+		data.add(GRGO);
+		data.add(NNJA);
+
+		if (variance) {
+			data = data.stream().map(s -> applyVariance(s)).collect(Collectors.toList());
+		}
+		// demo data
+
 		log.debug("Sending Data");
 		simpMessagingTemplate.convertAndSend("/topic/update", data);
 
@@ -124,7 +193,7 @@ public class RoomController {
 				BigDecimal currentCash = portfolio.getPortfolio().getCash();
 				BigDecimal sumOfStocks = BigDecimal.ZERO;
 				for (Stock currentStock : portfolio.getPortfolio().getStocks()) {
-					Optional<com.techelevator.dao.ApiStockDao.Stock> stockData = data.stream()
+					Optional<StockApi> stockData = data.stream()
 							.filter(s -> s.getSymbol().equals(currentStock.getTickerSymbol())).findFirst();
 					BigDecimal totalPricePerStockOwned = stockData.get().getPrice()
 							.multiply(new BigDecimal(currentStock.getNumberOfShares()));
