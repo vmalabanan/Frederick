@@ -1,6 +1,10 @@
 <template>
-	<div id="main-content" class="container">
-		<div v-for="(content, index) in contents" v-text="content" :key="index" />
+	<div id="" class="container">
+		<h1 style="text-align: center">Demo Control Panel</h1>
+		<button @click="spikeStock">GRGR TO THE MOOON!!!</button>
+		<button @click="crashStock">Crash Stock NINJA</button>
+		<button @click="applyVariance">Add variance to all stocks</button>
+		<button @click="normalize">Return to normal</button>
 	</div>
 </template>
 
@@ -11,37 +15,51 @@ export default {
 	data() {
 		return {
 			connection: false,
-			stompClient: SocketService.startConnection(),
-			contents: [],
+			stompClient: SocketService.startConnection()
 		}
 	},
 	created() {
 		this.stompClient.connect({},
 			() => {
 				console.log("Connecting")
-				this.stompClient.subscribe('/topic/test', resp => this.handleMessage(resp))
-				this.connection = true
 			},
 			() => {
-				this.connection = false
+				console.log("error")
 			}
 		)
 	},
 	methods: {
-		handleMessage(resp) {
-			this.contents.push(resp.body)
+		crashStock() {
+
 		},
-		send() {
-			console.log("Send message:" + this.sendMessage);
-			if (this.stompClient && this.stompClient.connected) {
-				const msg = { fromUser: this.$store.state.user.username, content: this.sendMessage };
-				this.stompClient.send("/app/game", JSON.stringify(msg), {});
-			}
-		}
+		spikeStock() {
+
+		},
+		applyVariance() {
+
+		},
+		normalize() {
+
+		},
 	}
 };
 </script>
 
 <style scoped>
+div {
+	margin-top: 10%;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+}
 
+button {
+	padding: 10px;
+	margin: 10px;
+	border-radius: 15px;
+	border: none;
+	color: black;
+	font-weight: 400;
+	background-color: cornflowerblue;
+}
 </style>
