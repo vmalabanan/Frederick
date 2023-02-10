@@ -99,7 +99,9 @@ export default {
 #chat-log {
   overflow-y: auto;
   background-color: white;
-  border-radius: 20px;
+  /* border-radius: 20px; */
+  border-radius: 0.5rem;
+
   height: 450px;
   display: flex;
   flex-direction: column-reverse;
@@ -114,7 +116,7 @@ export default {
 .btn-light {
   background-color: #8892ab;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   color: white;
 }
 
@@ -127,7 +129,7 @@ export default {
   color: white;
   background-color: #3c4d74;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
 }
 
 .btn-primary:hover {

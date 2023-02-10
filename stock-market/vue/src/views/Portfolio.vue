@@ -334,6 +334,7 @@ export default {
         //change chart css here
         backgroundColor: "#fff",
         // borderRadius: "20px",
+        borderRadius: "0.5rem",
       };
     },
     getGraphDataPoints() {

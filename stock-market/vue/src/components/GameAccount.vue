@@ -83,7 +83,7 @@ export default {
 	display: flex;
 	flex-direction: column;
 	padding: 10px 20px;
-	/* border-radius: 20px; */
+	border-radius: 0.5rem;
 	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
@@ -102,14 +102,14 @@ h4 {
 	color: #fff;
 	background-color: #3c4d74;
 	height: 40px;
-	border-radius: 0.25rem;
+	border-radius: 0.5rem;
 }
 
 button {
 	margin-top: 40px;
 	background-color: #8892ab;
 	color: white;
-	border-radius: 0.25rem;;
+	border-radius: 0.5rem;;
 }
 
 button:hover {
