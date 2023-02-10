@@ -1,55 +1,125 @@
 <template>
-	<div id="GameList">
-		<p class="no-invites-msg" v-if="$store.state.invitedGames.length === 0">No invitations to display</p>
-		<div class="card w-50" v-else>
-			<div class="card-header" style="background-color: #FFB703; border-radius:25px; height: 60px">
-				<span style="width: 140px">Game Name</span>
-				<span style="width: 40px">Type</span>
-				<span style="width: 130px">Length</span>
-				<span style="width: 100px"></span>
-			</div>
-			<div id="games" class="card-body">
-				<GameInvite v-for="(game, index) in $store.state.invitedGames" :key="index" :game="game" />
-			</div>
-			<div class="card-footer" style="background-color: #FFB703; border-radius:25px; height: 60px" />
-		</div>
-		<button class="btn btn-lg btn-info" id="back" @click="$router.go(-1)">
-			Back
-		</button>
-	</div>
+  <div id="gamelist">
+    <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
+    <p class="no-invites-msg" v-if="$store.state.acceptedGames.length === 0">
+      No games to display
+    </p>
+    <div v-else class="gamelist-content">
+      <div class="airplane-container">
+        <img src="../img/airplane.gif" alt="paper airplane gif " />
+      </div>
+
+      <div class="all-button-container">
+        <div class="gamelist-container">
+          <game-invite
+            v-for="(game, index) in $store.state.invitedGames"
+            :key="index"
+            :game="game"
+          ></game-invite>
+        </div>
+        <button class="btn btn-lg btn-info" id="back" @click="$router.go(-1)">
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
+import Hamburger from "../components/Hamburger.vue";
 import GameInvite from "../components/GameInvite.vue";
 export default {
-	name: "InvitationsList",
-	components: {
-		GameInvite
-	}
+  name: "InvitationsList",
+  components: {
+    Hamburger,
+    GameInvite,
+  },
+  data() {
+    return {
+      hamburgerLinks: ["home"],
+    };
+  },
+  methods: {
+    viewGame(gameId) {
+      this.$router.push({
+        name: "portfolio",
+        params: { id: gameId },
+      });
+    },
+  },
 };
 </script>
 
-<style>
-div#GameList {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 5%;
+<style scoped>
+#gamelist {
+  background-color: #ffcccc;
+  height: 100vh;
+}
+.no-invites-msg {
+  font-size: 2rem;
+  text-align: center;
+}
+.gamelist-content {
+  height: 90vh;
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-left: -10rem;
 }
 
-div#GameList>div {
-	background-color: #8ecae6;
-	border-radius: 25px;
-	margin: 0 auto;
-	border: none;
+.gamelist-container {
+  /* background-color: #ffb703; */
+  /* width: 20%; */
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-div.card-header {
-	display: flex;
-	justify-content: space-around;
-	align-items: center;
+.all-button-container {
+  /* margin-top: 5rem; */
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 5rem;
+  
 }
 
-div#GameList>#back {
-	margin-top: 20px;
+button {
+  border: none;
+  box-shadow: 0.5rem 0.5rem #fc7c31;
+  color: #fff;
+}
+
+
+.btn-info {
+  background-color: #04c2fc;
+}
+
+.btn-info:hover {
+  background-color: #65bce4;
+}
+
+@keyframes float {
+  0% {
+    top: 0px;
+  }
+
+  25% {
+    top: 20px;
+  }
+
+  50% {
+    top: 30px;
+  }
+
+  75% {
+    top: 20px;
+  }
+
+  100% {
+    top: 0px;
+  }
 }
 </style>
