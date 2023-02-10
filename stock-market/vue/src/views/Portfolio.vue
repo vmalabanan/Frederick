@@ -426,7 +426,6 @@ input {
   display: flex;
   gap: 1.75rem;
   /* align-items: flex-start; */
-  /* justify-content: center; */
 }
 
 .game-over {
