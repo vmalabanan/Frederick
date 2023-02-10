@@ -87,9 +87,9 @@ export default {
 				datasets: [
 					{
 						label: this.graphLabel,
-						backgroundColor: "#FB8500",
+						backgroundColor: "#3c4d74",
 						data: this.dataPoints,
-						borderColor: "#FB8500",
+						borderColor: "#3c4d74",
 					},
 				],
 			},
