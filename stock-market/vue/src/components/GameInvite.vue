@@ -7,7 +7,7 @@
     >
       {{ respondToInvitationErrorMsg }}
     </div>
-    <span id="name" style="width: 14rem">{{ game.gameName }}</span>
+    <span id="name" style="width: 30rem">{{ game.gameName }}</span>
     <div id="button-container">
       <button class="btn btn-lg btn-primary" id="join" @click="joinGame">
         Join
