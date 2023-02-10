@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-  background: #6c7c9c;
+  background: #8892ab;
 }
 
 .list-group {
@@ -85,7 +85,8 @@ button:hover {
 }
 
 .list-group-item:hover {
-  background: #6c7c9c;
+  background: #8892ab;
   cursor: pointer;
+  color: #fff;
 }
 </style>
