@@ -102,9 +102,10 @@ public class RoomController {
 				continue;
 			}
 			allSymbols = Stream.concat(allSymbols.stream(), getOwnedSymbols(gameId).stream())
-					.distinct()
 					.collect(Collectors.toList());
 		}
+
+		allSymbols = allSymbols.stream().distinct().collect(Collectors.toList());
 		List<com.techelevator.dao.ApiStockDao.Stock> data = stockDao.getQuote(String.join(",", allSymbols));
 		log.debug("Sending Data");
 		simpMessagingTemplate.convertAndSend("/topic/update", data);

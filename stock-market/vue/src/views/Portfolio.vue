@@ -1,72 +1,32 @@
 <template>
   <div class="portfolio-screen-container">
-    <GameOverScreen
-      v-if="gameOver"
-      :gameId="gameId"
-      :leaderboardData="this.leaderboardData"
-      class="game-over"
-    />
+    <GameOverScreen v-if="gameOver" :gameId="gameId" :leaderboardData="this.leaderboardData" class="game-over" />
     <div v-else class="portfolio-container">
       <div id="navbar">
         <drop-down :gameName="gameName" class="dropdown"></drop-down>
         <hamburger class="hamburger" :routeNames="hamburgerLinks"></hamburger>
       </div>
       <div class="portfolio-items-container">
-        <div
-          class="portfolio"
-          @click.capture="switchView"
-          :class="{ blurred: buySellCard.show }"
-        >
+        <div class="portfolio" @click.capture="switchView" :class="{ blurred: buySellCard.show }">
           <game-account :accountValue="accountValue" />
-          <line-chart
-            :key="graphLabel"
-            :styles="chartStyles"
-            :dataPoints="getGraphDataPoints"
-            :labels="getGraphXAxis"
-            :graphLabel="this.graphLabel"
-          />
+          <line-chart :key="graphLabel" :styles="chartStyles" :dataPoints="getGraphDataPoints" :labels="getGraphXAxis"
+            :graphLabel="this.graphLabel" />
           <leaderboard :gameId="gameId" :leaderboardData="leaderboardData" />
         </div>
 
-        <div
-          v-show="!onPortfolio"
-          id="search"
-          :class="{ blurred: buySellCard.show }"
-          class="form-floating mb-3"
-        >
-          <input
-            type="text"
-            name="searchSymbol"
-            @input="updateSearch"
-            class="form-control"
-            id="floatingInput"
-            placeholder="GOOG"
-            :value="search.input"
-            autocomplete="off"
-          />
+        <div v-show="!onPortfolio" id="search" :class="{ blurred: buySellCard.show }" class="form-floating mb-3">
+          <input type="text" name="searchSymbol" @input="updateSearch" class="form-control" id="floatingInput"
+            placeholder="GOOG" :value="search.input" autocomplete="off" />
           <label for="floatingInput">Search Stocks</label>
         </div>
 
         <div class="stock-container-and-chat">
           <div :class="{ blurred: buySellCard.show }">
-            <stock-container
-              @cardClick="updateGraphWith"
-              v-model="buySellCard"
-              :stocks="search.cards"
-              class="stocks-search"
-              v-show="!onPortfolio"
-              :onPortfolio="false"
-              :graphLabel="graphLabel"
-            />
-            <stock-container
-              @cardClick="updateGraphWith"
-              v-model="buySellCard"
-              :stocks="this.$store.state.portfolio.cards"
-              class="stocks-owned"
-              v-show="onPortfolio"
-              :onPortfolio="true"
-              :graphLabel="graphLabel"
-            />
+            <stock-container @cardClick="updateGraphWith" v-model="buySellCard" :stocks="search.cards"
+              class="stocks-search" v-show="!onPortfolio" :onPortfolio="false" :graphLabel="graphLabel" />
+            <stock-container @cardClick="updateGraphWith" v-model="buySellCard"
+              :stocks="this.$store.state.portfolio.cards" class="stocks-owned" v-show="onPortfolio" :onPortfolio="true"
+              :graphLabel="graphLabel" />
           </div>
 
           <div :class="{ blurred: buySellCard.show }">
@@ -374,6 +334,7 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 #navbar {
   position: fixed;
   top: 0;
@@ -424,6 +385,7 @@ div#search {
   /* align-items: center; */
   justify-content: center;
 }
+
 .game-over {
   position: fixed;
   width: 100%;

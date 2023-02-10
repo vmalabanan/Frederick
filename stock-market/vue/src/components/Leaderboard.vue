@@ -10,19 +10,11 @@
         Portfolio Value
       </li>
     </ul>
-    <ul
-      class="list-group list-group-horizontal"
-      v-for="(data, index) in this.leaderboardData"
-      :key="index"
-    >
+    <ul class="list-group list-group-horizontal" v-for="(data, index) in this.leaderboardData" :key="index">
       <li class="list-group-item col-1 data">
         {{ index + 1 }}
       </li>
-      <li
-        class="list-group-item col-2 data"
-        v-if="data[0] == $store.state.user.username"
-        style="font-weight: bold"
-      >
+      <li class="list-group-item col-2 data" v-if="data[0] == $store.state.user.username" style="font-weight: bold">
         {{ data[0] + " (you)" }}
       </li>
       <li class="list-group-item col-2 data" v-else>
@@ -46,7 +38,6 @@ export default {
         currency: "USD",
         minimumFractionDigits: 2,
       };
-      console.log(this.$store.state.user.username);
       let dollarString = new Intl.NumberFormat("en-US", formatting_options);
       let cashString = dollarString.format(cash);
       return cashString;
